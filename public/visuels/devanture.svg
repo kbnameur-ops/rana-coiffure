@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 625" width="1000" height="625" preserveAspectRatio="xMidYMid slice" role="img" aria-label="La devanture du salon dessinée au trait d'or">
+  <defs>
+    <linearGradient id="d-fond" x1="0" y1="0" x2="0.4" y2="1">
+      <stop offset="0" stop-color="#16110d"/>
+      <stop offset="1" stop-color="#0b0908"/>
+    </linearGradient>
+    <linearGradient id="d-or" x1="0" y1="0" x2="0.6" y2="1">
+      <stop offset="0" stop-color="#f5e3b0"/>
+      <stop offset="0.5" stop-color="#c9a15a"/>
+      <stop offset="1" stop-color="#8a6a1f"/>
+    </linearGradient>
+    <radialGradient id="d-lueur" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#e3c47c" stop-opacity="0.34"/>
+      <stop offset="1" stop-color="#e3c47c" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="1000" height="625" fill="url(#d-fond)"/>
+  <ellipse cx="500" cy="400" rx="470" ry="330" fill="url(#d-lueur)"/>
+
+  <rect x="120" y="90" width="760" height="470" fill="none" stroke="#e3c47c" stroke-opacity="0.3" stroke-width="1.6"/>
+
+  <!-- Bandeau enseigne -->
+  <rect x="120" y="90" width="760" height="92" fill="#0b0908" stroke="url(#d-or)" stroke-width="1.8"/>
+  <text x="500" y="140" text-anchor="middle"
+        font-family="Cormorant Garamond, Cormorant, Garamond, Georgia, 'Times New Roman', serif"
+        font-size="48" font-style="italic" font-weight="500" letter-spacing="4" fill="url(#d-or)">Rana</text>
+  <text x="500" y="167" text-anchor="middle"
+        font-family="Helvetica Neue, Helvetica, Arial, sans-serif"
+        font-size="14" font-weight="500" letter-spacing="13" fill="#e3c47c">COIFFURE</text>
+
+  <!-- Store -->
+  <path d="M120 182 h760 l-30 56 H150 z" fill="#e3c47c" fill-opacity="0.1" stroke="url(#d-or)" stroke-width="1.6"/>
+  <g stroke="#e3c47c" stroke-opacity="0.45" stroke-width="1.2">
+    <path d="M234 182 l-16 56"/><path d="M348 182 l-16 56"/><path d="M462 182 l-16 56"/>
+    <path d="M576 182 l-16 56"/><path d="M690 182 l-16 56"/><path d="M804 182 l-16 56"/>
+  </g>
+
+  <!-- Vitrines et porte -->
+  <g fill="#e3c47c" fill-opacity="0.05" stroke="url(#d-or)" stroke-width="2.2">
+    <rect x="164" y="270" width="264" height="250"/>
+    <rect x="572" y="270" width="264" height="250"/>
+    <rect x="452" y="270" width="96" height="250"/>
+  </g>
+  <circle cx="536" cy="400" r="5" fill="#e3c47c"/>
+
+  <!-- Silhouettes derrière la vitre -->
+  <g fill="none" stroke="#e3c47c" stroke-opacity="0.55" stroke-width="2">
+    <path d="M196 512 V430 a44 44 0 0 1 88 0 V512"/>
+    <path d="M612 512 V446 a38 38 0 0 1 76 0 V512"/>
+    <path d="M188 300 L 300 380"/>
+    <path d="M600 300 L 700 372"/>
+  </g>
+
+  <!-- Bacs -->
+  <g fill="none" stroke="url(#d-or)" stroke-width="1.8">
+    <rect x="180" y="520" width="70" height="40"/>
+    <rect x="750" y="520" width="70" height="40"/>
+  </g>
+  <g fill="#e3c47c" fill-opacity="0.75">
+    <circle cx="200" cy="512" r="10"/><circle cx="222" cy="502" r="8"/><circle cx="240" cy="514" r="7"/>
+    <circle cx="770" cy="512" r="10"/><circle cx="792" cy="502" r="8"/><circle cx="810" cy="514" r="7"/>
+  </g>
+
+  <path d="M0 560 h1000" stroke="#e3c47c" stroke-opacity="0.28" stroke-width="2"/>
+  <path d="M0 590 h1000" stroke="#e3c47c" stroke-opacity="0.14" stroke-width="1.2"/>
+</svg>

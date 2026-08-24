@@ -1,0 +1,53 @@
+"use client";
+
+import { useActionState } from "react";
+import { submitPasswordReset, type ActionState } from "@/app/admin/actions";
+
+const initial: ActionState = {};
+
+export function ResetForm({ token }: { token: string }) {
+  const [state, formAction, pending] = useActionState(
+    submitPasswordReset,
+    initial,
+  );
+
+  return (
+    <form action={formAction} className="mt-8 space-y-5">
+      <input type="hidden" name="jeton" value={token} />
+
+      {[
+        ["password", "Nouveau mot de passe"],
+        ["confirm", "Confirmation"],
+      ].map(([name, label]) => (
+        <label key={name} className="block">
+          <span className="eyebrow text-clay">{label}</span>
+          <input
+            type="password"
+            name={name}
+            required
+            minLength={8}
+            autoComplete="new-password"
+            className="mt-2 w-full border border-ink-line bg-ink-soft px-4 py-3 text-bone outline-none transition-colors focus:border-gold"
+          />
+        </label>
+      ))}
+
+      {state.error && (
+        <p
+          role="alert"
+          className="border-l-2 border-red-500 bg-ink-soft px-4 py-3 text-sm leading-relaxed text-bone-dim"
+        >
+          {state.error}
+        </p>
+      )}
+
+      <button
+        type="submit"
+        disabled={pending}
+        className="w-full bg-gold-soft px-6 py-3.5 text-xs font-semibold uppercase tracking-[0.2em] text-ink transition-colors hover:bg-gold-light disabled:opacity-60"
+      >
+        {pending ? "Enregistrement…" : "Choisir ce mot de passe"}
+      </button>
+    </form>
+  );
+}

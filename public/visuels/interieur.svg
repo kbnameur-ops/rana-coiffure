@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" width="800" height="1000" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Le salon dessiné au trait d'or : miroirs arrondis, coiffeuse et fauteuil">
+  <defs>
+    <linearGradient id="i-fond" x1="0.2" y1="0" x2="0.8" y2="1">
+      <stop offset="0" stop-color="#16110d"/>
+      <stop offset="0.55" stop-color="#0b0908"/>
+      <stop offset="1" stop-color="#120d0a"/>
+    </linearGradient>
+    <radialGradient id="i-halo" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#e3c47c" stop-opacity="0.3"/>
+      <stop offset="1" stop-color="#e3c47c" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="i-or" x1="0" y1="0" x2="0.6" y2="1">
+      <stop offset="0" stop-color="#f5e3b0"/>
+      <stop offset="0.5" stop-color="#c9a15a"/>
+      <stop offset="1" stop-color="#8a6a1f"/>
+    </linearGradient>
+    <linearGradient id="i-glace" x1="0" y1="0" x2="0.7" y2="1">
+      <stop offset="0" stop-color="#e3c47c" stop-opacity="0.16"/>
+      <stop offset="1" stop-color="#e3c47c" stop-opacity="0.02"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="800" height="1000" fill="url(#i-fond)"/>
+  <ellipse cx="400" cy="420" rx="430" ry="380" fill="url(#i-halo)"/>
+
+  <!-- Miroirs : deux arches et leurs reflets. -->
+  <path d="M120 620 V330 a110 110 0 0 1 220 0 V620 z" fill="url(#i-glace)" stroke="url(#i-or)" stroke-width="2.4"/>
+  <path d="M420 620 V300 a125 125 0 0 1 250 0 V620 z" fill="url(#i-glace)" stroke="url(#i-or)" stroke-width="2.4"/>
+  <g fill="none" stroke="#e3c47c" stroke-opacity="0.4" stroke-width="1.5">
+    <path d="M152 600 C 200 520, 176 430, 236 356"/>
+    <path d="M452 600 C 508 512, 476 412, 546 328"/>
+    <path d="M598 604 C 624 540, 614 470, 642 420"/>
+  </g>
+
+  <!-- Coiffeuse et flacons. -->
+  <rect x="80" y="620" width="640" height="14" rx="3" fill="#e3c47c" fill-opacity="0.14" stroke="url(#i-or)" stroke-width="1.6"/>
+  <g stroke="#e3c47c" stroke-opacity="0.55" stroke-width="1.5" fill="none">
+    <rect x="150" y="572" width="26" height="48" rx="6"/>
+    <rect x="192" y="588" width="20" height="32" rx="5"/>
+    <rect x="560" y="564" width="24" height="56" rx="6"/>
+    <rect x="596" y="590" width="18" height="30" rx="5"/>
+  </g>
+
+  <!-- Fauteuil de coiffage. -->
+  <path d="M300 838 h200 V820 a70 70 0 0 0 -70 -70 h-60 a70 70 0 0 0 -70 70 z" fill="#e3c47c" fill-opacity="0.1"/>
+  <g fill="none" stroke="url(#i-or)" stroke-width="2.4" stroke-linecap="round">
+    <path d="M300 900 V820 a70 70 0 0 1 70 -70 h60 a70 70 0 0 1 70 70 V900"/>
+    <path d="M296 900 h208"/>
+    <path d="M400 900 V952"/>
+    <path d="M356 962 h88"/>
+    <path d="M300 838 h200"/>
+  </g>
+
+  <!-- Tige fleurie. -->
+  <g fill="none" stroke="#c9a15a" stroke-width="1.9" stroke-linecap="round">
+    <path d="M700 900 C 690 820, 706 760, 690 700"/>
+    <path d="M694 806 C 726 792, 742 764, 740 736"/>
+    <path d="M698 756 C 668 744, 654 716, 656 690"/>
+  </g>
+  <g fill="#e3c47c" fill-opacity="0.8">
+    <circle cx="690" cy="694" r="12"/>
+    <circle cx="740" cy="732" r="9"/>
+    <circle cx="656" cy="686" r="8"/>
+  </g>
+
+  <path d="M0 900 h800" stroke="#e3c47c" stroke-opacity="0.25" stroke-width="1.6"/>
+</svg>
