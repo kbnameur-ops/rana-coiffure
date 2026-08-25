@@ -28,7 +28,7 @@ export function WalkInForm({
     <form action={formAction} className="mt-6 border border-line bg-white p-5">
       <div className="grid gap-4 sm:grid-cols-2">
         <label className="block sm:col-span-2">
-          <span className="eyebrow text-clay">Prestation réalisée</span>
+          <span className="eyebrow text-mute">Prestation réalisée</span>
           <select
             name="service_id"
             required
@@ -51,7 +51,7 @@ export function WalkInForm({
         </label>
 
         <label className="block">
-          <span className="eyebrow text-clay">Jour</span>
+          <span className="eyebrow text-mute">Jour</span>
           <input
             type="date"
             name="date"
@@ -63,7 +63,7 @@ export function WalkInForm({
         </label>
 
         <label className="block">
-          <span className="eyebrow text-clay">Heure</span>
+          <span className="eyebrow text-mute">Heure</span>
           {/* Pas de `step` : le navigateur l'ancre sur la valeur initiale, et
               une heure courante comme 08:23 rendait invalide toute saisie
               qui n'était pas un multiple de cinq minutes à partir de là. */}
@@ -77,7 +77,7 @@ export function WalkInForm({
         </label>
 
         <label className="block">
-          <span className="eyebrow text-clay">Client (facultatif)</span>
+          <span className="eyebrow text-mute">Client (facultatif)</span>
           <input
             name="client"
             placeholder="Client de passage"
@@ -86,7 +86,7 @@ export function WalkInForm({
         </label>
 
         <label className="block">
-          <span className="eyebrow text-clay">Remarque (facultatif)</span>
+          <span className="eyebrow text-mute">Remarque (facultatif)</span>
           <input
             name="notes"
             className="mt-2 w-full border border-ink/20 px-3 py-2.5"
@@ -110,7 +110,7 @@ export function WalkInForm({
       <button
         type="submit"
         disabled={pending}
-        className="mt-5 bg-ink px-7 py-3.5 text-xs font-semibold uppercase tracking-[0.18em] text-bone transition-colors hover:bg-ink-soft disabled:opacity-60"
+        className="mt-5 bg-ink px-7 py-3.5 text-xs font-semibold uppercase tracking-[0.18em] text-cream transition-colors hover:bg-ink-soft disabled:opacity-60"
       >
         {pending ? "Enregistrement…" : "Déclarer la prestation"}
       </button>

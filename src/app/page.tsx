@@ -3,7 +3,7 @@ import Link from "next/link";
 import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
 import { Reveal } from "@/components/site/Reveal";
-import { LogoFull, LogoMark } from "@/components/site/Logo";
+import { LogoMark, LogoMedallion } from "@/components/site/Logo";
 import { ServiceTabs, type TabCategory } from "@/components/site/ServiceTabs";
 import { Reviews } from "@/components/site/Reviews";
 import {
@@ -31,11 +31,11 @@ const MARQUEE = [
 
 const SIGNATURES = [
   {
-    title: "Diagnostic avant tout",
+    title: "Le diagnostic d'abord",
     text: "Longueur, densité, porosité, carnation : on regarde vos cheveux et on vous écoute avant de décider quoi que ce soit.",
   },
   {
-    title: "Couleur sur mesure",
+    title: "La couleur sur mesure",
     text: "Chaque formule est pesée pour votre base. Balayage, patine, reprise de racines : la lumière d'abord, l'effet de mode ensuite.",
   },
   {
@@ -43,30 +43,13 @@ const SIGNATURES = [
     text: "Les rendez-vous sont espacés. Personne ne vous presse, personne ne vous laisse une heure sous la machine.",
   },
   {
-    title: "Soins d'exception",
+    title: "Des soins choisis",
     text: "Gammes professionnelles sans sulfates, pensées pour les longueurs colorées. Conseil sincère, jamais de vente forcée.",
   },
 ];
 
-/**
- * Poussière d'or du héros. Les positions sont fixées en dur : une valeur
- * aléatoire différerait entre le rendu serveur et le client et casserait
- * l'hydratation.
- */
-const DUST = [
-  { left: "8%", top: "72%", size: 3, delay: "0s", duration: "17s", x: "18px", y: "-70px" },
-  { left: "17%", top: "38%", size: 2, delay: "1.4s", duration: "21s", x: "-14px", y: "-90px" },
-  { left: "26%", top: "84%", size: 4, delay: "2.6s", duration: "15s", x: "22px", y: "-60px" },
-  { left: "38%", top: "26%", size: 2, delay: "0.7s", duration: "24s", x: "12px", y: "-110px" },
-  { left: "47%", top: "66%", size: 3, delay: "3.1s", duration: "19s", x: "-20px", y: "-80px" },
-  { left: "56%", top: "18%", size: 2, delay: "1.9s", duration: "22s", x: "16px", y: "-95px" },
-  { left: "64%", top: "78%", size: 4, delay: "0.4s", duration: "16s", x: "-18px", y: "-65px" },
-  { left: "72%", top: "44%", size: 2, delay: "2.2s", duration: "23s", x: "20px", y: "-100px" },
-  { left: "81%", top: "30%", size: 3, delay: "1.1s", duration: "18s", x: "-12px", y: "-85px" },
-  { left: "88%", top: "70%", size: 2, delay: "3.6s", duration: "20s", x: "14px", y: "-75px" },
-  { left: "93%", top: "52%", size: 3, delay: "0.9s", duration: "25s", x: "-16px", y: "-105px" },
-  { left: "12%", top: "56%", size: 2, delay: "2.9s", duration: "19s", x: "10px", y: "-88px" },
-];
+/** Le titre du héros se compose mot à mot. Décalages fixes, rendus au serveur. */
+const TITRE = ["L'art", "de", "la", "coiffure", "féminine"];
 
 export default async function HomePage() {
   const today = todayISO();
@@ -120,210 +103,220 @@ export default async function HomePage() {
 
       <main>
         {/* ------------------------------------------------------------ héros */}
-        <section className="relative flex min-h-[100svh] items-center overflow-hidden bg-ink">
-          {/* Halos dorés : la lumière du salon, qui respire lentement. */}
-          <div className="absolute inset-0" aria-hidden>
-            <div className="absolute left-1/2 top-[42%] h-[110vmax] w-[110vmax] -translate-x-1/2 -translate-y-1/2 animate-[halo_11s_ease-in-out_infinite] rounded-full bg-[radial-gradient(circle,rgba(227,196,124,0.16),rgba(227,196,124,0.04)_38%,transparent_62%)]" />
-            <div className="absolute -right-[18%] -top-[12%] h-[70vmax] w-[70vmax] animate-[halo_17s_ease-in-out_infinite_reverse] rounded-full bg-[radial-gradient(circle,rgba(138,106,31,0.34),transparent_62%)]" />
-            <div className="absolute -bottom-[22%] -left-[14%] h-[60vmax] w-[60vmax] animate-[halo_14s_ease-in-out_infinite] rounded-full bg-[radial-gradient(circle,rgba(227,196,124,0.1),transparent_65%)]" />
+        <section className="relative overflow-hidden bg-porcelain pb-16 pt-32 sm:pb-24 sm:pt-36">
+          {/* Voiles de couleur : la lumière du lieu, sentie plus que vue. */}
+          <div aria-hidden className="absolute inset-0 overflow-hidden">
+            <span
+              className="wash -left-[10%] top-[-12%] h-[36rem] w-[36rem] bg-terracotta/18"
+              style={
+                { "--wash-x": "50px", "--wash-y": "30px", "--wash-duration": "28s" } as React.CSSProperties
+              }
+            />
+            <span
+              className="wash -right-[12%] top-[6%] h-[32rem] w-[32rem] bg-sage/14"
+              style={
+                { "--wash-x": "-40px", "--wash-y": "40px", "--wash-duration": "34s" } as React.CSSProperties
+              }
+            />
+            <span
+              className="wash bottom-[-18%] left-1/3 h-[30rem] w-[30rem] bg-brass-soft/22"
+              style={
+                { "--wash-x": "30px", "--wash-y": "-40px", "--wash-duration": "30s" } as React.CSSProperties
+              }
+            />
           </div>
 
-          {/* Poussière d'or en suspension. */}
-          <div className="absolute inset-0 overflow-hidden" aria-hidden>
-            {DUST.map((d, i) => (
-              <span
-                key={i}
-                className="dust"
-                style={
-                  {
-                    left: d.left,
-                    top: d.top,
-                    width: d.size,
-                    height: d.size,
-                    "--dust-delay": d.delay,
-                    "--dust-duration": d.duration,
-                    "--dust-x": d.x,
-                    "--dust-y": d.y,
-                  } as React.CSSProperties
-                }
-              />
-            ))}
-          </div>
-
-          <div className="relative mx-auto w-full max-w-6xl px-5 pb-14 pt-28 sm:px-8 sm:pb-16">
-            <div className="flex flex-col items-center text-center">
+          <div className="relative mx-auto grid max-w-6xl items-center gap-14 px-5 sm:px-8 lg:grid-cols-[1fr_auto] lg:gap-20">
+            <div>
               <Reveal>
-                <p className="eyebrow flex flex-wrap items-center justify-center gap-x-3 gap-y-2 text-gold-soft">
-                  <span className="hidden h-px w-10 bg-gold-soft/60 sm:block" aria-hidden />
+                <p className="eyebrow flex items-center gap-3 text-terracotta">
+                  <span className="h-px w-10 bg-terracotta/50" aria-hidden />
                   {settings.address} · {settings.postal_code} {settings.city}
-                  <span className="hidden h-px w-10 bg-gold-soft/60 sm:block" aria-hidden />
                 </p>
               </Reveal>
 
-              <Reveal delay={140} className="relative mt-6 sm:mt-8">
-                {/* Anneau doré qui tourne derrière le verrou. */}
-                <svg
-                  aria-hidden
-                  viewBox="0 0 400 400"
-                  className="pointer-events-none absolute left-1/2 top-1/2 h-[135%] w-[135%] -translate-x-1/2 -translate-y-1/2 animate-[ring-turn_46s_linear_infinite] opacity-40"
+              <h1 className="display mt-7 text-[clamp(2.8rem,7.5vw,5.25rem)] font-light">
+                {TITRE.map((mot, i) => (
+                  <span
+                    key={mot}
+                    className="mr-[0.28em] inline-block"
+                    style={{
+                      animation: `rise 1s var(--ease-out-soft) ${140 + i * 110}ms both`,
+                    }}
+                  >
+                    {mot}
+                  </span>
+                ))}
+                <span
+                  className="voice block text-terracotta"
+                  style={{ animation: "rise 1s var(--ease-out-soft) 700ms both" }}
                 >
-                  <circle
-                    cx="200"
-                    cy="200"
-                    r="188"
-                    fill="none"
-                    stroke="#e3c47c"
-                    strokeWidth="0.8"
-                    strokeDasharray="2 14"
-                  />
-                  <circle
-                    cx="200"
-                    cy="200"
-                    r="170"
-                    fill="none"
-                    stroke="#8a6a1f"
-                    strokeWidth="0.6"
-                  />
-                </svg>
+                  sans précipitation
+                </span>
+              </h1>
 
-                <LogoFull
-                  shopName={settings.shop_name}
-                  priority
-                  className="relative h-auto w-[min(68vw,21.5rem)] drop-shadow-[0_0_70px_rgba(227,196,124,0.22)]"
-                />
-                <h1 className="sr-only">
-                  {settings.shop_name} — {settings.tagline}
-                </h1>
-              </Reveal>
-
-              <Reveal delay={300}>
-                <p className="voice gold-text mt-7 text-[clamp(1.4rem,3.4vw,2.2rem)]">
-                  L&apos;art de la coiffure féminine, sans précipitation
-                </p>
-              </Reveal>
-
-              <Reveal delay={400}>
-                <p className="mx-auto mt-5 max-w-xl text-[0.95rem] leading-relaxed text-bone-dim/75 sm:text-lg">
+              <Reveal delay={820}>
+                <span className="rule-grow mt-9 block h-px w-24 bg-brass" />
+                <p className="mt-7 max-w-md text-[1.02rem] leading-relaxed text-mute">
                   Coupe travaillée aux ciseaux, couleur pensée pour votre lumière,
                   coiffage qui tient. On vous écoute avant de toucher aux longueurs.
                 </p>
               </Reveal>
 
-              <Reveal delay={500}>
-                <div className="mt-9 flex flex-wrap items-center justify-center gap-4">
+              <Reveal delay={920}>
+                <div className="mt-10 flex flex-wrap items-center gap-4">
                   <Link
                     href="/reservation"
-                    className="gild bg-gold-soft px-8 py-4 text-xs font-semibold uppercase tracking-[0.18em] text-ink transition-transform duration-300 hover:-translate-y-0.5 sm:px-10 sm:tracking-[0.24em]"
+                    className="btn-solid px-9 py-4 text-xs font-semibold uppercase tracking-[0.2em]"
                   >
                     <span>Prendre rendez-vous</span>
                   </Link>
                   <a
                     href={`tel:${settings.phone.replace(/\s/g, "")}`}
-                    className="border border-gold-soft/35 px-8 py-4 text-xs font-semibold uppercase tracking-[0.18em] text-bone-dim backdrop-blur-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-gold-soft hover:text-gold-soft sm:px-10 sm:tracking-[0.24em]"
+                    className="btn-ghost px-9 py-4 text-xs font-semibold uppercase tracking-[0.2em]"
                   >
-                    {settings.phone}
+                    <span>{settings.phone}</span>
                   </a>
                 </div>
               </Reveal>
 
               <div
-                className="mt-12 w-full max-w-3xl"
-                style={{
-                  animation: "rise 0.9s var(--ease-out-soft) 620ms both",
-                }}
+                className="mt-12 max-w-lg"
+                style={{ animation: "rise 1s var(--ease-out-soft) 1040ms both" }}
               >
-                <span className="hairline block h-px w-full opacity-50" aria-hidden />
-                <dl className="grid gap-x-8 gap-y-6 py-6 sm:grid-cols-3">
+                <span className="block h-px w-full bg-line" aria-hidden />
+                <dl className="grid grid-cols-2 gap-x-8 gap-y-5 py-6 sm:grid-cols-3">
                   <div>
-                    <dt className="eyebrow text-clay">Aujourd&apos;hui</dt>
-                    <dd className="mt-2.5 flex items-center justify-center gap-2 text-sm text-bone-dim">
+                    <dt className="eyebrow text-mute">Aujourd&apos;hui</dt>
+                    <dd className="mt-2 flex items-center gap-2 text-sm">
                       <span
                         className={`inline-block h-1.5 w-1.5 rounded-full ${
-                          openNow
-                            ? "animate-[glow-pulse_2.4s_ease-in-out_infinite] bg-gold-soft"
-                            : "bg-clay"
+                          openNow ? "bg-sage" : "bg-line"
                         }`}
+                        aria-hidden
                       />
                       {closedToday ? "Fermé" : todayLine?.text}
                     </dd>
                   </div>
                   <div>
-                    <dt className="eyebrow text-clay">Prestations dès</dt>
-                    <dd className="display mt-1.5 text-2xl text-gold-soft">
+                    <dt className="eyebrow text-mute">Dès</dt>
+                    <dd className="display mt-1 text-2xl text-terracotta">
                       {formatPrice(priceFrom)}
                     </dd>
                   </div>
-                  <div>
+                  <div className="col-span-2 sm:col-span-1">
                     {reviews ? (
                       <>
-                        <dt className="eyebrow text-clay">Avis Google</dt>
-                        <dd className="mt-2 flex items-center justify-center gap-2 text-sm text-bone-dim">
-                          <span className="text-gold-soft">★</span>
+                        <dt className="eyebrow text-mute">Avis Google</dt>
+                        <dd className="mt-2 flex items-center gap-2 text-sm">
+                          <span className="text-brass">★</span>
                           {reviews.rating.toFixed(1).replace(".", ",")} sur{" "}
                           {reviews.total} avis
                         </dd>
                       </>
                     ) : (
                       <>
-                        <dt className="eyebrow text-clay">Réservation</dt>
-                        <dd className="mt-2 text-sm text-bone-dim">
-                          En ligne, à toute heure
-                        </dd>
+                        <dt className="eyebrow text-mute">Réservation</dt>
+                        <dd className="mt-2 text-sm">En ligne, à toute heure</dd>
                       </>
                     )}
                   </div>
                 </dl>
-                <span className="hairline block h-px w-full opacity-50" aria-hidden />
+                <span className="block h-px w-full bg-line" aria-hidden />
               </div>
             </div>
+
+            {/* Le logo doré posé dans son médaillon : le bijou de la page. */}
+            <Reveal
+              delay={260}
+              className="order-first justify-self-center lg:order-none lg:justify-self-end"
+            >
+              <div className="relative">
+                <span
+                  aria-hidden
+                  className="absolute left-1/2 top-1/2 h-[118%] w-[118%] -translate-x-1/2 -translate-y-1/2 animate-[breathe_9s_ease-in-out_infinite] rounded-full bg-[radial-gradient(circle,rgba(164,85,63,0.2),transparent_68%)]"
+                />
+                <svg
+                  aria-hidden
+                  viewBox="0 0 400 400"
+                  className="pointer-events-none absolute left-1/2 top-1/2 h-[128%] w-[128%] -translate-x-1/2 -translate-y-1/2 animate-[ring-turn_54s_linear_infinite]"
+                >
+                  <circle
+                    cx="200"
+                    cy="200"
+                    r="192"
+                    fill="none"
+                    stroke="#9a7b3f"
+                    strokeOpacity="0.5"
+                    strokeWidth="0.8"
+                    strokeDasharray="1.5 13"
+                  />
+                </svg>
+                <LogoMedallion
+                  shopName={settings.shop_name}
+                  priority
+                  className="relative w-[min(62vw,23rem)]"
+                />
+              </div>
+            </Reveal>
           </div>
 
           <span
             aria-hidden
-            className="absolute bottom-6 left-1/2 hidden h-8 w-5 -translate-x-1/2 justify-center rounded-full border border-gold-soft/30 pt-1.5 lg:flex"
+            className="absolute bottom-5 left-1/2 hidden h-8 w-5 -translate-x-1/2 justify-center rounded-full border border-ink/15 pt-1.5 lg:flex"
           >
-            <span className="h-1.5 w-1 animate-[scroll-cue_1.8s_ease-in-out_infinite] rounded-full bg-gold-soft" />
+            <span className="h-1.5 w-1 animate-[scroll-cue_1.9s_ease-in-out_infinite] rounded-full bg-terracotta" />
           </span>
         </section>
 
         {/* --------------------------------------------------------- bandeau */}
-        <div className="overflow-hidden border-y border-ink-line bg-ink-soft py-4">
-          <ul className="flex w-max animate-[marquee_46s_linear_infinite] items-center gap-10 pr-10">
+        <div className="overflow-hidden bg-ink py-3.5">
+          <ul className="flex w-max animate-[marquee_52s_linear_infinite] items-center gap-10 pr-10">
             {[...MARQUEE, ...MARQUEE].map((word, i) => (
-              <li
-                key={i}
-                className="eyebrow flex items-center gap-10 text-bone-dim/55"
-              >
+              <li key={i} className="eyebrow flex items-center gap-10 text-cream/70">
                 {word}
-                <span className="text-gold-soft">✦</span>
+                <span className="text-brass-soft/70" aria-hidden>
+                  ✦
+                </span>
               </li>
             ))}
           </ul>
         </div>
 
         {/* ---------------------------------------------------------- maison */}
-        <section id="maison" className="scroll-mt-24 bg-bone py-20 sm:py-28">
-          <div className="mx-auto grid max-w-6xl gap-14 px-5 sm:px-8 lg:grid-cols-2 lg:items-center">
+        <section
+          id="maison"
+          className="relative scroll-mt-24 overflow-hidden bg-porcelain py-20 sm:py-28"
+        >
+          <span
+            aria-hidden
+            className="wash -left-[6%] top-[18%] h-[28rem] w-[28rem] bg-blush/70"
+            style={
+              { "--wash-x": "36px", "--wash-y": "-24px", "--wash-duration": "32s" } as React.CSSProperties
+            }
+          />
+
+          <div className="relative mx-auto grid max-w-6xl gap-14 px-5 sm:px-8 lg:grid-cols-[1fr_0.85fr] lg:items-center lg:gap-20">
             <Reveal className="order-2 lg:order-1">
-              <p className="eyebrow text-gold">La maison</p>
-              <h2 className="display mt-4 text-[clamp(2.1rem,5.2vw,3.5rem)] uppercase tracking-[0.06em]">
+              <p className="eyebrow text-terracotta">La maison</p>
+              <h2 className="display mt-5 text-[clamp(2.2rem,5vw,3.4rem)] font-light">
                 Le geste juste,
                 <br />
-                pas la mode
+                <span className="voice text-terracotta">pas la mode</span>
               </h2>
-              <span className="rule-grow mt-6 block h-px w-28 bg-gold" />
-              <p className="mt-7 text-lg leading-relaxed text-ink/70">
-                {settings.about}
-              </p>
+              <span className="rule-grow mt-7 block h-px w-24 bg-brass" />
+              <p className="mt-7 text-lg leading-relaxed text-mute">{settings.about}</p>
 
-              <dl className="mt-10 grid gap-x-8 gap-y-7 sm:grid-cols-2">
+              <dl className="mt-11 grid gap-x-10 gap-y-8 sm:grid-cols-2">
                 {SIGNATURES.map((item, i) => (
-                  <Reveal key={item.title} delay={i * 90}>
-                    <dt className="flex items-center gap-2.5 font-semibold">
-                      <span className="h-1.5 w-1.5 rotate-45 bg-gold" aria-hidden />
-                      {item.title}
+                  <Reveal key={item.title} delay={i * 110}>
+                    <dt className="flex items-baseline gap-3">
+                      <span className="numeral text-sm text-brass" aria-hidden>
+                        {String(i + 1).padStart(2, "0")}
+                      </span>
+                      <span className="display text-xl">{item.title}</span>
                     </dt>
-                    <dd className="mt-2 pl-4 text-sm leading-relaxed text-ink/60">
+                    <dd className="mt-2.5 pl-8 text-sm leading-relaxed text-mute">
                       {item.text}
                     </dd>
                   </Reveal>
@@ -331,20 +324,19 @@ export default async function HomePage() {
               </dl>
             </Reveal>
 
-            <Reveal delay={140} className="order-1 lg:order-2">
-              <div className="group relative aspect-4/5 overflow-hidden bg-ink">
+            <Reveal
+              variant="arch"
+              delay={180}
+              className="arch group order-1 overflow-hidden lg:order-2"
+            >
+              <div className="relative aspect-4/5">
                 <Image
                   src="/visuels/interieur.svg"
                   alt={`Le salon ${settings.shop_name} : miroirs, coiffeuse et fauteuil`}
                   fill
-                  sizes="(max-width: 1024px) 100vw, 45vw"
-                  className="animate-[slow-pan_34s_ease-in-out_infinite_alternate] object-cover"
+                  sizes="(max-width: 1024px) 100vw, 40vw"
+                  className="animate-[slow-zoom_40s_ease-in-out_infinite_alternate] object-cover"
                 />
-                <span
-                  aria-hidden
-                  className="pointer-events-none absolute inset-4 border border-gold-soft/25"
-                />
-                <LogoMark className="pointer-events-none absolute bottom-6 right-6 h-16 w-auto opacity-70 transition-opacity duration-500 group-hover:opacity-100" />
               </div>
             </Reveal>
           </div>
@@ -353,26 +345,26 @@ export default async function HomePage() {
         {/* ----------------------------------------------------- prestations */}
         <section
           id="prestations"
-          className="scroll-mt-24 border-y border-line bg-sand py-20 sm:py-28"
+          className="scroll-mt-24 border-y border-line bg-shell py-20 sm:py-28"
         >
           <div className="mx-auto max-w-6xl px-5 sm:px-8">
             <Reveal>
-              <div className="flex flex-wrap items-end justify-between gap-6">
+              <div className="flex flex-wrap items-end justify-between gap-8">
                 <div className="max-w-xl">
-                  <p className="eyebrow text-gold">La carte</p>
-                  <h2 className="display mt-4 text-[clamp(2.1rem,5.2vw,3.5rem)] uppercase tracking-[0.06em]">
+                  <p className="eyebrow text-terracotta">La carte</p>
+                  <h2 className="display mt-5 text-[clamp(2.2rem,5vw,3.4rem)] font-light">
                     Prestations &amp; tarifs
                   </h2>
-                  <span className="rule-grow mt-6 block h-px w-28 bg-gold" />
+                  <span className="rule-grow mt-7 block h-px w-24 bg-brass" />
                 </div>
-                <p className="max-w-sm text-ink/60">
+                <p className="max-w-sm text-mute">
                   Tarifs affichés, durées réelles. {allServices.length} prestations,
                   réservables en ligne au créneau qui vous arrange.
                 </p>
               </div>
             </Reveal>
 
-            <Reveal delay={120} className="mt-12">
+            <Reveal delay={140} className="mt-12">
               <ServiceTabs categories={tabs} />
             </Reveal>
           </div>
@@ -382,44 +374,54 @@ export default async function HomePage() {
         {team.length > 0 && (
           <section
             id="equipe"
-            className="relative scroll-mt-24 overflow-hidden bg-ink py-20 sm:py-28"
+            className="relative scroll-mt-24 overflow-hidden bg-porcelain py-20 sm:py-28"
           >
-            <div
+            <span
               aria-hidden
-              className="absolute -right-[10%] top-0 h-[50vmax] w-[50vmax] animate-[halo_16s_ease-in-out_infinite] rounded-full bg-[radial-gradient(circle,rgba(138,106,31,0.22),transparent_65%)]"
+              className="wash -right-[8%] top-[10%] h-[30rem] w-[30rem] bg-sage/12"
+              style={
+                { "--wash-x": "-34px", "--wash-y": "26px", "--wash-duration": "30s" } as React.CSSProperties
+              }
             />
+
             <div className="relative mx-auto max-w-6xl px-5 sm:px-8">
               <Reveal>
-                <p className="eyebrow text-gold-soft">L&apos;équipe</p>
-                <h2 className="display mt-4 text-[clamp(2.1rem,5.2vw,3.5rem)] uppercase tracking-[0.06em] text-bone">
+                <p className="eyebrow text-terracotta">L&apos;équipe</p>
+                <h2 className="display mt-5 text-[clamp(2.2rem,5vw,3.4rem)] font-light">
                   Qui vous coiffe
                 </h2>
-                <span className="rule-grow hairline mt-6 block h-px w-28" />
-                <p className="mt-6 max-w-xl text-lg leading-relaxed text-bone-dim/70">
+                <span className="rule-grow mt-7 block h-px w-24 bg-brass" />
+                <p className="mt-7 max-w-xl text-lg leading-relaxed text-mute">
                   Demandez votre coiffeuse au moment de réserver, ou laissez le
                   salon vous attribuer la première disponible.
                 </p>
               </Reveal>
 
-              <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
                 {team.map((member, i) => (
-                  <Reveal key={member.id} delay={i * 90}>
-                    <article className="luxe-card h-full p-7">
-                      <span className="display flex h-14 w-14 items-center justify-center rounded-full border border-gold-soft/40 text-lg text-gold-soft">
+                  <Reveal key={member.id} delay={i * 100}>
+                    <article className="card h-full p-7">
+                      <span
+                        className="display flex h-16 w-16 items-center justify-center rounded-full text-xl text-cream"
+                        style={{
+                          backgroundImage:
+                            i % 2 === 0
+                              ? "linear-gradient(140deg,#c47a62,#a4553f)"
+                              : "linear-gradient(140deg,#8b9a86,#5e6e5b)",
+                        }}
+                      >
                         {member.name.slice(0, 2).toUpperCase()}
                       </span>
-                      <h3 className="display mt-5 text-2xl uppercase tracking-[0.06em] text-bone">
-                        {member.name}
-                      </h3>
+                      <h3 className="display mt-6 text-2xl">{member.name}</h3>
                       {member.role_label && (
-                        <p className="mt-1.5 text-sm text-clay">{member.role_label}</p>
+                        <p className="mt-1.5 text-sm text-mute">{member.role_label}</p>
                       )}
                       <Link
                         href="/reservation"
-                        className="group mt-5 inline-block text-xs font-semibold uppercase tracking-[0.18em] text-gold-soft transition-colors hover:text-gold-light"
+                        className="group/lien mt-6 inline-block text-xs font-semibold uppercase tracking-[0.18em] text-terracotta"
                       >
                         Réserver
-                        <span className="ml-1.5 inline-block transition-transform duration-300 group-hover:translate-x-1">
+                        <span className="ml-1.5 inline-block transition-transform duration-300 group-hover/lien:translate-x-1">
                           →
                         </span>
                       </Link>
@@ -437,15 +439,15 @@ export default async function HomePage() {
         {/* ----------------------------------------------------------- infos */}
         <section
           id="infos"
-          className="scroll-mt-24 border-t border-line bg-sand py-20 sm:py-28"
+          className="scroll-mt-24 border-t border-line bg-shell py-20 sm:py-28"
         >
-          <div className="mx-auto grid max-w-6xl gap-14 px-5 sm:px-8 lg:grid-cols-2">
+          <div className="mx-auto grid max-w-6xl gap-14 px-5 sm:px-8 lg:grid-cols-2 lg:gap-20">
             <Reveal>
-              <p className="eyebrow text-gold">Horaires</p>
-              <h2 className="display mt-4 text-[clamp(1.9rem,4.2vw,2.7rem)] uppercase tracking-[0.06em]">
+              <p className="eyebrow text-terracotta">Horaires</p>
+              <h2 className="display mt-5 text-[clamp(1.9rem,4vw,2.6rem)] font-light">
                 Ouverture
               </h2>
-              <span className="rule-grow mt-6 block h-px w-28 bg-gold" />
+              <span className="rule-grow mt-7 block h-px w-24 bg-brass" />
 
               <ul className="mt-9 border-t border-line">
                 {lines.map((l) => {
@@ -453,18 +455,23 @@ export default async function HomePage() {
                   return (
                     <li
                       key={l.weekday}
-                      className={`flex items-baseline justify-between gap-4 border-b border-line py-3.5 transition-colors ${
+                      className={`flex items-baseline justify-between gap-4 border-b border-line py-3.5 ${
                         isToday ? "bg-white px-3 font-semibold" : ""
                       }`}
                     >
                       <span className="flex items-center gap-2.5">
                         {isToday && (
-                          <span className="h-1.5 w-1.5 rounded-full bg-gold" aria-hidden />
+                          <span
+                            className="h-1.5 w-1.5 rounded-full bg-terracotta"
+                            aria-hidden
+                          />
                         )}
                         {l.label}
                       </span>
                       <span
-                        className={`lining-nums tabular-nums ${l.ranges.length ? "text-ink" : "text-clay"}`}
+                        className={`lining-nums tabular-nums ${
+                          l.ranges.length ? "text-ink" : "text-mute"
+                        }`}
                       >
                         {l.text}
                       </span>
@@ -474,7 +481,7 @@ export default async function HomePage() {
               </ul>
 
               {closures.length > 0 && (
-                <p className="mt-6 border-l-2 border-gold bg-white px-4 py-3 text-sm text-ink/70">
+                <p className="mt-6 border-l-2 border-terracotta bg-white px-4 py-3 text-sm text-mute">
                   Fermeture exceptionnelle :{" "}
                   {closures
                     .slice(0, 3)
@@ -487,18 +494,18 @@ export default async function HomePage() {
               )}
 
               {settings.booking_notice && (
-                <p className="mt-6 text-sm leading-relaxed text-ink/60">
+                <p className="mt-6 text-sm leading-relaxed text-mute">
                   {settings.booking_notice}
                 </p>
               )}
             </Reveal>
 
-            <Reveal delay={140}>
-              <p className="eyebrow text-gold">Accès</p>
-              <h2 className="display mt-4 text-[clamp(1.9rem,4.2vw,2.7rem)] uppercase tracking-[0.06em]">
+            <Reveal delay={160}>
+              <p className="eyebrow text-terracotta">Accès</p>
+              <h2 className="display mt-5 text-[clamp(1.9rem,4vw,2.6rem)] font-light">
                 Venir au salon
               </h2>
-              <span className="rule-grow mt-6 block h-px w-28 bg-gold" />
+              <span className="rule-grow mt-7 block h-px w-24 bg-brass" />
 
               <address className="mt-9 text-lg not-italic leading-relaxed">
                 {settings.address}
@@ -506,34 +513,30 @@ export default async function HomePage() {
                 {settings.postal_code} {settings.city}
               </address>
 
-              <div className="mt-6 flex flex-wrap gap-3">
+              <div className="mt-7 flex flex-wrap gap-3">
                 <a
                   href={mapsUrl}
                   target="_blank"
                   rel="noreferrer noopener"
-                  className="border border-ink/20 px-6 py-3 text-xs font-semibold uppercase tracking-[0.18em] transition-all duration-300 hover:-translate-y-0.5 hover:border-ink hover:bg-ink hover:text-bone"
+                  className="btn-ghost px-7 py-3 text-xs font-semibold uppercase tracking-[0.18em]"
                 >
-                  Itinéraire
+                  <span>Itinéraire</span>
                 </a>
                 <a
                   href={`tel:${settings.phone.replace(/\s/g, "")}`}
-                  className="border border-ink/20 px-6 py-3 text-xs font-semibold uppercase tracking-[0.18em] transition-all duration-300 hover:-translate-y-0.5 hover:border-ink hover:bg-ink hover:text-bone"
+                  className="btn-ghost px-7 py-3 text-xs font-semibold uppercase tracking-[0.18em]"
                 >
-                  Appeler
+                  <span>Appeler</span>
                 </a>
               </div>
 
-              <div className="relative mt-9 aspect-16/10 overflow-hidden bg-ink">
+              <div className="relative mt-9 aspect-16/10 overflow-hidden rounded-t-[3rem] rounded-b-sm">
                 <Image
                   src="/visuels/devanture.svg"
                   alt={`La devanture du salon ${settings.shop_name}`}
                   fill
                   sizes="(max-width: 1024px) 100vw, 45vw"
-                  className="animate-[slow-pan_38s_ease-in-out_infinite_alternate] object-cover"
-                />
-                <span
-                  aria-hidden
-                  className="pointer-events-none absolute inset-4 border border-gold-soft/25"
+                  className="animate-[slow-zoom_44s_ease-in-out_infinite_alternate] object-cover"
                 />
               </div>
             </Reveal>
@@ -541,31 +544,32 @@ export default async function HomePage() {
         </section>
 
         {/* ------------------------------------------------------------- cta */}
-        <section className="relative overflow-hidden bg-ink py-20 sm:py-24">
+        <section className="relative overflow-hidden bg-ink py-20 sm:py-28">
           <Image
             src="/visuels/motif.svg"
             alt=""
             fill
             sizes="100vw"
-            className="object-cover opacity-50"
+            className="object-cover opacity-60"
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-ink via-ink/80 to-ink/40" />
+          <div className="absolute inset-0 bg-gradient-to-r from-ink via-ink/85 to-ink/45" />
 
-          <div className="relative mx-auto flex max-w-6xl flex-col items-start gap-8 px-5 sm:px-8 md:flex-row md:items-center md:justify-between">
+          <div className="relative mx-auto flex max-w-6xl flex-col items-start gap-10 px-5 sm:px-8 md:flex-row md:items-center md:justify-between">
             <Reveal>
-              <p className="eyebrow text-gold-soft">Rendez-vous</p>
-              <h2 className="display mt-4 max-w-xl text-[clamp(1.9rem,4.6vw,3.1rem)] uppercase tracking-[0.06em] text-bone">
+              <p className="eyebrow text-brass-soft">Rendez-vous</p>
+              <h2 className="display mt-5 max-w-xl text-[clamp(2rem,4.6vw,3.1rem)] font-light text-cream">
                 Votre fauteuil vous attend
               </h2>
-              <p className="mt-4 max-w-md text-bone-dim/70">
+              <p className="mt-5 max-w-md text-cream/65">
                 Choisissez la prestation, la coiffeuse et l&apos;heure. Une minute,
                 sans inscription.
               </p>
             </Reveal>
-            <Reveal delay={140}>
+            <Reveal delay={160} className="flex items-center gap-8">
+              <LogoMark className="hidden h-20 w-auto opacity-70 lg:block" />
               <Link
                 href="/reservation"
-                className="gild inline-block shrink-0 bg-gold-soft px-10 py-4 text-xs font-semibold uppercase tracking-[0.24em] text-ink transition-transform duration-300 hover:-translate-y-0.5"
+                className="btn-solid shrink-0 px-10 py-4 text-xs font-semibold uppercase tracking-[0.2em]"
               >
                 <span>Réserver maintenant</span>
               </Link>

@@ -14,7 +14,7 @@ export function SettingsForm({ settings }: { settings: Settings }) {
   return (
     <form action={formAction} className="mt-8 space-y-10">
       <fieldset className="border border-ink/12 bg-white p-5">
-        <legend className="eyebrow px-2 text-clay">Identité</legend>
+        <legend className="eyebrow px-2 text-mute">Identité</legend>
         <div className="grid gap-5 sm:grid-cols-2">
           <Text name="shop_name" label="Nom du salon" settings={settings} required />
           <Text name="tagline" label="Accroche" settings={settings} />
@@ -23,7 +23,7 @@ export function SettingsForm({ settings }: { settings: Settings }) {
       </fieldset>
 
       <fieldset className="border border-ink/12 bg-white p-5">
-        <legend className="eyebrow px-2 text-clay">Coordonnées</legend>
+        <legend className="eyebrow px-2 text-mute">Coordonnées</legend>
         <div className="grid gap-5 sm:grid-cols-2">
           <Text name="address" label="Adresse" settings={settings} />
           <Text name="postal_code" label="Code postal" settings={settings} />
@@ -40,7 +40,7 @@ export function SettingsForm({ settings }: { settings: Settings }) {
       </fieldset>
 
       <fieldset className="border border-ink/12 bg-white p-5">
-        <legend className="eyebrow px-2 text-clay">Espace client & fidélité</legend>
+        <legend className="eyebrow px-2 text-mute">Espace client & fidélité</legend>
         <p className="text-sm leading-relaxed text-ink/60">
           Le client se connecte par un lien envoyé à l&apos;adresse e-mail
           qu&apos;il a laissée en réservant. Un passage marqué « honoré » vaut
@@ -91,7 +91,7 @@ export function SettingsForm({ settings }: { settings: Settings }) {
       </fieldset>
 
       <fieldset className="border border-ink/12 bg-white p-5">
-        <legend className="eyebrow px-2 text-clay">Avis Google</legend>
+        <legend className="eyebrow px-2 text-mute">Avis Google</legend>
         <p className="text-sm leading-relaxed text-ink/60">
           Les avis sont lus directement sur votre fiche Google, affichés tels
           quels et rafraîchis toutes les six heures. Google en met cinq à
@@ -124,7 +124,7 @@ export function SettingsForm({ settings }: { settings: Settings }) {
       </fieldset>
 
       <fieldset className="border border-ink/12 bg-white p-5">
-        <legend className="eyebrow px-2 text-clay">Réservation</legend>
+        <legend className="eyebrow px-2 text-mute">Réservation</legend>
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           <Text
             name="capacity"
@@ -187,9 +187,9 @@ function Text({
 }) {
   return (
     <label className="block">
-      <span className="eyebrow text-clay">
+      <span className="eyebrow text-mute">
         {label}
-        {required && <span className="ml-1 text-gold">*</span>}
+        {required && <span className="ml-1 text-terracotta">*</span>}
       </span>
       <input
         name={name}
@@ -198,7 +198,7 @@ function Text({
         defaultValue={settings[name] ?? ""}
         className="mt-2 w-full border border-ink/20 px-3 py-2.5"
       />
-      {hint && <span className="mt-1 block text-xs text-clay">{hint}</span>}
+      {hint && <span className="mt-1 block text-xs text-mute">{hint}</span>}
     </label>
   );
 }
@@ -214,7 +214,7 @@ function Area({
 }) {
   return (
     <label className="mt-5 block">
-      <span className="eyebrow text-clay">{label}</span>
+      <span className="eyebrow text-mute">{label}</span>
       <textarea
         name={name}
         rows={4}

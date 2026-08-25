@@ -11,11 +11,14 @@ export function Reveal({
   delay = 0,
   as: Tag = "div",
   className = "",
+  variant = "rise",
 }: {
   children: ReactNode;
   delay?: number;
   as?: ElementType;
   className?: string;
+  /** « arch » découvre le contenu par le bas, comme un store qu'on lève. */
+  variant?: "rise" | "arch";
 }) {
   const ref = useRef<HTMLElement>(null);
   const [shown, setShown] = useState(false);
@@ -41,13 +44,23 @@ export function Reveal({
     return () => observer.disconnect();
   }, []);
 
+  const style = { "--reveal-delay": `${delay}ms` } as React.CSSProperties;
+
+  // Le découpage se fait sur un enfant, jamais sur l'élément observé : un
+  // `clip-path` qui vide la boîte annule aussi son intersection, et
+  // l'observateur ne se déclencherait jamais.
+  if (variant === "arch") {
+    return (
+      <Tag ref={ref} className={className}>
+        <span data-shown={shown} style={style} className="reveal-arch block">
+          {children}
+        </span>
+      </Tag>
+    );
+  }
+
   return (
-    <Tag
-      ref={ref}
-      data-shown={shown}
-      style={{ "--reveal-delay": `${delay}ms` } as React.CSSProperties}
-      className={`reveal ${className}`}
-    >
+    <Tag ref={ref} data-shown={shown} style={style} className={`reveal ${className}`}>
       {children}
     </Tag>
   );

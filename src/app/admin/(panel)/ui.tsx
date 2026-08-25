@@ -19,7 +19,7 @@ export function SubmitButton({
 }) {
   const { pending } = useFormStatus();
   const styles = {
-    primary: "bg-ink text-bone hover:bg-ink-soft",
+    primary: "bg-ink text-cream hover:bg-ink-soft",
     ghost: "border border-ink/20 hover:border-ink",
     danger: "border border-red-300 text-red-700 hover:bg-red-50",
   }[variant];
@@ -54,7 +54,7 @@ export function ConfirmButton({
   variant?: "primary" | "ghost" | "danger";
 }) {
   const styles = {
-    primary: "bg-ink text-bone hover:bg-ink-soft",
+    primary: "bg-ink text-cream hover:bg-ink-soft",
     ghost: "border border-ink/20 hover:border-ink",
     danger: "border border-red-300 text-red-700 hover:bg-red-50",
   }[variant];

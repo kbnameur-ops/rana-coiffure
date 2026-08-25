@@ -37,7 +37,7 @@ export function StaffPlanningForm({
       <input type="hidden" name="staff_id" value={member.id} />
 
       <div className="border-t border-ink/12">
-        <p className="eyebrow px-4 pt-4 text-clay">Disponibilité de la semaine</p>
+        <p className="eyebrow px-4 pt-4 text-mute">Disponibilité de la semaine</p>
         <p className="px-4 pt-2 text-sm text-ink/60">
           {hasPlanning
             ? "Ce planning prime sur les horaires d'ouverture du salon."
@@ -53,14 +53,14 @@ export function StaffPlanningForm({
       </div>
 
       <div className="border-t border-ink/12 p-4">
-        <p className="eyebrow text-clay">Compétences</p>
+        <p className="eyebrow text-mute">Compétences</p>
         <p className="mt-2 text-sm text-ink/60">
           Aucune case cochée : ce coiffeur assure toutes les prestations.
         </p>
         <div className="mt-4 grid gap-5 sm:grid-cols-3">
           {[...byCategory.entries()].map(([category, list]) => (
             <div key={category}>
-              <p className="text-xs font-semibold uppercase tracking-wider text-clay">
+              <p className="text-xs font-semibold uppercase tracking-wider text-mute">
                 {category}
               </p>
               <ul className="mt-2 space-y-1.5">

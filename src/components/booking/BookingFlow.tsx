@@ -276,16 +276,16 @@ export function BookingFlow({
                   state === "current"
                     ? "text-ink"
                     : state === "done"
-                      ? "text-clay hover:text-ink"
-                      : "text-clay/60"
+                      ? "text-mute hover:text-ink"
+                      : "text-mute/60"
                 } ${reachable ? "cursor-pointer" : "cursor-default"}`}
               >
                 <span
                   className={`flex h-7 w-7 items-center justify-center rounded-full border text-[0.7rem] ${
                     state === "current"
-                      ? "border-ink bg-ink text-bone"
+                      ? "border-ink bg-ink text-cream"
                       : state === "done"
-                        ? "border-gold bg-gold-soft text-ink"
+                        ? "border-terracotta bg-terracotta text-cream"
                         : "border-ink/20"
                   }`}
                 >
@@ -323,7 +323,7 @@ export function BookingFlow({
             {categories.map(([category, list]) => (
               <div key={category}>
                 <div className="flex items-baseline gap-4">
-                  <h3 className="eyebrow text-clay">{category}</h3>
+                  <h3 className="eyebrow text-mute">{category}</h3>
                   <span className="h-px grow bg-ink/10" />
                 </div>
                 <div className="mt-4 grid gap-3 sm:grid-cols-2">
@@ -345,7 +345,7 @@ export function BookingFlow({
                           {s.description}
                         </span>
                       )}
-                      <span className="mt-4 text-xs uppercase tracking-[0.16em] text-clay">
+                      <span className="mt-4 text-xs uppercase tracking-[0.16em] text-mute">
                         {formatDuration(s.duration_min)}
                       </span>
                     </button>
@@ -388,7 +388,7 @@ export function BookingFlow({
               >
                 <span className="flex items-center gap-3">
                   <span
-                    className="display flex h-10 w-10 items-center justify-center rounded-full bg-ink text-sm text-bone"
+                    className="display flex h-10 w-10 items-center justify-center rounded-full bg-ink text-sm text-cream"
                     aria-hidden
                   >
                     {member.name.slice(0, 2).toUpperCase()}
@@ -425,7 +425,7 @@ export function BookingFlow({
             >
               ← Avant
             </button>
-            <p className="text-sm text-clay">
+            <p className="text-sm text-mute">
               {loadingDays ? "Chargement…" : "14 jours affichés"}
             </p>
             <button
@@ -458,10 +458,10 @@ export function BookingFlow({
                     title={!available ? (d.reason ?? "Complet") : undefined}
                     className={`w-[74px] shrink-0 border px-2 py-3 text-center transition-colors ${
                       date === d.date
-                        ? "border-ink bg-ink text-bone"
+                        ? "border-ink bg-ink text-cream"
                         : available
                           ? "border-ink/15 bg-white hover:border-ink"
-                          : "border-ink/10 bg-ink/[0.03] text-clay/60"
+                          : "border-ink/10 bg-ink/[0.03] text-mute/60"
                     }`}
                   >
                     <span className="block text-[0.65rem] uppercase tracking-widest">
@@ -496,14 +496,14 @@ export function BookingFlow({
                 if (!slots.length) return null;
                 return (
                   <div key={part} className="mt-6">
-                    <p className="eyebrow text-clay">{part}</p>
+                    <p className="eyebrow text-mute">{part}</p>
                     <div className="mt-3 flex flex-wrap gap-2">
                       {slots.map((s) => (
                         <button
                           key={s}
                           type="button"
                           onClick={() => chooseSlot(date, s)}
-                          className="border border-ink/15 bg-white px-4 py-2.5 text-sm lining-nums tabular-nums transition-colors hover:border-ink hover:bg-ink hover:text-bone"
+                          className="border border-ink/15 bg-white px-4 py-2.5 text-sm lining-nums tabular-nums transition-colors hover:border-ink hover:bg-ink hover:text-cream"
                         >
                           {minutesToTime(s)}
                         </button>
@@ -564,7 +564,7 @@ export function BookingFlow({
                   onChange={(v) => setForm({ ...form, birthdate: v })}
                   autoComplete="bday"
                 />
-                <p className="mt-2 text-xs leading-relaxed text-clay">
+                <p className="mt-2 text-xs leading-relaxed text-mute">
                   Avec votre numéro, elle vous ouvre l&apos;espace client :
                   historique, annulation en ligne et carte de fidélité.
                 </p>
@@ -577,7 +577,7 @@ export function BookingFlow({
                 autoComplete="email"
               />
               <label className="block">
-                <span className="eyebrow text-clay">Précisions (facultatif)</span>
+                <span className="eyebrow text-mute">Précisions (facultatif)</span>
                 <textarea
                   rows={3}
                   maxLength={500}
@@ -592,15 +592,15 @@ export function BookingFlow({
             <button
               type="submit"
               disabled={submitting}
-              className="mt-8 w-full bg-ink px-8 py-4 text-xs font-semibold uppercase tracking-[0.2em] text-bone transition-colors hover:bg-ink-soft disabled:opacity-60 sm:w-auto"
+              className="mt-8 w-full bg-ink px-8 py-4 text-xs font-semibold uppercase tracking-[0.2em] text-cream transition-colors hover:bg-ink-soft disabled:opacity-60 sm:w-auto"
             >
               {submitting ? "Envoi…" : "Confirmer le rendez-vous"}
             </button>
-            <p className="mt-4 text-xs leading-relaxed text-clay">{notice}</p>
+            <p className="mt-4 text-xs leading-relaxed text-mute">{notice}</p>
           </form>
 
           <aside className="order-1 h-fit border border-ink/12 bg-white p-6 lg:order-2">
-            <p className="eyebrow text-clay">Récapitulatif</p>
+            <p className="eyebrow text-mute">Récapitulatif</p>
             <dl className="mt-5 space-y-4 text-sm">
               <Row label="Prestation" value={service.name} />
               {staffLine && <Row label="Avec" value={staffLine} />}
@@ -612,12 +612,12 @@ export function BookingFlow({
               <Row label="Durée" value={formatDuration(service.duration_min)} />
             </dl>
             <div className="mt-6 flex items-baseline justify-between border-t border-ink/10 pt-4">
-              <span className="eyebrow text-clay">Total</span>
+              <span className="eyebrow text-mute">Total</span>
               <span className="display text-2xl">
                 {formatPrice(service.price_cents)}
               </span>
             </div>
-            <p className="mt-3 text-xs text-clay">Règlement sur place.</p>
+            <p className="mt-3 text-xs text-mute">Règlement sur place.</p>
           </aside>
         </section>
       )}
@@ -625,7 +625,7 @@ export function BookingFlow({
       {/* --------------------------------------------------- 5 confirmation */}
       {step === "done" && result && service && date && slot !== null && (
         <section className="mt-12 max-w-xl">
-          <div className="flex h-14 w-14 items-center justify-center rounded-full bg-gold-soft text-2xl text-ink">
+          <div className="flex h-14 w-14 items-center justify-center rounded-full bg-terracotta text-2xl text-cream">
             ✓
           </div>
           <h2 className="display mt-6 text-3xl uppercase">C&apos;est noté</h2>
@@ -658,7 +658,7 @@ export function BookingFlow({
           <div className="mt-8 flex flex-wrap gap-3">
             <Link
               href="/"
-              className="bg-ink px-7 py-3.5 text-xs font-semibold uppercase tracking-[0.18em] text-bone transition-colors hover:bg-ink-soft"
+              className="bg-ink px-7 py-3.5 text-xs font-semibold uppercase tracking-[0.18em] text-cream transition-colors hover:bg-ink-soft"
             >
               Retour à l&apos;accueil
             </Link>
@@ -707,9 +707,9 @@ function Field({
 }) {
   return (
     <label className="block">
-      <span className="eyebrow text-clay">
+      <span className="eyebrow text-mute">
         {label}
-        {required && <span className="ml-1 text-gold">*</span>}
+        {required && <span className="ml-1 text-terracotta">*</span>}
       </span>
       <input
         type={type}
@@ -734,7 +734,7 @@ function Row({
 }) {
   return (
     <div className="flex items-baseline justify-between gap-4">
-      <dt className="text-clay">{label}</dt>
+      <dt className="text-mute">{label}</dt>
       <dd
         className={`text-right font-medium ${capitalize ? "first-letter:uppercase" : ""}`}
       >

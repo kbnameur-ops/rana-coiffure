@@ -21,9 +21,9 @@ const STATUS_LABEL: Record<string, string> = {
 };
 
 const STATUS_STYLE: Record<string, string> = {
-  confirmed: "bg-ink text-bone",
+  confirmed: "bg-ink text-cream",
   done: "bg-emerald-100 text-emerald-800",
-  cancelled: "bg-ink/10 text-clay line-through",
+  cancelled: "bg-ink/10 text-mute line-through",
   no_show: "bg-red-100 text-red-800",
 };
 
@@ -71,7 +71,7 @@ export default async function ListeRendezVousPage({
           ["Chiffre attendu", formatPrice(revenue)],
         ].map(([label, value]) => (
           <div key={label} className="bg-white p-5">
-            <dt className="eyebrow text-clay">{label}</dt>
+            <dt className="eyebrow text-mute">{label}</dt>
             <dd className="display mt-2 text-2xl">{value}</dd>
           </div>
         ))}
@@ -79,7 +79,7 @@ export default async function ListeRendezVousPage({
 
       <form className="mt-8 flex flex-wrap items-end gap-3 border border-ink/12 bg-white p-4">
         <label className="text-sm">
-          <span className="eyebrow block text-clay">Du</span>
+          <span className="eyebrow block text-mute">Du</span>
           <input
             type="date"
             name="du"
@@ -88,7 +88,7 @@ export default async function ListeRendezVousPage({
           />
         </label>
         <label className="text-sm">
-          <span className="eyebrow block text-clay">Au</span>
+          <span className="eyebrow block text-mute">Au</span>
           <input
             type="date"
             name="au"
@@ -97,7 +97,7 @@ export default async function ListeRendezVousPage({
           />
         </label>
         <label className="text-sm">
-          <span className="eyebrow block text-clay">Statut</span>
+          <span className="eyebrow block text-mute">Statut</span>
           <select
             name="statut"
             defaultValue={status}
@@ -111,7 +111,7 @@ export default async function ListeRendezVousPage({
           </select>
         </label>
         <label className="grow text-sm sm:max-w-xs">
-          <span className="eyebrow block text-clay">Recherche</span>
+          <span className="eyebrow block text-mute">Recherche</span>
           <input
             type="search"
             name="q"
@@ -122,7 +122,7 @@ export default async function ListeRendezVousPage({
         </label>
         <button
           type="submit"
-          className="bg-ink px-5 py-2.5 text-xs font-semibold uppercase tracking-[0.14em] text-bone transition-colors hover:bg-ink-soft"
+          className="bg-ink px-5 py-2.5 text-xs font-semibold uppercase tracking-[0.14em] text-cream transition-colors hover:bg-ink-soft"
         >
           Filtrer
         </button>
@@ -139,7 +139,7 @@ export default async function ListeRendezVousPage({
               <h2 className="display text-lg uppercase">
                 <span className="first-letter:uppercase">{formatDateLong(date)}</span>
                 {date === today && (
-                  <span className="ml-3 bg-gold-soft px-2 py-1 text-[0.65rem] tracking-widest text-ink">
+                  <span className="ml-3 bg-terracotta px-2 py-1 text-[0.65rem] tracking-widest text-cream">
                     Aujourd&apos;hui
                   </span>
                 )}
@@ -152,7 +152,7 @@ export default async function ListeRendezVousPage({
                       <p className="display text-lg lining-nums tabular-nums">
                         {minutesToTime(b.start_min)}
                       </p>
-                      <p className="text-xs text-clay lining-nums tabular-nums">
+                      <p className="text-xs text-mute lining-nums tabular-nums">
                         → {minutesToTime(b.end_min)}
                       </p>
                     </div>
@@ -168,7 +168,7 @@ export default async function ListeRendezVousPage({
                           </>
                         )}
                       </p>
-                      <p className="mt-1 text-sm text-clay">
+                      <p className="mt-1 text-sm text-mute">
                         <a href={`tel:${b.phone.replace(/\s/g, "")}`} className="underline">
                           {b.phone}
                         </a>
@@ -177,7 +177,7 @@ export default async function ListeRendezVousPage({
                         {b.ref}
                       </p>
                       {b.notes && (
-                        <p className="mt-2 border-l-2 border-gold pl-3 text-sm text-ink/70">
+                        <p className="mt-2 border-l-2 border-terracotta pl-3 text-sm text-ink/70">
                           {b.notes}
                         </p>
                       )}

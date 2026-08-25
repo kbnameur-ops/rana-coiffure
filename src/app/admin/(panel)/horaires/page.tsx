@@ -52,7 +52,7 @@ export default async function HorairesPage() {
           className="mt-6 flex flex-wrap items-end gap-3 border border-ink/12 bg-white p-4"
         >
           <label className="text-sm">
-            <span className="eyebrow block text-clay">Date</span>
+            <span className="eyebrow block text-mute">Date</span>
             <input
               type="date"
               name="date"
@@ -62,7 +62,7 @@ export default async function HorairesPage() {
             />
           </label>
           <label className="grow text-sm sm:max-w-sm">
-            <span className="eyebrow block text-clay">Motif (facultatif)</span>
+            <span className="eyebrow block text-mute">Motif (facultatif)</span>
             <input
               name="reason"
               placeholder="Congés annuels"
@@ -81,7 +81,7 @@ export default async function HorairesPage() {
               >
                 <div>
                   <p className="font-semibold first-letter:uppercase">{formatDateLong(c.date)}</p>
-                  {c.reason && <p className="text-sm text-clay">{c.reason}</p>}
+                  {c.reason && <p className="text-sm text-mute">{c.reason}</p>}
                 </div>
                 <form>
                   <input type="hidden" name="id" value={c.id} />
@@ -96,7 +96,7 @@ export default async function HorairesPage() {
             ))}
           </ul>
         ) : (
-          <p className="mt-6 border border-ink/12 bg-white p-6 text-sm text-clay">
+          <p className="mt-6 border border-ink/12 bg-white p-6 text-sm text-mute">
             Aucune fermeture programmée.
           </p>
         )}

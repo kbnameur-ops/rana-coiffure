@@ -22,7 +22,7 @@ export function Header({
 }: {
   shopName: string;
   phone: string;
-  /** Le héros porte un visuel plein cadre : l'en-tête s'y superpose jusqu'au premier scroll. */
+  /** Le héros est clair : la barre y flotte sans fond jusqu'au premier scroll. */
   transparent?: boolean;
   hasTeam?: boolean;
   hasReviews?: boolean;
@@ -45,13 +45,13 @@ export function Header({
       (hasTeam || l.href !== "/#equipe") && (hasReviews || l.href !== "/#avis"),
   );
 
-  // Le logo est ivoire et gold sur fond sombre : la barre reste prune une fois
-  // figée, sans quoi il disparaîtrait sur l'ivoire du site.
+  // Le site est clair de bout en bout : c'est la déclinaison espresso du
+  // verrou qui sert ici, l'or étant réservé aux fonds sombres.
   return (
     <header
       className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ${
         solid
-          ? "border-b border-ink-line bg-ink/92 shadow-xl shadow-black/40 backdrop-blur-md"
+          ? "border-b border-line bg-porcelain/85 backdrop-blur-md"
           : "border-b border-transparent"
       }`}
     >
@@ -59,8 +59,9 @@ export function Header({
         <Link href="/" aria-label={`${shopName}, accueil`}>
           <LogoBar
             shopName={shopName}
+            tone="ink"
             priority
-            className="h-12 w-auto drop-shadow-[0_2px_18px_rgba(227,196,124,0.25)] transition-transform duration-500 hover:-translate-y-0.5 sm:h-14"
+            className="h-11 w-auto transition-transform duration-500 hover:-translate-y-0.5 sm:h-12"
           />
         </Link>
 
@@ -69,26 +70,26 @@ export function Header({
             <a
               key={l.href}
               href={l.href}
-              className="group relative text-sm text-bone/80 transition-colors hover:text-bone"
+              className="group relative text-sm text-mute transition-colors hover:text-ink"
             >
               {l.label}
-              <span className="absolute -bottom-1 left-0 h-px w-0 bg-gold-soft transition-all duration-300 group-hover:w-full" />
+              <span className="absolute -bottom-1 left-0 h-px w-0 bg-terracotta transition-all duration-400 group-hover:w-full" />
             </a>
           ))}
         </nav>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-4">
           {hasClientSpace && (
             <Link
               href="/espace"
-              className="hidden text-sm text-bone/80 transition-colors hover:text-gold-soft xl:block"
+              className="hidden text-sm text-mute transition-colors hover:text-terracotta xl:block"
             >
               Mon espace
             </Link>
           )}
           <Link
             href="/reservation"
-            className="gild bg-gold-soft px-5 py-2.5 text-xs font-semibold uppercase tracking-[0.18em] text-ink transition-transform duration-300 hover:-translate-y-0.5"
+            className="btn-solid px-5 py-2.5 text-xs font-semibold uppercase tracking-[0.16em]"
           >
             <span>Réserver</span>
           </Link>
@@ -97,9 +98,16 @@ export function Header({
             onClick={() => setOpen((v) => !v)}
             aria-label="Ouvrir le menu"
             aria-expanded={open}
-            className="text-bone lg:hidden"
+            className="text-ink lg:hidden"
           >
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.6"
+            >
               {open ? <path d="M5 5l14 14M19 5L5 19" /> : <path d="M4 8h16M4 16h16" />}
             </svg>
           </button>
@@ -107,13 +115,13 @@ export function Header({
       </div>
 
       {open && (
-        <nav className="border-t border-ink-line bg-ink px-5 pb-5 lg:hidden">
+        <nav className="border-t border-line bg-porcelain px-5 pb-5 lg:hidden">
           {links.map((l) => (
             <a
               key={l.href}
               href={l.href}
               onClick={() => setOpen(false)}
-              className="block border-b border-ink-line py-4 text-bone/80"
+              className="block border-b border-line py-4 text-mute"
             >
               {l.label}
             </a>
@@ -122,14 +130,14 @@ export function Header({
             <Link
               href="/espace"
               onClick={() => setOpen(false)}
-              className="block border-b border-ink-line py-4 text-bone/80"
+              className="block border-b border-line py-4 text-mute"
             >
               Mon espace client
             </Link>
           )}
           <a
             href={`tel:${phone.replace(/\s/g, "")}`}
-            className="block py-4 font-medium text-gold-soft"
+            className="block py-4 font-medium text-terracotta"
           >
             {phone}
           </a>

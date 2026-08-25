@@ -1,18 +1,26 @@
 @import "tailwindcss";
 
 @theme static {
-  /* Palette tirée du logo : noir laqué, or clair, crème. */
-  --color-ink: #0b0908;
-  --color-ink-soft: #14100e;
-  --color-ink-line: #2a231d;
-  --color-bone: #faf6ef;
-  --color-bone-dim: #ece2d3;
-  --color-sand: #f4ece0;
-  --color-line: #e3d7c4;
-  --color-gold: #8a6a1f;
-  --color-gold-soft: #e3c47c;
-  --color-gold-light: #f5e3b0;
-  --color-clay: #877a6b;
+  /* Un salon clair : porcelaine et coquille d'œuf en fond, terre cuite et
+     sauge pour la couleur, laiton pour les filets, espresso pour le texte.
+     Le noir du logo ne sert plus de décor — il devient un accent rare. */
+  --color-porcelain: #fdfbf7;
+  --color-shell: #f8f1ea;
+  --color-blush: #f6e7e0;
+  --color-line: #e8dcd2;
+
+  --color-ink: #241c1a;
+  --color-ink-soft: #3a2e2a;
+  --color-ink-line: #4a3b36;
+  --color-cream: #fbf6f0;
+  --color-mute: #7a6c64;
+
+  --color-terracotta: #a4553f;
+  --color-terracotta-soft: #d08a72;
+  --color-sage: #5e6e5b;
+  --color-sage-soft: #96a691;
+  --color-brass: #9a7b3f;
+  --color-brass-soft: #e3c47c;
 
   --font-display: var(--font-cormorant), "Cormorant Garamond", Georgia, "Times New Roman", serif;
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
@@ -27,37 +35,37 @@
   }
 
   body {
-    background-color: var(--color-bone);
+    background-color: var(--color-porcelain);
     color: var(--color-ink);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
   }
 
   ::selection {
-    background-color: var(--color-gold-soft);
+    background-color: var(--color-blush);
     color: var(--color-ink);
   }
 
   :focus-visible {
-    outline: 2px solid var(--color-gold);
+    outline: 2px solid var(--color-terracotta);
     outline-offset: 3px;
   }
 }
 
-/* ------------------------------------------------------------ écritures */
+/* ------------------------------------------------------------- écritures */
 
 @utility display {
   font-family: var(--font-display);
-  font-weight: 500;
-  letter-spacing: 0.02em;
-  line-height: 1.08;
+  font-weight: 400;
+  letter-spacing: 0.005em;
+  line-height: 1.05;
   /* Cormorant compose des chiffres elzéviriens : illisible pour un prix. */
   font-variant-numeric: lining-nums;
 }
 
 @utility eyebrow {
   font-size: 0.6875rem;
-  letter-spacing: 0.3em;
+  letter-spacing: 0.28em;
   text-transform: uppercase;
   font-weight: 500;
 }
@@ -66,128 +74,90 @@
 @utility voice {
   font-family: var(--font-display);
   font-style: italic;
-  font-weight: 400;
+  font-weight: 300;
   letter-spacing: 0.01em;
+  line-height: 1.25;
 }
 
-/* Titre traversé lentement par un reflet doré. */
-@utility gold-text {
-  background-image: linear-gradient(
-    100deg,
-    var(--color-gold-soft) 0%,
-    var(--color-gold-soft) 32%,
-    var(--color-gold-light) 46%,
-    #fffaf0 52%,
-    var(--color-gold-light) 58%,
-    var(--color-gold-soft) 72%,
-    var(--color-gold-soft) 100%
-  );
-  background-size: 300% 100%;
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  animation: shimmer 9s linear infinite;
+/* Numérotation éditoriale des points forts (01, 02, …). */
+@utility numeral {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-variant-numeric: lining-nums;
+  letter-spacing: 0.04em;
 }
 
 /* ---------------------------------------------------------------- filets */
 
-@utility hairline {
+/* Filet de laiton qui s'éteint aux deux bouts. */
+@utility rule-brass {
   background-image: linear-gradient(
     90deg,
     transparent,
-    var(--color-gold-soft) 22%,
-    var(--color-gold-light) 50%,
-    var(--color-gold-soft) 78%,
+    var(--color-brass) 18%,
+    var(--color-brass) 82%,
     transparent
   );
 }
 
 @utility rule-grow {
   transform-origin: left;
-  animation: rule-grow 0.9s var(--ease-out-soft) both;
+  animation: rule-grow 1s var(--ease-out-soft) both;
 }
 
-/* ----------------------------------------------------------------- cartes */
+/* ----------------------------------------------------------------- forme */
 
-/* Carte sombre bordée d'or, traversée par un reflet au survol. */
-@utility luxe-card {
-  position: relative;
-  overflow: hidden;
-  border: 1px solid var(--color-ink-line);
-  background-color: var(--color-ink-soft);
-  transition:
-    border-color 0.5s var(--ease-out-soft),
-    transform 0.5s var(--ease-out-soft),
-    box-shadow 0.5s var(--ease-out-soft);
-
-  &::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(
-      110deg,
-      transparent 35%,
-      rgba(245, 227, 176, 0.16) 50%,
-      transparent 65%
-    );
-    transform: translateX(-120%);
-    transition: transform 0.9s var(--ease-out-soft);
-    pointer-events: none;
-  }
-
-  &:hover {
-    border-color: color-mix(in srgb, var(--color-gold-soft) 55%, transparent);
-    transform: translateY(-4px);
-    box-shadow: 0 24px 60px -30px rgba(227, 196, 124, 0.5);
-  }
-
-  &:hover::after {
-    transform: translateX(120%);
-  }
+/* L'arche : le miroir du salon, motif répété d'une section à l'autre. */
+@utility arch {
+  border-radius: 999px 999px 0.25rem 0.25rem;
 }
 
-/* Même principe sur fond crème : filet doré et léger soulèvement. */
-@utility fine-card {
+/* ---------------------------------------------------------------- cartes */
+
+/* Carte claire : pas de boîte lourde, un filet fin et un trait d'accent qui
+   se déploie au survol. */
+@utility card {
   position: relative;
   overflow: hidden;
+  background-color: #fffdfa;
   border: 1px solid var(--color-line);
-  background-color: #fffdf9;
   transition:
-    border-color 0.5s var(--ease-out-soft),
-    transform 0.5s var(--ease-out-soft),
-    box-shadow 0.5s var(--ease-out-soft);
+    border-color 0.6s var(--ease-out-soft),
+    transform 0.6s var(--ease-out-soft),
+    box-shadow 0.6s var(--ease-out-soft);
 
-  &::after {
+  &::before {
     content: "";
     position: absolute;
-    inset: 0;
-    background: linear-gradient(
-      110deg,
-      transparent 35%,
-      rgba(138, 106, 31, 0.07) 50%,
-      transparent 65%
-    );
-    transform: translateX(-120%);
-    transition: transform 0.9s var(--ease-out-soft);
-    pointer-events: none;
+    inset-inline: 0;
+    top: 0;
+    height: 2px;
+    background-color: var(--color-terracotta);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.7s var(--ease-out-soft);
   }
 
   &:hover {
-    border-color: color-mix(in srgb, var(--color-gold) 45%, transparent);
-    transform: translateY(-4px);
-    box-shadow: 0 22px 50px -28px rgba(138, 106, 31, 0.45);
+    border-color: color-mix(in srgb, var(--color-terracotta) 30%, transparent);
+    transform: translateY(-5px);
+    box-shadow: 0 26px 50px -34px rgba(36, 28, 26, 0.35);
   }
 
-  &:hover::after {
-    transform: translateX(120%);
+  &:hover::before {
+    transform: scaleX(1);
   }
 }
 
-/* Bouton plein : l'or s'éclaire d'un balayage au survol. */
-@utility gild {
+/* --------------------------------------------------------------- boutons */
+
+/* Bouton plein : la terre cuite s'assombrit d'un balayage au survol. */
+@utility btn-solid {
   position: relative;
   overflow: hidden;
   isolation: isolate;
+  background-color: var(--color-terracotta);
+  color: var(--color-cream);
 
   & > span {
     position: relative;
@@ -198,14 +168,9 @@
     content: "";
     position: absolute;
     inset: 0;
-    background: linear-gradient(
-      100deg,
-      var(--color-gold-light),
-      #fffaf0 45%,
-      var(--color-gold-light)
-    );
+    background-color: var(--color-ink);
     transform: translateX(-101%);
-    transition: transform 0.6s var(--ease-out-soft);
+    transition: transform 0.65s var(--ease-out-soft);
   }
 
   &:hover::before {
@@ -213,16 +178,61 @@
   }
 }
 
+/* Bouton de contour : le fond se remplit depuis le bas. */
+@utility btn-ghost {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  border: 1px solid color-mix(in srgb, var(--color-ink) 22%, transparent);
+  color: var(--color-ink);
+  transition: color 0.5s var(--ease-out-soft), border-color 0.5s var(--ease-out-soft);
+
+  & > span {
+    position: relative;
+    z-index: 1;
+  }
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-color: var(--color-ink);
+    transform: translateY(101%);
+    transition: transform 0.55s var(--ease-out-soft);
+  }
+
+  &:hover {
+    color: var(--color-cream);
+    border-color: var(--color-ink);
+  }
+
+  &:hover::before {
+    transform: translateY(0);
+  }
+}
+
+/* ---------------------------------------------------------- mise en scène */
+
+/* Grand voile de couleur qui dérive très lentement : la lumière du lieu se
+   sent sans jamais se remarquer. Volontairement peu opaque. */
+@utility wash {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(90px);
+  pointer-events: none;
+  animation: wash-drift var(--wash-duration, 26s) ease-in-out infinite alternate;
+}
+
 /* ------------------------------------------------------------ révélation */
 
 @utility reveal {
   opacity: 0;
-  transform: translateY(26px);
-  filter: blur(6px);
+  transform: translateY(22px);
+  filter: blur(5px);
   transition:
-    opacity 0.9s var(--ease-out-soft),
-    transform 0.9s var(--ease-out-soft),
-    filter 0.9s var(--ease-out-soft);
+    opacity 1s var(--ease-out-soft),
+    transform 1s var(--ease-out-soft),
+    filter 1s var(--ease-out-soft);
   transition-delay: var(--reveal-delay, 0ms);
 
   &[data-shown="true"] {
@@ -232,15 +242,15 @@
   }
 }
 
-/* Poussière d'or du héros : de lents points qui montent et scintillent. */
-@utility dust {
-  position: absolute;
-  border-radius: 9999px;
-  background-color: var(--color-gold-soft);
-  animation:
-    drift var(--dust-duration, 18s) ease-in-out infinite alternate,
-    twinkle 4.5s ease-in-out infinite;
-  animation-delay: var(--dust-delay, 0s);
+/* L'image se dévoile par le bas, comme un store qu'on lève. */
+@utility reveal-arch {
+  clip-path: inset(100% 0 0 0);
+  transition: clip-path 1.4s var(--ease-out-soft);
+  transition-delay: var(--reveal-delay, 0ms);
+
+  &[data-shown="true"] {
+    clip-path: inset(0 0 0 0);
+  }
 }
 
 /* ------------------------------------------------------------ mouvements */
@@ -254,15 +264,6 @@
   }
 }
 
-@keyframes shimmer {
-  from {
-    background-position: 150% 0;
-  }
-  to {
-    background-position: -150% 0;
-  }
-}
-
 @keyframes marquee {
   from {
     transform: translateX(0);
@@ -272,54 +273,32 @@
   }
 }
 
-/* Lent recadrage du visuel de fond : le décor « respire ». */
-@keyframes slow-pan {
+@keyframes wash-drift {
   from {
-    transform: scale(1.06) translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0) scale(1);
   }
   to {
-    transform: scale(1.16) translate3d(-2%, -1.5%, 0);
+    transform: translate3d(var(--wash-x, 40px), var(--wash-y, -30px), 0) scale(1.18);
   }
 }
 
-@keyframes glow-pulse {
-  0%,
-  100% {
-    opacity: 0.4;
-  }
-  50% {
-    opacity: 0.9;
-  }
-}
-
-@keyframes halo {
-  0%,
-  100% {
-    opacity: 0.5;
-    transform: scale(1);
-  }
-  50% {
-    opacity: 0.85;
-    transform: scale(1.08);
-  }
-}
-
-@keyframes drift {
+/* Lent recadrage d'une image : le décor « respire ». */
+@keyframes slow-zoom {
   from {
-    transform: translate3d(0, 0, 0);
+    transform: scale(1.02);
   }
   to {
-    transform: translate3d(var(--dust-x, 14px), var(--dust-y, -60px), 0);
+    transform: scale(1.12);
   }
 }
 
-@keyframes twinkle {
-  0%,
-  100% {
-    opacity: 0.15;
+/* Anneau de laiton qui tourne derrière le médaillon du héros. */
+@keyframes ring-turn {
+  from {
+    transform: rotate(0deg);
   }
-  50% {
-    opacity: 0.9;
+  to {
+    transform: rotate(360deg);
   }
 }
 
@@ -337,24 +316,27 @@
   }
 }
 
-/* Anneau doré qui tourne lentement derrière le logo du héros. */
-@keyframes ring-turn {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
 @keyframes rise {
   from {
     opacity: 0;
-    transform: translateY(18px);
+    transform: translateY(16px);
   }
   to {
     opacity: 1;
     transform: none;
+  }
+}
+
+/* Le halo derrière le médaillon respire, très légèrement. */
+@keyframes breathe {
+  0%,
+  100% {
+    opacity: 0.55;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.85;
+    transform: scale(1.06);
   }
 }
 
@@ -374,10 +356,7 @@
     filter: none;
   }
 
-  .gold-text {
-    color: var(--color-gold-soft);
-    background-image: none;
-    -webkit-background-clip: border-box;
-    background-clip: border-box;
+  .reveal-arch {
+    clip-path: none;
   }
 }

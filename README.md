@@ -266,19 +266,24 @@ réserver tous les deux.
   **Prestations & tarifs**.
 - Équipe, plannings et compétences : **Coiffeurs**.
 - Les visuels d'ambiance sont dans `public/visuels/` : `interieur.svg` (le
-  salon, section « La maison »), `devanture.svg` (section « Accès ») et
-  `motif.svg` (fond du bandeau de rappel). Ce sont des illustrations vectorielles
-  dorées, pensées comme un habillage provisoire : remplacez-les par de vraies
-  photographies du salon aux mêmes chemins — le code n'a pas à bouger, seul le
-  format change (4/5 pour l'intérieur, 16/10 pour la devanture).
-- Le logo est dans `public/logo/` : `complet.png` (verrou complet — emblème,
-  « Rana », « Coiffure » et la ligne de signature), `horizontal.png` (le nom
-  seul, pour les barres de navigation où le verrou complet serait illisible) et
-  `embleme.png` (le profil et sa chevelure, en ornement). `src/app/icon.png`
-  sert de favicon. Les trois fichiers sont détourés depuis le logo d'origine :
-  le fond noir est devenu transparent, ce qui permet de poser le verrou sur
-  n'importe quel fond sombre.
-- La palette et les animations sont dans `src/app/globals.css`.
+  salon, section « La maison », cadré en arche), `devanture.svg` (section
+  « Accès ») et `motif.svg` (fond du bandeau de rappel). Ce sont des
+  illustrations vectorielles claires, pensées comme un habillage provisoire :
+  remplacez-les par de vraies photographies du salon aux mêmes chemins — le code
+  n'a pas à bouger, seul le format change (4/5 pour l'intérieur, 16/10 pour la
+  devanture).
+- Le logo est dans `public/logo/`, en deux teintes. La version dorée
+  (`complet.png`, `horizontal.png`, `embleme.png`) est détourée du fond noir
+  d'origine et se pose sur les surfaces espresso : médaillon du héros, bandeau
+  de rappel, pied de page, espaces salon et coiffeur. La version espresso
+  (`complet-encre.png`, `horizontal-encre.png`, `embleme-encre.png`) est
+  reconstruite depuis la silhouette et sert partout ailleurs, sur les fonds
+  clairs — l'or se délaverait sur l'ivoire. `src/app/icon.png` sert de favicon.
+- La palette et les animations sont dans `src/app/globals.css` : porcelaine et
+  coquille d'œuf en fond, terre cuite et sauge pour la couleur, laiton pour les
+  filets, espresso pour le texte et les rares aplats sombres. Les mouvements
+  (voiles de couleur, révélations au scroll, arches qui se lèvent) sont tous
+  neutralisés sous `prefers-reduced-motion`.
 
 ## Structure
 

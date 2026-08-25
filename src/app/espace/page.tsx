@@ -27,9 +27,9 @@ export const metadata: Metadata = {
 };
 
 const STATUS: Record<string, { label: string; className: string }> = {
-  confirmed: { label: "À venir", className: "bg-ink text-bone" },
+  confirmed: { label: "À venir", className: "bg-ink text-cream" },
   done: { label: "Honorée", className: "bg-emerald-100 text-emerald-800" },
-  cancelled: { label: "Annulée", className: "bg-ink/8 text-clay" },
+  cancelled: { label: "Annulée", className: "bg-ink/8 text-mute" },
   no_show: { label: "Manquée", className: "bg-red-100 text-red-800" },
 };
 
@@ -46,11 +46,11 @@ export default async function EspacePage({
   if (!client) {
     return (
       <Shell settings={settings}>
-        <p className="eyebrow text-gold">Espace client</p>
+        <p className="eyebrow text-terracotta">Espace client</p>
         <h1 className="display mt-4 text-[clamp(2rem,6vw,3rem)] uppercase">
           Vos rendez-vous
         </h1>
-        <span className="rule-grow mt-6 block h-0.5 w-24 bg-gold-soft" />
+        <span className="rule-grow mt-6 block h-0.5 w-24 bg-terracotta" />
 
         {efface && (
           <p className="mt-7 border-l-2 border-emerald-600 bg-emerald-50 px-4 py-3 text-sm text-emerald-900">
@@ -70,7 +70,7 @@ export default async function EspacePage({
           <LoginForm />
         </div>
 
-        <p className="mt-10 max-w-lg text-sm leading-relaxed text-clay">
+        <p className="mt-10 max-w-lg text-sm leading-relaxed text-mute">
           Votre espace se crée tout seul à votre première réservation. La date
           de naissance y est demandée : c&apos;est elle qui vous ouvre l&apos;accès
           ici. Si vous ne l&apos;avez jamais renseignée, indiquez-la au salon ou
@@ -106,7 +106,7 @@ export default async function EspacePage({
     <Shell settings={settings}>
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <p className="eyebrow text-gold">Espace client</p>
+          <p className="eyebrow text-terracotta">Espace client</p>
           <h1 className="display mt-4 text-[clamp(2rem,6vw,3rem)] uppercase">
             Bonjour {client.name.split(" ")[0] || "à vous"}
           </h1>
@@ -114,13 +114,13 @@ export default async function EspacePage({
         <form action={logoutClient}>
           <button
             type="submit"
-            className="text-xs font-semibold uppercase tracking-[0.14em] text-clay transition-colors hover:text-ink"
+            className="text-xs font-semibold uppercase tracking-[0.14em] text-mute transition-colors hover:text-ink"
           >
             Se déconnecter
           </button>
         </form>
       </div>
-      <span className="rule-grow mt-6 block h-0.5 w-24 bg-gold-soft" />
+      <span className="rule-grow mt-6 block h-0.5 w-24 bg-terracotta" />
 
       {/* ------------------------------------------------ prochain rendez-vous */}
       <section className="mt-12">
@@ -130,7 +130,7 @@ export default async function EspacePage({
             <p className="text-ink/70">Aucun rendez-vous à venir.</p>
             <Link
               href="/reservation"
-              className="mt-5 inline-block bg-ink px-7 py-3.5 text-xs font-semibold uppercase tracking-[0.18em] text-bone transition-colors hover:bg-ink-soft"
+              className="mt-5 inline-block bg-ink px-7 py-3.5 text-xs font-semibold uppercase tracking-[0.18em] text-cream transition-colors hover:bg-ink-soft"
             >
               Prendre rendez-vous
             </Link>
@@ -154,7 +154,7 @@ export default async function EspacePage({
                     {b.staff_name && ` · avec ${b.staff_name}`} ·{" "}
                     {formatPrice(b.price_cents)}
                   </p>
-                  <p className="mt-1 text-xs text-clay">Référence {b.ref}</p>
+                  <p className="mt-1 text-xs text-mute">Référence {b.ref}</p>
                 </div>
                 <CancelButton
                   id={b.id}
@@ -164,7 +164,7 @@ export default async function EspacePage({
             ))}
           </ul>
         )}
-        <p className="mt-4 text-sm leading-relaxed text-clay">
+        <p className="mt-4 text-sm leading-relaxed text-mute">
           L&apos;annulation en ligne est possible jusqu&apos;à l&apos;heure du
           rendez-vous. Passé ce délai, il est compté comme manqué.
         </p>
@@ -181,7 +181,7 @@ export default async function EspacePage({
       <section className="mt-14">
         <div className="flex flex-wrap items-baseline justify-between gap-4">
           <h2 className="display text-xl uppercase">Historique</h2>
-          <p className="text-sm text-clay">
+          <p className="text-sm text-mute">
             {honoured} passage{honoured > 1 ? "s" : ""} honoré
             {honoured > 1 ? "s" : ""}
             {missed > 0 && ` · ${missed} manqué${missed > 1 ? "s" : ""}`}
@@ -230,21 +230,21 @@ export default async function EspacePage({
         <h2 className="display text-xl uppercase">Vos coordonnées</h2>
         <dl className="mt-5 grid gap-5 border border-line bg-white p-6 sm:grid-cols-3">
           <div>
-            <dt className="eyebrow text-clay">Nom</dt>
+            <dt className="eyebrow text-mute">Nom</dt>
             <dd className="mt-2 text-sm">{client.name || "—"}</dd>
           </div>
           <div>
-            <dt className="eyebrow text-clay">Téléphone</dt>
+            <dt className="eyebrow text-mute">Téléphone</dt>
             <dd className="mt-2 text-sm lining-nums tabular-nums">{client.phone}</dd>
           </div>
           <div>
-            <dt className="eyebrow text-clay">Date de naissance</dt>
+            <dt className="eyebrow text-mute">Date de naissance</dt>
             <dd className="mt-2 text-sm">
               {client.birthdate ? formatDateLong(client.birthdate) : "—"}
             </dd>
           </div>
         </dl>
-        <p className="mt-4 text-sm leading-relaxed text-clay">
+        <p className="mt-4 text-sm leading-relaxed text-mute">
           Ces informations proviennent de vos réservations : elles se mettent à
           jour à la prochaine. Elles servent uniquement à gérer vos rendez-vous
           et votre fidélité, et ne sont transmises à personne.
@@ -272,7 +272,7 @@ async function Shell({
         hasTeam={false}
         hasReviews={false}
       />
-      <main className="bg-bone pt-28 pb-24 sm:pt-32">
+      <main className="bg-porcelain pt-28 pb-24 sm:pt-32">
         <div className="mx-auto max-w-4xl px-5 sm:px-8">{children}</div>
       </main>
       <Footer settings={settings} />

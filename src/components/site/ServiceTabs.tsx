@@ -40,13 +40,13 @@ export function ServiceTabs({ categories }: { categories: TabCategory[] }) {
                 aria-selected={selected}
                 type="button"
                 onClick={() => setActive(i)}
-                className={`relative whitespace-nowrap px-5 py-4 text-sm font-semibold uppercase tracking-[0.12em] transition-colors ${
-                  selected ? "text-ink" : "text-clay hover:text-ink/70"
+                className={`relative whitespace-nowrap px-5 py-4 text-sm font-medium uppercase tracking-[0.12em] transition-colors ${
+                  selected ? "text-ink" : "text-mute hover:text-ink"
                 }`}
               >
                 {category.name}
                 <span
-                  className={`absolute inset-x-0 -bottom-px h-0.5 origin-left bg-gold transition-transform duration-400 ${
+                  className={`absolute inset-x-0 -bottom-px h-0.5 origin-left bg-terracotta transition-transform duration-500 ${
                     selected ? "scale-x-100" : "scale-x-0"
                   }`}
                 />
@@ -56,39 +56,34 @@ export function ServiceTabs({ categories }: { categories: TabCategory[] }) {
         </div>
       </div>
 
-      <div
-        key={current.id}
-        className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3"
-      >
+      <div key={current.id} className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {current.services.map((service, i) => (
           <article
             key={service.id}
-            style={{ animation: `rise 0.7s var(--ease-out-soft) ${i * 60}ms both` }}
-            className="fine-card group flex flex-col p-6"
+            style={{ animation: `rise 0.8s var(--ease-out-soft) ${i * 70}ms both` }}
+            className="card group flex flex-col p-7"
           >
-            <span className="absolute inset-x-0 top-0 z-10 h-px origin-left scale-x-0 bg-gold transition-transform duration-500 group-hover:scale-x-100" />
-
-            <div className="relative z-10 flex items-start justify-between gap-4">
-              <h4 className="text-base font-semibold leading-snug">{service.name}</h4>
-              <p className="display shrink-0 text-3xl lining-nums tabular-nums text-gold">
+            <div className="flex items-start justify-between gap-4">
+              <h4 className="display text-xl leading-snug">{service.name}</h4>
+              <p className="display shrink-0 text-3xl lining-nums tabular-nums text-terracotta">
                 {formatPrice(service.price_cents)}
               </p>
             </div>
 
             {service.description && (
-              <p className="relative z-10 mt-3 grow text-sm leading-relaxed text-ink/60">
+              <p className="mt-3 grow text-sm leading-relaxed text-mute">
                 {service.description}
               </p>
             )}
 
-            <div className="relative z-10 mt-6 flex items-center justify-between gap-3 border-t border-line pt-4">
-              <span className="text-xs uppercase tracking-[0.16em] text-clay">
+            <div className="mt-7 flex items-center justify-between gap-3 border-t border-line pt-4">
+              <span className="text-xs uppercase tracking-[0.16em] text-mute">
                 {formatDuration(service.duration_min)}
               </span>
               {service.bookable ? (
                 <Link
                   href={`/reservation?prestation=${service.id}`}
-                  className="text-xs font-semibold uppercase tracking-[0.16em] text-ink transition-colors hover:text-gold"
+                  className="text-xs font-semibold uppercase tracking-[0.16em] text-terracotta"
                 >
                   Réserver
                   <span className="ml-1.5 inline-block transition-transform duration-300 group-hover:translate-x-1">
@@ -96,7 +91,7 @@ export function ServiceTabs({ categories }: { categories: TabCategory[] }) {
                   </span>
                 </Link>
               ) : (
-                <span className="text-xs uppercase tracking-[0.16em] text-clay">
+                <span className="text-xs uppercase tracking-[0.16em] text-mute">
                   Sur place
                 </span>
               )}

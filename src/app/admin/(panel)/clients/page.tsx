@@ -45,7 +45,7 @@ export default async function ClientsPage({
           ["Rendez-vous manqués", String(totalMissed)],
         ].map(([label, value]) => (
           <div key={label} className="bg-white p-5">
-            <dt className="eyebrow text-clay">{label}</dt>
+            <dt className="eyebrow text-mute">{label}</dt>
             <dd className="display mt-2 text-2xl">{value}</dd>
           </div>
         ))}
@@ -53,7 +53,7 @@ export default async function ClientsPage({
 
       <form className="mt-8 flex flex-wrap items-end gap-3 border border-ink/12 bg-white p-4">
         <label className="grow text-sm sm:max-w-sm">
-          <span className="eyebrow block text-clay">Recherche</span>
+          <span className="eyebrow block text-mute">Recherche</span>
           <input
             type="search"
             name="q"
@@ -64,7 +64,7 @@ export default async function ClientsPage({
         </label>
         <button
           type="submit"
-          className="bg-ink px-5 py-2.5 text-xs font-semibold uppercase tracking-[0.14em] text-bone transition-colors hover:bg-ink-soft"
+          className="bg-ink px-5 py-2.5 text-xs font-semibold uppercase tracking-[0.14em] text-cream transition-colors hover:bg-ink-soft"
         >
           Filtrer
         </button>
@@ -86,7 +86,7 @@ export default async function ClientsPage({
               <li key={client.id} className="flex flex-wrap gap-5 p-5">
                 <div className="min-w-[14rem] grow">
                   <p className="font-semibold">{client.name || "Sans nom"}</p>
-                  <p className="mt-1 text-sm text-clay">
+                  <p className="mt-1 text-sm text-mute">
                     <a
                       href={`tel:${client.phone}`}
                       className="underline lining-nums tabular-nums"
@@ -109,7 +109,7 @@ export default async function ClientsPage({
                     {Number(client.upcoming) > 0 &&
                       ` · ${client.upcoming} à venir`}
                   </p>
-                  <p className="mt-1 text-xs text-clay">
+                  <p className="mt-1 text-xs text-mute">
                     {client.last_visit
                       ? `Dernier passage : ${formatDateLong(client.last_visit)}`
                       : "Jamais venu"}
@@ -121,7 +121,7 @@ export default async function ClientsPage({
                   >
                     <input type="hidden" name="client_id" value={client.id} />
                     <label className="text-xs">
-                      <span className="eyebrow block text-clay">
+                      <span className="eyebrow block text-mute">
                         Date de naissance
                       </span>
                       <input
@@ -134,7 +134,7 @@ export default async function ClientsPage({
                     <SubmitButton variant="ghost">Enregistrer</SubmitButton>
                   </form>
                   {!client.birthdate && (
-                    <p className="mt-2 text-xs text-gold">
+                    <p className="mt-2 text-xs text-terracotta">
                       Sans date de naissance, ce client ne peut pas ouvrir son
                       espace.
                     </p>
@@ -143,18 +143,18 @@ export default async function ClientsPage({
 
                 {loyaltyOn && (
                   <div className="min-w-[11rem]">
-                    <p className="eyebrow text-clay">Fidélité</p>
+                    <p className="eyebrow text-mute">Fidélité</p>
                     <p className="mt-2 text-sm lining-nums tabular-nums">
                       {stamps} / {threshold}
                     </p>
                     <div className="mt-2 h-1.5 w-full bg-ink/10">
                       <div
-                        className="h-full bg-gold-soft"
+                        className="h-full bg-terracotta"
                         style={{ width: `${(stamps / threshold) * 100}%` }}
                       />
                     </div>
                     {available > 0 && (
-                      <p className="mt-2 text-xs font-semibold text-gold">
+                      <p className="mt-2 text-xs font-semibold text-terracotta">
                         {available} récompense{available > 1 ? "s" : ""} à remettre
                       </p>
                     )}

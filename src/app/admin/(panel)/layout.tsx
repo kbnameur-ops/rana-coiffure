@@ -21,12 +21,12 @@ export default async function PanelLayout({
   const settings = await getSettings();
 
   return (
-    <div className="min-h-screen bg-bone">
+    <div className="min-h-screen bg-porcelain">
       <header className="border-b border-ink-line bg-ink">
         <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4 px-5 py-4 sm:px-8">
           <div className="flex items-center gap-4">
             <LogoBar shopName={settings.shop_name} className="h-11 w-auto" />
-            <p className="eyebrow border-l border-ink-line pl-4 text-gold-soft">
+            <p className="eyebrow border-l border-ink-line pl-4 text-brass-soft">
               Espace salon
             </p>
           </div>
@@ -34,15 +34,15 @@ export default async function PanelLayout({
             <Link
               href="/"
               target="_blank"
-              className="text-clay transition-colors hover:text-bone"
+              className="text-cream/60 transition-colors hover:text-cream"
             >
               Voir le site ↗
             </Link>
-            <span className="hidden text-clay sm:inline">{session.email}</span>
+            <span className="hidden text-cream/60 sm:inline">{session.email}</span>
             <form action={logout}>
               <button
                 type="submit"
-                className="border border-ink-line px-4 py-2 text-xs font-semibold uppercase tracking-[0.14em] text-bone transition-colors hover:border-gold hover:text-gold-soft"
+                className="border border-ink-line px-4 py-2 text-xs font-semibold uppercase tracking-[0.14em] text-cream transition-colors hover:border-terracotta hover:text-brass-soft"
               >
                 Déconnexion
               </button>

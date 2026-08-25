@@ -8,7 +8,7 @@ const STATUS: Record<string, string> = {
   confirmed: "border-ink/25 bg-white",
   done: "border-emerald-500/40 bg-emerald-50",
   no_show: "border-red-400/50 bg-red-50",
-  pending: "border-gold bg-gold/12",
+  pending: "border-terracotta bg-terracotta/12",
 };
 
 const ETIQUETTE: Record<string, string> = {
@@ -76,7 +76,7 @@ export function DayBoard({
             {heures.map((m) => (
               <span
                 key={m}
-                className="absolute right-2 -translate-y-1/2 text-xs lining-nums tabular-nums text-clay"
+                className="absolute right-2 -translate-y-1/2 text-xs lining-nums tabular-nums text-mute"
                 style={{ top: (m - debut) * PX_PAR_MINUTE }}
               >
                 {minutesToTime(m)}
@@ -100,7 +100,7 @@ export function DayBoard({
               <div className="flex h-14 flex-col justify-center border-b border-ink/12 px-3">
                 <p className="truncate font-semibold">{colonne.nom}</p>
                 {colonne.role && (
-                  <p className="truncate text-xs text-clay">{colonne.role}</p>
+                  <p className="truncate text-xs text-mute">{colonne.role}</p>
                 )}
               </div>
 
@@ -109,7 +109,7 @@ export function DayBoard({
                 {travail.map((h) => (
                   <div
                     key={h.id}
-                    className="absolute inset-x-0 bg-sand/70"
+                    className="absolute inset-x-0 bg-shell/70"
                     style={{
                       top: (h.open_min - debut) * PX_PAR_MINUTE,
                       height: (h.close_min - h.open_min) * PX_PAR_MINUTE,

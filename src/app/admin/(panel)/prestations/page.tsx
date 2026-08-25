@@ -32,7 +32,7 @@ export default async function PrestationsPage() {
         </div>
         <form action={createCategory} className="flex items-end gap-2">
           <label className="text-sm">
-            <span className="eyebrow block text-clay">Nouvelle catégorie</span>
+            <span className="eyebrow block text-mute">Nouvelle catégorie</span>
             <input
               name="name"
               required
@@ -125,13 +125,13 @@ function CategoryBlock({
           </li>
         ))}
         {services.length === 0 && (
-          <li className="p-4 text-sm text-clay">Aucune prestation pour l&apos;instant.</li>
+          <li className="p-4 text-sm text-mute">Aucune prestation pour l&apos;instant.</li>
         )}
       </ul>
 
       <form action={createService} className="border-t border-ink/12 bg-ink/[0.02] p-4">
         <input type="hidden" name="category_id" value={category.id} />
-        <p className="eyebrow text-clay">Ajouter une prestation</p>
+        <p className="eyebrow text-mute">Ajouter une prestation</p>
         <div className="mt-3 grid gap-3 sm:grid-cols-[1.4fr_2fr_auto_auto_auto]">
           <input
             name="name"
@@ -202,7 +202,7 @@ function ServiceRow({
             inputMode="decimal"
             className="w-24 border border-ink/20 px-3 py-2 text-right lining-nums tabular-nums"
           />
-          <span className="text-sm text-clay">€</span>
+          <span className="text-sm text-mute">€</span>
         </label>
         <label className="flex items-center gap-2">
           <input
@@ -213,13 +213,13 @@ function ServiceRow({
             defaultValue={service.duration_min}
             className="w-24 border border-ink/20 px-3 py-2 text-right lining-nums tabular-nums"
           />
-          <span className="text-sm text-clay">min</span>
+          <span className="text-sm text-mute">min</span>
         </label>
       </div>
 
       <div className="flex flex-wrap items-center gap-x-5 gap-y-3">
         <label className="flex items-center gap-2 text-sm">
-          <span className="text-clay">Catégorie</span>
+          <span className="text-mute">Catégorie</span>
           <select
             name="category_id"
             defaultValue={service.category_id ?? ""}

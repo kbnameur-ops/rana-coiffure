@@ -1,15 +1,21 @@
 import Image from "next/image";
 
 /**
- * Le logo du salon existe en trois états, tous dorés sur fond détouré : le
- * verrou complet là où il y a de la place (héros, pied de page), le verrou
- * horizontal dans les barres de navigation, et l'emblème seul en ornement.
+ * Le logo existe en deux teintes : doré, pour les fonds sombres, et espresso,
+ * pour les fonds clairs qui font l'essentiel du site. L'or reste rare — c'est
+ * ce qui lui garde sa valeur.
  */
 
-export function LogoMark({ className = "" }: { className?: string }) {
+export function LogoMark({
+  className = "",
+  tone = "gold",
+}: {
+  className?: string;
+  tone?: "gold" | "ink";
+}) {
   return (
     <Image
-      src="/logo/embleme.png"
+      src={tone === "ink" ? "/logo/embleme-encre.png" : "/logo/embleme.png"}
       alt=""
       width={520}
       height={409}
@@ -23,14 +29,16 @@ export function LogoBar({
   shopName,
   className = "",
   priority = false,
+  tone = "gold",
 }: {
   shopName: string;
   className?: string;
   priority?: boolean;
+  tone?: "gold" | "ink";
 }) {
   return (
     <Image
-      src="/logo/horizontal.png"
+      src={tone === "ink" ? "/logo/horizontal-encre.png" : "/logo/horizontal.png"}
       alt={shopName}
       width={820}
       height={425}
@@ -45,14 +53,16 @@ export function LogoFull({
   shopName,
   className = "",
   priority = false,
+  tone = "gold",
 }: {
   shopName: string;
   className?: string;
   priority?: boolean;
+  tone?: "gold" | "ink";
 }) {
   return (
     <Image
-      src="/logo/complet.png"
+      src={tone === "ink" ? "/logo/complet-encre.png" : "/logo/complet.png"}
       alt={`Logo ${shopName}`}
       width={800}
       height={795}
@@ -63,41 +73,32 @@ export function LogoFull({
   );
 }
 
-export function Wordmark({
-  name,
-  tone = "dark",
-  size = "md",
-  subtitle = "Salon de coiffure dames",
+/**
+ * Le verrou doré posé dans un disque espresso : sur une page claire, le logo
+ * devient un bijou plutôt qu'une image qui se délave sur l'ivoire.
+ */
+export function LogoMedallion({
+  shopName,
+  className = "",
+  priority = false,
 }: {
-  name: string;
-  tone?: "dark" | "light";
-  size?: "sm" | "md" | "lg";
-  subtitle?: string | null;
+  shopName: string;
+  className?: string;
+  priority?: boolean;
 }) {
-  const text = tone === "light" ? "text-bone" : "text-ink";
-  const sub = tone === "light" ? "text-bone-dim/70" : "text-clay";
-  const rule = tone === "light" ? "bg-bone/30" : "bg-ink/20";
-  const scale = {
-    sm: "text-lg",
-    md: "text-2xl sm:text-3xl",
-    lg: "text-[clamp(2.2rem,7vw,5rem)]",
-  }[size];
-
   return (
-    <span className="inline-flex flex-col">
-      <span className={`display ${scale} ${text}`}>{name}</span>
-      {subtitle && (
-        <span
-          className={`flex items-center gap-2 ${size === "lg" ? "mt-4" : "mt-1.5"}`}
-        >
-          <span className={`h-px w-6 ${rule}`} aria-hidden />
-          <span
-            className={`eyebrow ${sub} ${size === "lg" ? "text-[0.7rem] sm:text-xs" : "text-[0.6rem]"}`}
-          >
-            {subtitle}
-          </span>
-        </span>
-      )}
+    <span
+      className={`relative flex aspect-square items-center justify-center rounded-full bg-[radial-gradient(circle_at_35%_28%,#332723,#171110)] shadow-[0_40px_80px_-40px_rgba(36,28,26,0.55)] ${className}`}
+    >
+      <span
+        aria-hidden
+        className="pointer-events-none absolute inset-0 rounded-full ring-1 ring-inset ring-brass/35"
+      />
+      <LogoFull
+        shopName={shopName}
+        priority={priority}
+        className="h-auto w-[68%]"
+      />
     </span>
   );
 }

@@ -19,7 +19,7 @@ export function PasswordForm() {
           ["confirm", "Confirmation", "new-password"],
         ].map(([name, label, autoComplete]) => (
           <label key={name} className="block">
-            <span className="eyebrow text-clay">{label}</span>
+            <span className="eyebrow text-mute">{label}</span>
             <input
               type="password"
               name={name}

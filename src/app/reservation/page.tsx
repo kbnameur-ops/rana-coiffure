@@ -86,9 +86,9 @@ export default async function ReservationPage({
         hasClientSpace={settings.client_space_enabled !== "0"}
       />
 
-      <main className="bg-bone pt-28 pb-24 sm:pt-32">
+      <main className="bg-porcelain pt-28 pb-24 sm:pt-32">
         <div className="mx-auto max-w-5xl px-5 sm:px-8">
-          <p className="eyebrow text-clay">Rendez-vous</p>
+          <p className="eyebrow text-mute">Rendez-vous</p>
           <h1 className="display mt-4 text-[clamp(2.25rem,6vw,3.75rem)] uppercase">
             Réserver
           </h1>

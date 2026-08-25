@@ -15,12 +15,12 @@ export function LoginForm({
   return (
     <form action={formAction} className="mt-8 space-y-5">
       <label className="block">
-        <span className="eyebrow text-clay">Votre nom</span>
+        <span className="eyebrow text-cream/60">Votre nom</span>
         <select
           name="staff_id"
           required
           defaultValue=""
-          className="mt-2 w-full border border-ink-line bg-ink-soft px-4 py-3.5 text-bone outline-none transition-colors focus:border-gold"
+          className="mt-2 w-full border border-ink-line bg-ink-soft px-4 py-3.5 text-cream outline-none transition-colors focus:border-terracotta-soft"
         >
           <option value="" disabled>
             Choisir…
@@ -35,20 +35,20 @@ export function LoginForm({
       </label>
 
       <label className="block">
-        <span className="eyebrow text-clay">Votre code</span>
+        <span className="eyebrow text-cream/60">Votre code</span>
         <input
           name="code"
           required
           autoComplete="one-time-code"
           spellCheck={false}
-          className="mt-2 w-full border border-ink-line bg-ink-soft px-4 py-3.5 text-lg uppercase tracking-[0.3em] text-bone outline-none transition-colors focus:border-gold"
+          className="mt-2 w-full border border-ink-line bg-ink-soft px-4 py-3.5 text-lg uppercase tracking-[0.3em] text-cream outline-none transition-colors focus:border-terracotta-soft"
         />
       </label>
 
       {state.error && (
         <p
           role="alert"
-          className="border-l-2 border-red-500 bg-ink-soft px-4 py-3 text-sm leading-relaxed text-bone-dim"
+          className="border-l-2 border-red-500 bg-ink-soft px-4 py-3 text-sm leading-relaxed text-cream/80"
         >
           {state.error}
         </p>
@@ -57,7 +57,7 @@ export function LoginForm({
       <button
         type="submit"
         disabled={pending}
-        className="w-full bg-gold-soft px-6 py-3.5 text-xs font-semibold uppercase tracking-[0.2em] text-ink transition-colors hover:bg-gold-light disabled:opacity-60"
+        className="w-full bg-terracotta px-6 py-3.5 text-xs font-semibold uppercase tracking-[0.2em] text-cream transition-colors hover:bg-ink disabled:opacity-60"
       >
         {pending ? "Vérification…" : "Entrer"}
       </button>

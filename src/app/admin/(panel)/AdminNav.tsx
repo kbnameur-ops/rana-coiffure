@@ -28,8 +28,8 @@ export function AdminNav() {
                 href={t.href}
                 className={`block whitespace-nowrap border-b-2 px-4 py-3 text-sm transition-colors ${
                   active
-                    ? "border-gold text-bone"
-                    : "border-transparent text-clay hover:text-bone"
+                    ? "border-terracotta text-cream"
+                    : "border-transparent text-cream/60 hover:text-cream"
                 }`}
               >
                 {t.label}

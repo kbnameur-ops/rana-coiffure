@@ -19,7 +19,7 @@ export function CodeForm({
   return (
     <form action={formAction} className="border-t border-ink/12 p-4">
       <input type="hidden" name="staff_id" value={staffId} />
-      <p className="eyebrow text-clay">Accès à l&apos;espace coiffeur</p>
+      <p className="eyebrow text-mute">Accès à l&apos;espace coiffeur</p>
       <p className="mt-2 max-w-2xl text-sm leading-relaxed text-ink/60">
         {hasCode
           ? "Un code est actif. En générer un nouveau annule le précédent."

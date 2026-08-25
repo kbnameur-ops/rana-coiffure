@@ -56,7 +56,7 @@ export function WeeklyPlanning({
 
                 {split[i] ? (
                   <>
-                    <span className="text-clay">et</span>
+                    <span className="text-mute">et</span>
                     <Pair
                       weekday={weekday}
                       suffix="b"
@@ -68,7 +68,7 @@ export function WeeklyPlanning({
                       onClick={() =>
                         setSplit((p) => p.map((v, k) => (k === i ? false : v)))
                       }
-                      className="text-xs uppercase tracking-wider text-clay underline"
+                      className="text-xs uppercase tracking-wider text-mute underline"
                     >
                       Retirer la coupure
                     </button>
@@ -79,14 +79,14 @@ export function WeeklyPlanning({
                     onClick={() =>
                       setSplit((p) => p.map((v, k) => (k === i ? true : v)))
                     }
-                    className="text-xs uppercase tracking-wider text-clay underline"
+                    className="text-xs uppercase tracking-wider text-mute underline"
                   >
                     + Coupure déjeuner
                   </button>
                 )}
               </div>
             ) : (
-              <span className="text-sm text-clay">
+              <span className="text-sm text-mute">
                 {fallbackNote ?? "Fermé"}
               </span>
             )}
@@ -111,7 +111,7 @@ function Pair({
   return (
     <span className="flex items-center gap-2">
       <TimeSelect name={`from_${weekday}_${suffix}`} defaultValue={from} kind="start" />
-      <span className="text-clay">→</span>
+      <span className="text-mute">→</span>
       <TimeSelect name={`to_${weekday}_${suffix}`} defaultValue={to} kind="end" />
     </span>
   );

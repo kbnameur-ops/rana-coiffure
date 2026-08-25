@@ -17,16 +17,16 @@ export function LoyaltyCard({ loyalty }: { loyalty: LoyaltyState }) {
   const ready = loyalty.available > 0;
 
   return (
-    <section className="relative overflow-hidden bg-ink p-7 text-bone sm:p-9">
+    <section className="relative overflow-hidden bg-ink p-7 text-cream sm:p-9">
       <div
         aria-hidden
-        className="pointer-events-none absolute -right-16 -top-16 h-56 w-56 rounded-full bg-gold/15 blur-3xl"
+        className="pointer-events-none absolute -right-16 -top-16 h-56 w-56 rounded-full bg-terracotta/15 blur-3xl"
       />
 
       <div className="relative">
         <div className="flex flex-wrap items-baseline justify-between gap-3">
-          <p className="eyebrow text-gold-soft">Carte de fidélité</p>
-          <p className="text-sm lining-nums tabular-nums text-bone/60">
+          <p className="eyebrow text-brass-soft">Carte de fidélité</p>
+          <p className="text-sm lining-nums tabular-nums text-cream/60">
             {loyalty.stamps} / {loyalty.threshold}
           </p>
         </div>
@@ -43,8 +43,8 @@ export function LoyaltyCard({ loyalty }: { loyalty: LoyaltyState }) {
                 key={i}
                 className={`flex h-11 w-11 items-center justify-center rounded-full border transition-colors ${
                   filled
-                    ? "border-gold bg-gold-soft text-ink"
-                    : "border-bone/20 text-bone/25"
+                    ? "border-terracotta bg-terracotta text-cream"
+                    : "border-cream/20 text-cream/25"
                 }`}
               >
                 {filled ? (
@@ -57,17 +57,17 @@ export function LoyaltyCard({ loyalty }: { loyalty: LoyaltyState }) {
           })}
         </ul>
 
-        <p className="mt-7 max-w-md text-sm leading-relaxed text-bone/70">
+        <p className="mt-7 max-w-md text-sm leading-relaxed text-cream/70">
           {ready ? (
             <>
-              Votre carte est complète : <strong className="text-gold-soft">{loyalty.reward.toLowerCase()}</strong>{" "}
+              Votre carte est complète : <strong className="text-brass-soft">{loyalty.reward.toLowerCase()}</strong>{" "}
               vous attend. Signalez-le au salon lors de votre prochain passage,
               c&apos;est lui qui valide la récompense.
             </>
           ) : (
             <>
               Un tampon par passage honoré. Encore{" "}
-              <strong className="text-bone">
+              <strong className="text-cream">
                 {loyalty.threshold - loyalty.stamps} passage
                 {loyalty.threshold - loyalty.stamps > 1 ? "s" : ""}
               </strong>{" "}
@@ -77,7 +77,7 @@ export function LoyaltyCard({ loyalty }: { loyalty: LoyaltyState }) {
         </p>
 
         {loyalty.redeemed > 0 && (
-          <p className="mt-3 text-xs text-bone/45">
+          <p className="mt-3 text-xs text-cream/45">
             {loyalty.redeemed} récompense{loyalty.redeemed > 1 ? "s" : ""} déjà
             utilisée{loyalty.redeemed > 1 ? "s" : ""}.
           </p>

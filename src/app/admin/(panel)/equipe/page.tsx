@@ -42,7 +42,7 @@ export default async function EquipePage() {
         </div>
         <form action={createStaffAction} className="flex flex-wrap items-end gap-2">
           <label className="text-sm">
-            <span className="eyebrow block text-clay">Nom</span>
+            <span className="eyebrow block text-mute">Nom</span>
             <input
               name="name"
               required
@@ -51,7 +51,7 @@ export default async function EquipePage() {
             />
           </label>
           <label className="text-sm">
-            <span className="eyebrow block text-clay">Rôle (facultatif)</span>
+            <span className="eyebrow block text-mute">Rôle (facultatif)</span>
             <input
               name="role_label"
               placeholder="Coloriste"
@@ -98,7 +98,7 @@ export default async function EquipePage() {
                   >
                     <input type="hidden" name="id" value={member.id} />
                     <label className="text-sm">
-                      <span className="eyebrow block text-clay">Nom</span>
+                      <span className="eyebrow block text-mute">Nom</span>
                       <input
                         name="name"
                         defaultValue={member.name}
@@ -106,7 +106,7 @@ export default async function EquipePage() {
                       />
                     </label>
                     <label className="text-sm">
-                      <span className="eyebrow block text-clay">Rôle</span>
+                      <span className="eyebrow block text-mute">Rôle</span>
                       <input
                         name="role_label"
                         defaultValue={member.role_label}

@@ -24,7 +24,7 @@ export default async function ParametresPage() {
         className={`mt-8 border-l-2 px-5 py-4 text-sm leading-relaxed ${
           reviews.configured
             ? "border-emerald-600 bg-emerald-50 text-emerald-900"
-            : "border-gold bg-white text-ink/70"
+            : "border-terracotta bg-white text-ink/70"
         }`}
       >
         <p className="font-semibold">
@@ -51,7 +51,7 @@ export default async function ParametresPage() {
       <section className="mt-14">
         <h2 className="display text-xl uppercase">Sécurité</h2>
         {adminPasswordPinned() && (
-          <p className="mt-4 max-w-2xl border-l-2 border-gold bg-white px-5 py-4 text-sm leading-relaxed text-ink/70">
+          <p className="mt-4 max-w-2xl border-l-2 border-terracotta bg-white px-5 py-4 text-sm leading-relaxed text-ink/70">
             La variable <code>ADMIN_PASSWORD</code> est définie sur
             l&apos;hébergement : elle réapplique ce mot de passe à chaque
             déploiement et écrasera donc tout changement fait ici. Retirez-la

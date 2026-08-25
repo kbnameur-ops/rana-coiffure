@@ -23,10 +23,10 @@ export const metadata: Metadata = {
 };
 
 const STATUS: Record<string, { label: string; className: string }> = {
-  confirmed: { label: "À venir", className: "bg-ink text-bone" },
+  confirmed: { label: "À venir", className: "bg-ink text-cream" },
   done: { label: "Honorée", className: "bg-emerald-100 text-emerald-800" },
   no_show: { label: "Manquée", className: "bg-red-100 text-red-800" },
-  pending: { label: "À valider", className: "bg-gold/20 text-gold" },
+  pending: { label: "À valider", className: "bg-terracotta/20 text-terracotta" },
 };
 
 export default async function CoiffeurPage({
@@ -44,17 +44,17 @@ export default async function CoiffeurPage({
       <main className="flex min-h-screen items-center justify-center bg-ink px-5 py-16">
         <div className="w-full max-w-sm">
           <LogoBar shopName={settings.shop_name} className="h-14 w-auto" />
-          <p className="eyebrow mt-7 text-gold-soft">Espace coiffeur</p>
-          <h1 className="display mt-3 text-3xl uppercase text-bone">
+          <p className="eyebrow mt-7 text-brass-soft">Espace coiffeur</p>
+          <h1 className="display mt-3 text-3xl uppercase text-cream">
             Votre journée
           </h1>
-          <p className="mt-4 text-sm leading-relaxed text-clay">
+          <p className="mt-4 text-sm leading-relaxed text-cream/60">
             Consultez votre planning et déclarez les prestations réalisées hors
             réservation. Le code vous est remis par le salon.
           </p>
 
           {team.length === 0 ? (
-            <p className="mt-8 border-l-2 border-gold bg-ink-soft px-5 py-4 text-sm text-bone-dim">
+            <p className="mt-8 border-l-2 border-terracotta bg-ink-soft px-5 py-4 text-sm text-cream/80">
               Aucun coiffeur n&apos;est encore enregistré dans le salon.
             </p>
           ) : (
@@ -95,20 +95,20 @@ export default async function CoiffeurPage({
   ).padStart(2, "0")}`;
 
   return (
-    <div className="min-h-screen bg-bone">
+    <div className="min-h-screen bg-porcelain">
       <header className="bg-ink">
         <div className="mx-auto flex max-w-4xl flex-wrap items-center justify-between gap-4 px-5 py-4 sm:px-8">
           <div className="flex items-center gap-4">
             <LogoBar shopName={settings.shop_name} className="h-10 w-auto" />
             <div className="border-l border-ink-line pl-4">
-              <p className="eyebrow text-gold-soft">Espace coiffeur</p>
-              <p className="display text-lg uppercase text-bone">{member.name}</p>
+              <p className="eyebrow text-brass-soft">Espace coiffeur</p>
+              <p className="display text-lg uppercase text-cream">{member.name}</p>
             </div>
           </div>
           <form action={logoutStaff}>
             <button
               type="submit"
-              className="border border-ink-line px-4 py-2 text-xs font-semibold uppercase tracking-[0.14em] text-bone transition-colors hover:border-gold hover:text-gold-soft"
+              className="border border-ink-line px-4 py-2 text-xs font-semibold uppercase tracking-[0.14em] text-cream transition-colors hover:border-terracotta hover:text-brass-soft"
             >
               Quitter
             </button>
@@ -120,7 +120,7 @@ export default async function CoiffeurPage({
         {/* ------------------------------------------------------- cumuls */}
         <dl className="grid gap-px overflow-hidden border border-line bg-line sm:grid-cols-3">
           <div className="bg-white p-5">
-            <dt className="eyebrow text-clay">Cette semaine</dt>
+            <dt className="eyebrow text-mute">Cette semaine</dt>
             <dd className="display mt-2 text-2xl">
               {activite.week.count} prestation{activite.week.count > 1 ? "s" : ""}
             </dd>
@@ -129,7 +129,7 @@ export default async function CoiffeurPage({
             </dd>
           </div>
           <div className="bg-white p-5">
-            <dt className="eyebrow text-clay">Ce mois-ci</dt>
+            <dt className="eyebrow text-mute">Ce mois-ci</dt>
             <dd className="display mt-2 text-2xl">
               {activite.month.count} prestation{activite.month.count > 1 ? "s" : ""}
             </dd>
@@ -138,7 +138,7 @@ export default async function CoiffeurPage({
             </dd>
           </div>
           <div className="bg-white p-5">
-            <dt className="eyebrow text-clay">En attente de validation</dt>
+            <dt className="eyebrow text-mute">En attente de validation</dt>
             <dd className="display mt-2 text-2xl">{activite.pending}</dd>
             <dd className="mt-1 text-sm text-ink/60">
               Non comptées tant que le salon n&apos;a pas validé
@@ -189,7 +189,7 @@ export default async function CoiffeurPage({
                       <p className="display text-lg lining-nums tabular-nums">
                         {minutesToTime(b.start_min)}
                       </p>
-                      <p className="text-xs lining-nums tabular-nums text-clay">
+                      <p className="text-xs lining-nums tabular-nums text-mute">
                         → {minutesToTime(b.end_min)}
                       </p>
                     </div>
@@ -240,14 +240,14 @@ export default async function CoiffeurPage({
             ).map(([titre, bloc]) => (
               <div key={titre} className="border border-line bg-white">
                 <div className="flex items-baseline justify-between gap-3 border-b border-line px-5 py-4">
-                  <p className="eyebrow text-clay">{titre}</p>
+                  <p className="eyebrow text-mute">{titre}</p>
                   <p className="text-sm lining-nums tabular-nums text-ink/60">
                     {bloc.from.split("-").reverse().slice(0, 2).join("/")} –{" "}
                     {bloc.to.split("-").reverse().slice(0, 2).join("/")}
                   </p>
                 </div>
                 {bloc.lines.length === 0 ? (
-                  <p className="p-5 text-sm text-clay">
+                  <p className="p-5 text-sm text-mute">
                     Aucune prestation validée sur la période.
                   </p>
                 ) : (
@@ -265,8 +265,8 @@ export default async function CoiffeurPage({
                         </li>
                       ))}
                     </ul>
-                    <div className="flex items-baseline justify-between gap-4 border-t border-line bg-sand px-5 py-4">
-                      <span className="eyebrow text-clay">Total</span>
+                    <div className="flex items-baseline justify-between gap-4 border-t border-line bg-shell px-5 py-4">
+                      <span className="eyebrow text-mute">Total</span>
                       <span className="display text-lg lining-nums tabular-nums">
                         {bloc.count} · {formatPrice(bloc.total)}
                       </span>

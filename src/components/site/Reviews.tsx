@@ -15,8 +15,8 @@ function Stars({ value, className = "" }: { value: number; className?: string })
           <svg key={i} viewBox="0 0 20 20" className="h-4 w-4" aria-hidden>
             <defs>
               <linearGradient id={`star-${i}-${Math.round(fill * 100)}`}>
-                <stop offset={`${fill * 100}%`} stopColor="#e0a92e" />
-                <stop offset={`${fill * 100}%`} stopColor="#d8cfbe" />
+                <stop offset={`${fill * 100}%`} stopColor="#9a7b3f" />
+                <stop offset={`${fill * 100}%`} stopColor="#e8dcd2" />
               </linearGradient>
             </defs>
             <path
@@ -34,24 +34,26 @@ export function Reviews({ data }: { data: GoogleReviews }) {
   const average = data.rating.toFixed(1).replace(".", ",");
 
   return (
-    <section id="avis" className="scroll-mt-24 bg-bone py-20 sm:py-28">
+    <section id="avis" className="scroll-mt-24 bg-porcelain py-20 sm:py-28">
       <div className="mx-auto max-w-6xl px-5 sm:px-8">
         <div className="grid gap-12 lg:grid-cols-[minmax(0,20rem)_1fr] lg:gap-16">
           {/* ------------------------------------------------------ synthèse */}
           <Reveal>
-            <p className="eyebrow text-gold">Ce qu&apos;on en dit</p>
-            <h2 className="display mt-4 text-[clamp(2.1rem,5.2vw,3.5rem)] uppercase tracking-[0.06em]">
+            <p className="eyebrow text-terracotta">Ce qu&apos;on en dit</p>
+            <h2 className="display mt-5 text-[clamp(2.2rem,5vw,3.4rem)] font-light">
               Avis Google
             </h2>
-            <span className="rule-grow mt-6 block h-px w-28 bg-gold" />
+            <span className="rule-grow mt-7 block h-px w-24 bg-brass" />
 
-            <div className="mt-9 border border-line bg-white p-7">
+            <div className="mt-9 border border-line bg-white p-8">
               <div className="flex items-baseline gap-3">
-                <span className="display text-5xl lining-nums tabular-nums">{average}</span>
-                <span className="text-clay">/ 5</span>
+                <span className="display text-6xl lining-nums tabular-nums text-terracotta">
+                  {average}
+                </span>
+                <span className="text-mute">/ 5</span>
               </div>
-              <Stars value={data.rating} className="mt-3" />
-              <p className="mt-4 text-sm text-ink/60">
+              <Stars value={data.rating} className="mt-4" />
+              <p className="mt-4 text-sm text-mute">
                 {data.total} avis publiés sur Google
               </p>
 
@@ -61,7 +63,7 @@ export function Reviews({ data }: { data: GoogleReviews }) {
                     href={data.mapsUri}
                     target="_blank"
                     rel="noreferrer noopener"
-                    className="font-semibold text-ink underline-offset-4 transition-colors hover:text-gold hover:underline"
+                    className="font-semibold text-ink underline-offset-4 transition-colors hover:text-terracotta hover:underline"
                   >
                     Lire tous les avis sur Google ↗
                   </a>
@@ -71,7 +73,7 @@ export function Reviews({ data }: { data: GoogleReviews }) {
                     href={data.writeUri}
                     target="_blank"
                     rel="noreferrer noopener"
-                    className="text-clay underline-offset-4 transition-colors hover:text-gold hover:underline"
+                    className="text-mute underline-offset-4 transition-colors hover:text-terracotta hover:underline"
                   >
                     Laisser un avis ↗
                   </a>
@@ -82,14 +84,14 @@ export function Reviews({ data }: { data: GoogleReviews }) {
 
           {/* --------------------------------------------------------- avis */}
           <div>
-            <div className="-mx-5 flex snap-x snap-mandatory gap-4 overflow-x-auto px-5 pb-4 sm:mx-0 sm:grid sm:snap-none sm:grid-cols-2 sm:overflow-visible sm:px-0 sm:pb-0">
+            <div className="-mx-5 flex snap-x snap-mandatory gap-5 overflow-x-auto px-5 pb-4 sm:mx-0 sm:grid sm:snap-none sm:grid-cols-2 sm:overflow-visible sm:px-0 sm:pb-0">
               {data.reviews.map((review, i) => (
                 <Reveal
                   key={review.id}
-                  delay={i * 90}
+                  delay={i * 100}
                   className="w-[85vw] shrink-0 snap-start sm:w-auto"
                 >
-                  <article className="flex h-full flex-col border border-line bg-white p-6 transition-all duration-400 hover:-translate-y-1 hover:shadow-xl hover:shadow-ink/8">
+                  <article className="card flex h-full flex-col p-7">
                     <div className="flex items-center gap-3">
                       {review.photoUri ? (
                         <Image
@@ -101,7 +103,15 @@ export function Reviews({ data }: { data: GoogleReviews }) {
                           unoptimized
                         />
                       ) : (
-                        <span className="display flex h-10 w-10 items-center justify-center rounded-full bg-ink text-sm text-bone">
+                        <span
+                          className="display flex h-10 w-10 items-center justify-center rounded-full text-sm text-cream"
+                          style={{
+                            backgroundImage:
+                              i % 2 === 0
+                                ? "linear-gradient(140deg,#c47a62,#a4553f)"
+                                : "linear-gradient(140deg,#8b9a86,#5e6e5b)",
+                          }}
+                        >
                           {review.author.slice(0, 1).toUpperCase()}
                         </span>
                       )}
@@ -111,7 +121,7 @@ export function Reviews({ data }: { data: GoogleReviews }) {
                             href={review.authorUri}
                             target="_blank"
                             rel="noreferrer noopener"
-                            className="block truncate text-sm font-semibold hover:text-gold"
+                            className="block truncate text-sm font-semibold transition-colors hover:text-terracotta"
                           >
                             {review.author}
                           </a>
@@ -120,13 +130,13 @@ export function Reviews({ data }: { data: GoogleReviews }) {
                             {review.author}
                           </p>
                         )}
-                        <p className="text-xs text-clay">{review.relativeTime}</p>
+                        <p className="text-xs text-mute">{review.relativeTime}</p>
                       </div>
                     </div>
 
                     <Stars value={review.rating} className="mt-4" />
 
-                    <p className="mt-4 line-clamp-6 grow text-sm leading-relaxed text-ink/70">
+                    <p className="mt-4 line-clamp-6 grow text-sm leading-relaxed text-mute">
                       {review.text}
                     </p>
 
@@ -135,7 +145,7 @@ export function Reviews({ data }: { data: GoogleReviews }) {
                         href={review.reviewUri}
                         target="_blank"
                         rel="noreferrer noopener"
-                        className="mt-5 text-xs font-semibold uppercase tracking-[0.16em] text-ink transition-colors hover:text-gold"
+                        className="mt-5 text-xs font-semibold uppercase tracking-[0.16em] text-terracotta"
                       >
                         Lire sur Google ↗
                       </a>
@@ -145,7 +155,7 @@ export function Reviews({ data }: { data: GoogleReviews }) {
               ))}
             </div>
 
-            <p className="mt-6 text-xs leading-relaxed text-clay">
+            <p className="mt-6 text-xs leading-relaxed text-mute">
               Avis publiés sur Google, affichés tels quels et sans sélection du
               salon. Google n&apos;en met que cinq à disposition : le lien
               « Lire tous les avis » ouvre la liste complète.

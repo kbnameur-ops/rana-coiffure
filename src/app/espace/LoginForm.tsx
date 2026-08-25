@@ -11,7 +11,7 @@ export function LoginForm() {
   return (
     <form action={formAction} className="mt-8 space-y-5">
       <label className="block">
-        <span className="eyebrow text-clay">Votre numéro de téléphone</span>
+        <span className="eyebrow text-mute">Votre numéro de téléphone</span>
         <input
           type="tel"
           name="phone"
@@ -23,7 +23,7 @@ export function LoginForm() {
       </label>
 
       <label className="block">
-        <span className="eyebrow text-clay">Votre date de naissance</span>
+        <span className="eyebrow text-mute">Votre date de naissance</span>
         <input
           type="date"
           name="birthdate"
@@ -46,7 +46,7 @@ export function LoginForm() {
       <button
         type="submit"
         disabled={pending}
-        className="w-full bg-ink px-8 py-4 text-xs font-semibold uppercase tracking-[0.2em] text-bone transition-transform duration-300 hover:-translate-y-0.5 disabled:opacity-60 sm:w-auto"
+        className="w-full bg-ink px-8 py-4 text-xs font-semibold uppercase tracking-[0.2em] text-cream transition-transform duration-300 hover:-translate-y-0.5 disabled:opacity-60 sm:w-auto"
       >
         {pending ? "Vérification…" : "Accéder à mon espace"}
       </button>

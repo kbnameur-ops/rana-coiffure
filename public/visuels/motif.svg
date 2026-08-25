@@ -1,19 +1,18 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" width="1600" height="900" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Motif de vagues">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" width="1600" height="900" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Motif d'ondulations">
   <defs>
     <linearGradient id="m-fil" x1="0" y1="0" x2="1" y2="0">
-      <stop offset="0" stop-color="#8a6a1f" stop-opacity="0"/>
-      <stop offset="0.5" stop-color="#e3c47c" stop-opacity="0.9"/>
-      <stop offset="1" stop-color="#8a6a1f" stop-opacity="0"/>
+      <stop offset="0" stop-color="#9a7b3f" stop-opacity="0"/>
+      <stop offset="0.5" stop-color="#e3c47c" stop-opacity="0.75"/>
+      <stop offset="1" stop-color="#9a7b3f" stop-opacity="0"/>
     </linearGradient>
   </defs>
-  <rect width="1600" height="900" fill="#0b0908"/>
-  <g fill="none" stroke="url(#m-fil)" stroke-width="2" stroke-linecap="round">
-    <path d="M-40 120 C 260 40, 520 200, 800 120 C 1080 40, 1340 200, 1640 120"/>
-    <path d="M-40 240 C 260 160, 520 320, 800 240 C 1080 160, 1340 320, 1640 240"/>
-    <path d="M-40 360 C 260 280, 520 440, 800 360 C 1080 280, 1340 440, 1640 360"/>
-    <path d="M-40 480 C 260 400, 520 560, 800 480 C 1080 400, 1340 560, 1640 480"/>
-    <path d="M-40 600 C 260 520, 520 680, 800 600 C 1080 520, 1340 680, 1640 600"/>
-    <path d="M-40 720 C 260 640, 520 800, 800 720 C 1080 640, 1340 800, 1640 720"/>
-    <path d="M-40 840 C 260 760, 520 920, 800 840 C 1080 760, 1340 920, 1640 840"/>
+  <rect width="1600" height="900" fill="#241c1a"/>
+  <g fill="none" stroke="url(#m-fil)" stroke-width="1.4" stroke-linecap="round">
+    <path d="M-40 140 C 300 60, 500 220, 800 140 C 1100 60, 1300 220, 1640 140"/>
+    <path d="M-40 260 C 300 180, 500 340, 800 260 C 1100 180, 1300 340, 1640 260"/>
+    <path d="M-40 380 C 300 300, 500 460, 800 380 C 1100 300, 1300 460, 1640 380"/>
+    <path d="M-40 500 C 300 420, 500 580, 800 500 C 1100 420, 1300 580, 1640 500"/>
+    <path d="M-40 620 C 300 540, 500 700, 800 620 C 1100 540, 1300 700, 1640 620"/>
+    <path d="M-40 740 C 300 660, 500 820, 800 740 C 1100 660, 1300 820, 1640 740"/>
   </g>
 </svg>

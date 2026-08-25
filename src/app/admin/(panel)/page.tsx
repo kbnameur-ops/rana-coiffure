@@ -82,7 +82,7 @@ export default async function PlanningPage({
             />
             <button
               type="submit"
-              className="bg-ink px-4 py-2.5 text-xs font-semibold uppercase tracking-[0.14em] text-bone transition-colors hover:bg-ink-soft"
+              className="bg-ink px-4 py-2.5 text-xs font-semibold uppercase tracking-[0.14em] text-cream transition-colors hover:bg-ink-soft"
             >
               Aller
             </button>
@@ -97,7 +97,7 @@ export default async function PlanningPage({
           ["À valider", String(attente.length)],
         ].map(([label, value]) => (
           <div key={label} className="bg-white p-5">
-            <dt className="eyebrow text-clay">{label}</dt>
+            <dt className="eyebrow text-mute">{label}</dt>
             <dd className="display mt-2 text-2xl">{value}</dd>
           </div>
         ))}
@@ -111,7 +111,7 @@ export default async function PlanningPage({
         staffHours={staffHours.filter((h) => h.weekday === isoDay)}
       />
 
-      <p className="mt-4 text-sm text-clay">
+      <p className="mt-4 text-sm text-mute">
         Le fond clair d&apos;une colonne marque les heures travaillées du
         coiffeur. Cliquer sur un rendez-vous ouvre sa fiche dans la liste.
       </p>
@@ -126,7 +126,7 @@ export default async function PlanningPage({
         </p>
 
         {attente.length === 0 ? (
-          <p className="mt-5 border border-ink/12 bg-white p-6 text-sm text-clay">
+          <p className="mt-5 border border-ink/12 bg-white p-6 text-sm text-mute">
             Rien en attente.
           </p>
         ) : (
@@ -137,7 +137,7 @@ export default async function PlanningPage({
                   <p className="text-sm font-semibold first-letter:uppercase">
                     {formatDateLong(b.date).replace(/ \d{4}$/, "")}
                   </p>
-                  <p className="text-xs lining-nums tabular-nums text-clay">
+                  <p className="text-xs lining-nums tabular-nums text-mute">
                     {minutesToTime(b.start_min)}
                   </p>
                 </div>
@@ -170,7 +170,7 @@ export default async function PlanningPage({
         )}
       </section>
 
-      <p className="mt-10 text-sm text-clay">
+      <p className="mt-10 text-sm text-mute">
         Espace coiffeur :{" "}
         <Link href="/coiffeur" className="underline hover:text-ink">
           {settings.shop_name} — /coiffeur
