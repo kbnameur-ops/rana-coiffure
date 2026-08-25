@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 625" width="1000" height="625" preserveAspectRatio="xMidYMid slice" role="img" aria-label="La devanture du salon au trait">
   <defs>
     <linearGradient id="d-ciel" x1="0" y1="0" x2="0.3" y2="1">
-      <stop offset="0" stop-color="#fdfbf7"/>
+      <stop offset="0" stop-color="#fdfaf8"/>
       <stop offset="1" stop-color="#f6e7e0"/>
     </linearGradient>
     <radialGradient id="d-jour" cx="0.5" cy="0.35" r="0.55">
@@ -10,7 +10,7 @@
     </radialGradient>
     <linearGradient id="d-vitre" x1="0.1" y1="0" x2="0.8" y2="1">
       <stop offset="0" stop-color="#ffffff"/>
-      <stop offset="1" stop-color="#f2e4da"/>
+      <stop offset="1" stop-color="#f2e2de"/>
     </linearGradient>
   </defs>
 
@@ -21,7 +21,7 @@
   <rect x="130" y="86" width="740" height="474" fill="#fffdfa" stroke="#e8dcd2" stroke-width="2"/>
 
   <!-- Enseigne espresso : le seul aplat sombre, comme sur la vraie rue. -->
-  <rect x="130" y="86" width="740" height="88" fill="#241c1a"/>
+  <rect x="130" y="86" width="740" height="88" fill="#33141f"/>
   <text x="500" y="134" text-anchor="middle"
         font-family="Cormorant Garamond, Cormorant, Garamond, Georgia, 'Times New Roman', serif"
         font-size="46" font-style="italic" font-weight="500" letter-spacing="3" fill="#e3c47c">Rana</text>
@@ -43,7 +43,7 @@
   <!-- Vitrines en arche et porte. -->
   <path d="M180 522 V346 a92 92 0 0 1 184 0 V522 z" fill="url(#d-vitre)" stroke="#9a7b3f" stroke-width="2"/>
   <path d="M636 522 V346 a92 92 0 0 1 184 0 V522 z" fill="url(#d-vitre)" stroke="#9a7b3f" stroke-width="2"/>
-  <path d="M448 522 V320 a52 52 0 0 1 104 0 V522 z" fill="url(#d-vitre)" stroke="#241c1a" stroke-width="2.4"/>
+  <path d="M448 522 V320 a52 52 0 0 1 104 0 V522 z" fill="url(#d-vitre)" stroke="#33141f" stroke-width="2.4"/>
   <circle cx="536" cy="430" r="5" fill="#9a7b3f"/>
 
   <!-- Reflets et silhouettes derrière la vitre. -->
@@ -61,7 +61,7 @@
   </g>
 
   <!-- Bacs à plantes. -->
-  <g fill="#241c1a" fill-opacity="0.82">
+  <g fill="#33141f" fill-opacity="0.82">
     <path d="M196 522 h64 l-8 38 h-48 z"/>
     <path d="M744 522 h64 l-8 38 h-48 z"/>
   </g>

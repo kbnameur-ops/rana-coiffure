@@ -2,21 +2,23 @@
 
 @theme static {
   /* Un salon clair : porcelaine et coquille d'œuf en fond, terre cuite et
-     sauge pour la couleur, laiton pour les filets, espresso pour le texte.
-     Le noir du logo ne sert plus de décor — il devient un accent rare. */
-  --color-porcelain: #fdfbf7;
-  --color-shell: #f8f1ea;
-  --color-blush: #f6e7e0;
-  --color-line: #e8dcd2;
+     sauge pour la couleur, laiton pour les filets, aubergine profond pour le
+     texte. L'aubergine remplace le brun : même densité, mais un rouge sourd
+     qui réchauffe au lieu de plomber. */
+  --color-porcelain: #fdfaf8;
+  --color-shell: #f8f0eb;
+  --color-blush: #f6e5e2;
+  --color-line: #e9dad3;
 
-  --color-ink: #241c1a;
-  --color-ink-soft: #3a2e2a;
-  --color-ink-line: #4a3b36;
+  --color-ink: #33141f;
+  --color-ink-soft: #48202e;
+  --color-ink-line: #5c2c3d;
   --color-cream: #fbf6f0;
-  --color-mute: #7a6c64;
+  --color-mute: #7a6a72;
 
   --color-terracotta: #a4553f;
   --color-terracotta-soft: #d08a72;
+  --color-terracotta-deep: #7e3c2b;
   --color-sage: #5e6e5b;
   --color-sage-soft: #96a691;
   --color-brass: #9a7b3f;
@@ -141,7 +143,7 @@
   &:hover {
     border-color: color-mix(in srgb, var(--color-terracotta) 30%, transparent);
     transform: translateY(-5px);
-    box-shadow: 0 26px 50px -34px rgba(36, 28, 26, 0.35);
+    box-shadow: 0 26px 50px -34px rgba(51, 20, 31, 0.32);
   }
 
   &:hover::before {
@@ -168,7 +170,7 @@
     content: "";
     position: absolute;
     inset: 0;
-    background-color: var(--color-ink);
+    background-color: var(--color-terracotta-deep);
     transform: translateX(-101%);
     transition: transform 0.65s var(--ease-out-soft);
   }

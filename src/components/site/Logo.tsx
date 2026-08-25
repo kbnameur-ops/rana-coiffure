@@ -88,7 +88,7 @@ export function LogoMedallion({
 }) {
   return (
     <span
-      className={`relative flex aspect-square items-center justify-center rounded-full bg-[radial-gradient(circle_at_35%_28%,#332723,#171110)] shadow-[0_40px_80px_-40px_rgba(36,28,26,0.55)] ${className}`}
+      className={`relative flex aspect-square items-center justify-center rounded-full bg-[radial-gradient(circle_at_35%_28%,#4a1f2f,#210b13)] shadow-[0_40px_80px_-40px_rgba(51,20,31,0.5)] ${className}`}
     >
       <span
         aria-hidden
