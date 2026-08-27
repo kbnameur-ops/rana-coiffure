@@ -265,13 +265,11 @@ réserver tous les deux.
 - Prestations, prix, durées, ordre d'affichage, visibilité, réservabilité :
   **Prestations & tarifs**.
 - Équipe, plannings et compétences : **Coiffeurs**.
-- Les visuels d'ambiance sont dans `public/visuels/` : `interieur.svg` (le
-  salon, section « La maison », cadré en arche), `devanture.svg` (section
-  « Accès ») et `motif.svg` (fond du bandeau de rappel). Ce sont des
-  illustrations vectorielles claires, pensées comme un habillage provisoire :
-  remplacez-les par de vraies photographies du salon aux mêmes chemins — le code
-  n'a pas à bouger, seul le format change (4/5 pour l'intérieur, 16/10 pour la
-  devanture).
+- Les photographies du salon sont dans `public/photos/` : `salon.jpg` (la
+  salle, section « La maison », cadrée en 4/5 pour l'arche) et `devanture.jpg`
+  (section « Accès », en 16/10). Pour les remplacer, gardez les mêmes chemins
+  et les mêmes proportions — le code n'a pas à bouger. `public/visuels/motif.svg`
+  reste une trame vectorielle, elle sert de fond au bandeau de rappel.
 - Le logo est dans `public/logo/`, en deux déclinaisons. `verrou.png` et
   `marque.png` sont le verrou horizontal et l'emblème couronné dans leurs
   couleurs d'origine — bleu nuit et or — et se posent tels quels sur la

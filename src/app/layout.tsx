@@ -23,18 +23,18 @@ export async function generateMetadata(): Promise<Metadata> {
     return { title: "Configuration requise", robots: { index: false } };
 
   const s = await getSettings();
-  const name = s.shop_name || "Rana Coiffure";
+  const name = s.shop_name || "Rana Beauté Coiffure";
   const city = s.city || "Paris";
-  const tagline = s.tagline || "Salon de coiffure dames";
+  const tagline = s.tagline || "Salon de coiffure & institut de beauté";
   return {
     title: {
       default: `${name} — ${tagline} à ${city}`,
       template: `%s — ${name}`,
     },
-    description: `${name}, ${tagline.toLowerCase()} à ${city}. Coupe, couleur, balayage, lissage, chignon et soins. Réservation en ligne en moins d'une minute.`,
+    description: `${name}, ${tagline.toLowerCase()} à ${city}. Coupe, couleur, balayage, lissage, chignon, ongles et soins du visage. Réservation en ligne en moins d'une minute.`,
     openGraph: {
       title: `${name} — ${tagline}`,
-      description: `${tagline} à ${city}. Coupe, couleur, balayage, coiffure de mariée. Réservez votre rendez-vous en ligne.`,
+      description: `${tagline} à ${city}. Coupe, couleur, balayage, coiffure de mariée, ongles et soins. Réservez votre rendez-vous en ligne.`,
       type: "website",
       locale: "fr_FR",
     },

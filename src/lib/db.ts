@@ -289,8 +289,8 @@ CREATE INDEX IF NOT EXISTS idx_bookings_client ON bookings (client_id, date);
 `;
 
 export const DEFAULT_SETTINGS: Record<string, string> = {
-  shop_name: "Rana Coiffure",
-  tagline: "Salon de coiffure dames",
+  shop_name: "Rana Beauté Coiffure",
+  tagline: "Salon de coiffure & institut de beauté",
   about:
     "Un salon de quartier où l'on prend le temps : le diagnostic avant les ciseaux, la couleur pesée pour votre base, le coiffage travaillé jusqu'au dernier geste. On y vient pour la coupe du mois comme pour la couleur qu'on n'ose pas ailleurs.",
   address: "12 rue des Lilas",
@@ -368,6 +368,21 @@ const CATALOGUE: [string, [string, string, number, number][]][] = [
   ],
 ];
 
+/**
+ * Prestations d'institut relevées sur la vitrine du salon. Créées inactives et
+ * sans tarif : c'est au salon de les chiffrer puis de les publier.
+ */
+const INSTITUT_CATEGORIE = "Beauté & ongles";
+const INSTITUT: [string, string, number][] = [
+  ["Beauté des mains", "Manucure, mise en forme, pose de vernis.", 45],
+  ["Beauté des pieds", "Pédicure, gommage, pose de vernis.", 60],
+  ["Pose de faux ongles", "Pose complète, gel ou résine.", 90],
+  ["Maquillage permanent", "Sourcils, lèvres ou eye-liner. Retouche comprise.", 120],
+  ["Extension de cils", "Pose cil à cil ou volume russe.", 120],
+  ["Tatouage", "Sur devis, après rendez-vous conseil.", 60],
+  ["Soin visage", "Nettoyage, gommage, masque et hydratation.", 60],
+];
+
 // Fermé dimanche et lundi. 9h30–19h en semaine, nocturne le jeudi jusqu'à 20h,
 // 9h–18h30 le samedi.
 const OPENING: [number, number, number][] = [
@@ -412,6 +427,32 @@ async function initialise(sql: Sql) {
             [category.id, label, description, price, duration, i],
           );
         }
+      }
+    }
+
+    // Les prestations d'institut sont affichées sur la vitrine du salon. Elles
+    // sont créées ici, sur une base neuve comme sur une base déjà amorcée, mais
+    // *inactives* : leurs tarifs restent à fixer et rien ne doit s'afficher au
+    // public tant que le salon ne les a pas renseignés depuis l'espace salon.
+    const [institut] = await tx.query<{ id: number }>(
+      "SELECT id FROM categories WHERE name = $1",
+      [INSTITUT_CATEGORIE],
+    );
+    if (!institut) {
+      const [{ max: rang }] = await tx.query<{ max: number | null }>(
+        "SELECT MAX(sort_order) AS max FROM categories",
+      );
+      const [cat] = await tx.query<{ id: number }>(
+        "INSERT INTO categories (name, sort_order) VALUES ($1, $2) RETURNING id",
+        [INSTITUT_CATEGORIE, (rang ?? -1) + 1],
+      );
+      for (const [i, [nom, description, duree]] of INSTITUT.entries()) {
+        await tx.query(
+          `INSERT INTO services
+             (category_id, name, description, price_cents, duration_min, sort_order, active)
+           VALUES ($1, $2, $3, 0, $4, $5, FALSE)`,
+          [cat.id, nom, description, duree, i],
+        );
       }
     }
 

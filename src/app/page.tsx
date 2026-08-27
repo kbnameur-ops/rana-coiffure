@@ -27,6 +27,8 @@ const MARQUEE = [
   "Lissage brésilien",
   "Chignon de mariée",
   "Soins profonds",
+  "Beauté des ongles",
+  "Soin du visage",
 ];
 
 const SIGNATURES = [
@@ -327,9 +329,10 @@ export default async function HomePage() {
             >
               <div className="relative aspect-4/5">
                 <Image
-                  src="/visuels/interieur.svg"
-                  alt={`Le salon ${settings.shop_name} : miroirs, coiffeuse et fauteuil`}
+                  src="/photos/salon.jpg"
+                  alt={`La salle du salon ${settings.shop_name} : coiffeuses, miroirs et fauteuils`}
                   fill
+                  priority
                   sizes="(max-width: 1024px) 100vw, 40vw"
                   className="animate-[slow-zoom_40s_ease-in-out_infinite_alternate] object-cover"
                 />
@@ -528,8 +531,8 @@ export default async function HomePage() {
 
               <div className="relative mt-9 aspect-16/10 overflow-hidden rounded-t-[3rem] rounded-b-sm">
                 <Image
-                  src="/visuels/devanture.svg"
-                  alt={`La devanture du salon ${settings.shop_name}`}
+                  src="/photos/devanture.jpg"
+                  alt={`La devanture du salon ${settings.shop_name}, vue depuis la rue`}
                   fill
                   sizes="(max-width: 1024px) 100vw, 45vw"
                   className="animate-[slow-zoom_44s_ease-in-out_infinite_alternate] object-cover"

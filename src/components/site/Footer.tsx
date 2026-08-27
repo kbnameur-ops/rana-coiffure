@@ -11,8 +11,8 @@ export function Footer({ settings }: { settings: Settings }) {
         <div>
           <LogoBar shopName={settings.shop_name} tone="clair" className="h-auto w-56" />
           <p className="mt-6 max-w-xs text-sm leading-relaxed text-cream/55">
-            Salon de coiffure dames, {settings.postal_code} {settings.city}. Coupe,
-            couleur, balayage, lissage, chignon et soins.
+            Coiffure et institut de beauté, {settings.postal_code} {settings.city}.
+            Coupe, couleur, balayage, lissage, chignon, ongles et soins.
           </p>
         </div>
 
