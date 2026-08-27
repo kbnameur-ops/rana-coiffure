@@ -293,12 +293,12 @@ export const DEFAULT_SETTINGS: Record<string, string> = {
   tagline: "Salon de coiffure & institut de beauté",
   about:
     "Un salon de quartier où l'on prend le temps : le diagnostic avant les ciseaux, la couleur pesée pour votre base, le coiffage travaillé jusqu'au dernier geste. On y vient pour la coupe du mois comme pour la couleur qu'on n'ose pas ailleurs.",
-  address: "12 rue des Lilas",
-  postal_code: "75020",
-  city: "Paris",
-  phone: "01 23 45 67 89",
+  address: "84 avenue Jean Jaurès",
+  postal_code: "93500",
+  city: "Pantin",
+  phone: "01 48 40 07 84",
   email: "",
-  instagram: "",
+  instagram: "https://www.instagram.com/rana_coiffure/",
   google_maps_url: "",
   client_space_enabled: "1",
   loyalty_enabled: "1",
@@ -428,6 +428,25 @@ async function initialise(sql: Sql) {
           );
         }
       }
+    }
+
+    // Le site a d'abord été mis en ligne avec des coordonnées d'exemple. On les
+    // remplace par celles du salon, en ne touchant qu'aux valeurs restées
+    // telles quelles : une saisie faite depuis l'espace salon prime toujours.
+    const CORRECTIONS: [string, string, string][] = [
+      ["shop_name", "Rana Coiffure", "Rana Beauté Coiffure"],
+      ["tagline", "Salon de coiffure dames", "Salon de coiffure & institut de beauté"],
+      ["address", "12 rue des Lilas", "84 avenue Jean Jaurès"],
+      ["postal_code", "75020", "93500"],
+      ["city", "Paris", "Pantin"],
+      ["phone", "01 23 45 67 89", "01 48 40 07 84"],
+      ["instagram", "", "https://www.instagram.com/rana_coiffure/"],
+    ];
+    for (const [cle, exemple, reel] of CORRECTIONS) {
+      await tx.query(
+        "UPDATE settings SET value = $1 WHERE key = $2 AND value = $3",
+        [reel, cle, exemple],
+      );
     }
 
     // Les prestations d'institut sont affichées sur la vitrine du salon. Elles
