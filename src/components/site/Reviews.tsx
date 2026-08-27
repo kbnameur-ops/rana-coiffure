@@ -15,8 +15,8 @@ function Stars({ value, className = "" }: { value: number; className?: string })
           <svg key={i} viewBox="0 0 20 20" className="h-4 w-4" aria-hidden>
             <defs>
               <linearGradient id={`star-${i}-${Math.round(fill * 100)}`}>
-                <stop offset={`${fill * 100}%`} stopColor="#9a7b3f" />
-                <stop offset={`${fill * 100}%`} stopColor="#e8dcd2" />
+                <stop offset={`${fill * 100}%`} stopColor="#8a6a26" />
+                <stop offset={`${fill * 100}%`} stopColor="#e8dcd0" />
               </linearGradient>
             </defs>
             <path
@@ -39,15 +39,15 @@ export function Reviews({ data }: { data: GoogleReviews }) {
         <div className="grid gap-12 lg:grid-cols-[minmax(0,20rem)_1fr] lg:gap-16">
           {/* ------------------------------------------------------ synthèse */}
           <Reveal>
-            <p className="eyebrow text-terracotta">Ce qu&apos;on en dit</p>
+            <p className="eyebrow text-gold">Ce qu&apos;on en dit</p>
             <h2 className="display mt-5 text-[clamp(2.2rem,5vw,3.4rem)] font-light">
               Avis Google
             </h2>
-            <span className="rule-grow mt-7 block h-px w-24 bg-brass" />
+            <span className="rule-grow mt-7 block h-px w-24 bg-gold" />
 
             <div className="mt-9 border border-line bg-white p-8">
               <div className="flex items-baseline gap-3">
-                <span className="display text-6xl lining-nums tabular-nums text-terracotta">
+                <span className="display text-6xl lining-nums tabular-nums text-gold">
                   {average}
                 </span>
                 <span className="text-mute">/ 5</span>
@@ -63,7 +63,7 @@ export function Reviews({ data }: { data: GoogleReviews }) {
                     href={data.mapsUri}
                     target="_blank"
                     rel="noreferrer noopener"
-                    className="font-semibold text-ink underline-offset-4 transition-colors hover:text-terracotta hover:underline"
+                    className="font-semibold text-ink underline-offset-4 transition-colors hover:text-gold hover:underline"
                   >
                     Lire tous les avis sur Google ↗
                   </a>
@@ -73,7 +73,7 @@ export function Reviews({ data }: { data: GoogleReviews }) {
                     href={data.writeUri}
                     target="_blank"
                     rel="noreferrer noopener"
-                    className="text-mute underline-offset-4 transition-colors hover:text-terracotta hover:underline"
+                    className="text-mute underline-offset-4 transition-colors hover:text-gold hover:underline"
                   >
                     Laisser un avis ↗
                   </a>
@@ -108,8 +108,8 @@ export function Reviews({ data }: { data: GoogleReviews }) {
                           style={{
                             backgroundImage:
                               i % 2 === 0
-                                ? "linear-gradient(140deg,#c47a62,#a4553f)"
-                                : "linear-gradient(140deg,#8b9a86,#5e6e5b)",
+                                ? "linear-gradient(140deg,#3d5178,#1f2e4a)"
+                                : "linear-gradient(140deg,#c9a961,#8a6a26)",
                           }}
                         >
                           {review.author.slice(0, 1).toUpperCase()}
@@ -121,7 +121,7 @@ export function Reviews({ data }: { data: GoogleReviews }) {
                             href={review.authorUri}
                             target="_blank"
                             rel="noreferrer noopener"
-                            className="block truncate text-sm font-semibold transition-colors hover:text-terracotta"
+                            className="block truncate text-sm font-semibold transition-colors hover:text-gold"
                           >
                             {review.author}
                           </a>
@@ -145,7 +145,7 @@ export function Reviews({ data }: { data: GoogleReviews }) {
                         href={review.reviewUri}
                         target="_blank"
                         rel="noreferrer noopener"
-                        className="mt-5 text-xs font-semibold uppercase tracking-[0.16em] text-terracotta"
+                        className="mt-5 text-xs font-semibold uppercase tracking-[0.16em] text-gold"
                       >
                         Lire sur Google ↗
                       </a>

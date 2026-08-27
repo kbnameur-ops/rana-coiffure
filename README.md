@@ -272,16 +272,18 @@ réserver tous les deux.
   remplacez-les par de vraies photographies du salon aux mêmes chemins — le code
   n'a pas à bouger, seul le format change (4/5 pour l'intérieur, 16/10 pour la
   devanture).
-- Le logo est dans `public/logo/`, en deux teintes. La version dorée
-  (`complet.png`, `horizontal.png`, `embleme.png`) est détourée du fond noir
-  d'origine et se pose sur les surfaces espresso : médaillon du héros, bandeau
-  de rappel, pied de page, espaces salon et coiffeur. La version espresso
-  (`complet-encre.png`, `horizontal-encre.png`, `embleme-encre.png`) est
-  reconstruite depuis la silhouette et sert partout ailleurs, sur les fonds
-  clairs — l'or se délaverait sur l'ivoire. `src/app/icon.png` sert de favicon.
+- Le logo est dans `public/logo/`, en deux déclinaisons. `verrou.png` et
+  `marque.png` sont le verrou horizontal et l'emblème couronné dans leurs
+  couleurs d'origine — bleu nuit et or — et se posent tels quels sur la
+  porcelaine, qui fait l'essentiel du site. `verrou-clair.png` et
+  `marque-clair.png` remplacent le marine par du crème et remontent l'or :
+  ce sont eux qui servent sur les deux aplats marine, bandeau de rappel et
+  pied de page, où le verrou d'origine s'effacerait. `src/app/icon.png` sert
+  de favicon. Les quatre fichiers sont détourés de la maquette du graphiste ;
+  un fichier vectoriel donnerait un rendu plus net aux grandes tailles.
 - La palette et les animations sont dans `src/app/globals.css` : porcelaine et
-  coquille d'œuf en fond, terre cuite et sauge pour la couleur, laiton pour les
-  filets, espresso pour le texte et les rares aplats sombres. Les mouvements
+  coquille d'œuf en fond, bleu nuit pour le texte et les deux aplats sombres,
+  or pour les accents et les filets, un rosé sourd pour la chaleur. Les mouvements
   (voiles de couleur, révélations au scroll, arches qui se lèvent) sont tous
   neutralisés sous `prefers-reduced-motion`.
 

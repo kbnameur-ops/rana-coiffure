@@ -46,7 +46,7 @@ export function ServiceTabs({ categories }: { categories: TabCategory[] }) {
               >
                 {category.name}
                 <span
-                  className={`absolute inset-x-0 -bottom-px h-0.5 origin-left bg-terracotta transition-transform duration-500 ${
+                  className={`absolute inset-x-0 -bottom-px h-0.5 origin-left bg-gold transition-transform duration-500 ${
                     selected ? "scale-x-100" : "scale-x-0"
                   }`}
                 />
@@ -65,7 +65,7 @@ export function ServiceTabs({ categories }: { categories: TabCategory[] }) {
           >
             <div className="flex items-start justify-between gap-4">
               <h4 className="display text-xl leading-snug">{service.name}</h4>
-              <p className="display shrink-0 text-3xl lining-nums tabular-nums text-terracotta">
+              <p className="display shrink-0 text-3xl lining-nums tabular-nums text-gold">
                 {formatPrice(service.price_cents)}
               </p>
             </div>
@@ -83,7 +83,7 @@ export function ServiceTabs({ categories }: { categories: TabCategory[] }) {
               {service.bookable ? (
                 <Link
                   href={`/reservation?prestation=${service.id}`}
-                  className="text-xs font-semibold uppercase tracking-[0.16em] text-terracotta"
+                  className="text-xs font-semibold uppercase tracking-[0.16em] text-gold"
                 >
                   Réserver
                   <span className="ml-1.5 inline-block transition-transform duration-300 group-hover:translate-x-1">

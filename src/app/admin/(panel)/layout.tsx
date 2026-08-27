@@ -25,8 +25,8 @@ export default async function PanelLayout({
       <header className="border-b border-ink-line bg-ink">
         <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4 px-5 py-4 sm:px-8">
           <div className="flex items-center gap-4">
-            <LogoBar shopName={settings.shop_name} className="h-11 w-auto" />
-            <p className="eyebrow border-l border-ink-line pl-4 text-brass-soft">
+            <LogoBar shopName={settings.shop_name} tone="clair" className="h-11 w-auto" />
+            <p className="eyebrow border-l border-ink-line pl-4 text-gold-soft">
               Espace salon
             </p>
           </div>
@@ -42,7 +42,7 @@ export default async function PanelLayout({
             <form action={logout}>
               <button
                 type="submit"
-                className="border border-ink-line px-4 py-2 text-xs font-semibold uppercase tracking-[0.14em] text-cream transition-colors hover:border-terracotta hover:text-brass-soft"
+                className="border border-ink-line px-4 py-2 text-xs font-semibold uppercase tracking-[0.14em] text-cream transition-colors hover:border-gold hover:text-gold-soft"
               >
                 Déconnexion
               </button>

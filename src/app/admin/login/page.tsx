@@ -27,8 +27,8 @@ export default async function LoginPage({
   return (
     <main className="flex min-h-screen items-center justify-center bg-ink px-5 py-16">
       <div className="w-full max-w-sm">
-        <LogoBar shopName={settings.shop_name} className="h-14 w-auto" />
-        <p className="eyebrow mt-7 text-brass-soft">Espace salon</p>
+        <LogoBar shopName={settings.shop_name} tone="clair" className="h-14 w-auto" />
+        <p className="eyebrow mt-7 text-gold-soft">Espace salon</p>
         <h1 className="display mt-3 text-3xl uppercase text-cream">
           Connexion
         </h1>
@@ -49,7 +49,7 @@ export default async function LoginPage({
             <p className="font-semibold text-cream">Clé de session manquante</p>
             <p className="mt-2">
               Ajoutez la variable{" "}
-              <code className="text-brass-soft">SESSION_SECRET</code> à
+              <code className="text-gold-soft">SESSION_SECRET</code> à
               l&apos;hébergement, puis redéployez. Sans elle, la signature des
               sessions repose sur une valeur de développement présente dans le
               dépôt.
@@ -62,21 +62,21 @@ export default async function LoginPage({
             <LoginForm suite={suite ?? "/admin"} />
             <Link
               href="/admin/mot-de-passe-oublie"
-              className="mt-6 inline-block text-xs uppercase tracking-[0.16em] text-cream/60 transition-colors hover:text-brass-soft"
+              className="mt-6 inline-block text-xs uppercase tracking-[0.16em] text-cream/60 transition-colors hover:text-gold-soft"
             >
               Mot de passe oublié ?
             </Link>
           </>
         ) : hasAccount ? null : (
-          <div className="mt-8 border-l-2 border-terracotta bg-ink-soft px-5 py-4 text-sm leading-relaxed text-cream/80">
+          <div className="mt-8 border-l-2 border-gold bg-ink-soft px-5 py-4 text-sm leading-relaxed text-cream/80">
             <p className="font-semibold text-cream">
               Aucun compte administrateur
             </p>
             <p className="mt-2">
               Par sécurité, aucun compte n&apos;est créé sans mot de passe
               défini. Ajoutez les variables{" "}
-              <code className="text-brass-soft">ADMIN_EMAIL</code> et{" "}
-              <code className="text-brass-soft">ADMIN_PASSWORD</code> à
+              <code className="text-gold-soft">ADMIN_EMAIL</code> et{" "}
+              <code className="text-gold-soft">ADMIN_PASSWORD</code> à
               l&apos;hébergement, puis redéployez : le compte sera créé au
               démarrage suivant.
             </p>

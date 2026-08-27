@@ -285,7 +285,7 @@ export function BookingFlow({
                     state === "current"
                       ? "border-ink bg-ink text-cream"
                       : state === "done"
-                        ? "border-terracotta bg-terracotta text-cream"
+                        ? "border-gold bg-gold text-cream"
                         : "border-ink/20"
                   }`}
                 >
@@ -625,7 +625,7 @@ export function BookingFlow({
       {/* --------------------------------------------------- 5 confirmation */}
       {step === "done" && result && service && date && slot !== null && (
         <section className="mt-12 max-w-xl">
-          <div className="flex h-14 w-14 items-center justify-center rounded-full bg-terracotta text-2xl text-cream">
+          <div className="flex h-14 w-14 items-center justify-center rounded-full bg-gold text-2xl text-cream">
             ✓
           </div>
           <h2 className="display mt-6 text-3xl uppercase">C&apos;est noté</h2>
@@ -709,7 +709,7 @@ function Field({
     <label className="block">
       <span className="eyebrow text-mute">
         {label}
-        {required && <span className="ml-1 text-terracotta">*</span>}
+        {required && <span className="ml-1 text-gold">*</span>}
       </span>
       <input
         type={type}

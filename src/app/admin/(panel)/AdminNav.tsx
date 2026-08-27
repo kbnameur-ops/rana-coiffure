@@ -28,7 +28,7 @@ export function AdminNav() {
                 href={t.href}
                 className={`block whitespace-nowrap border-b-2 px-4 py-3 text-sm transition-colors ${
                   active
-                    ? "border-terracotta text-cream"
+                    ? "border-gold text-cream"
                     : "border-transparent text-cream/60 hover:text-cream"
                 }`}
               >

@@ -1,12 +1,12 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" width="1600" height="900" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Motif d'ondulations">
   <defs>
     <linearGradient id="m-fil" x1="0" y1="0" x2="1" y2="0">
-      <stop offset="0" stop-color="#9a7b3f" stop-opacity="0"/>
-      <stop offset="0.5" stop-color="#e3c47c" stop-opacity="0.75"/>
-      <stop offset="1" stop-color="#9a7b3f" stop-opacity="0"/>
+      <stop offset="0" stop-color="#8a6a26" stop-opacity="0"/>
+      <stop offset="0.5" stop-color="#d9ba72" stop-opacity="0.75"/>
+      <stop offset="1" stop-color="#8a6a26" stop-opacity="0"/>
     </linearGradient>
   </defs>
-  <rect width="1600" height="900" fill="#33141f"/>
+  <rect width="1600" height="900" fill="#1f2e4a"/>
   <g fill="none" stroke="url(#m-fil)" stroke-width="1.4" stroke-linecap="round">
     <path d="M-40 140 C 300 60, 500 220, 800 140 C 1100 60, 1300 220, 1640 140"/>
     <path d="M-40 260 C 300 180, 500 340, 800 260 C 1100 180, 1300 340, 1640 260"/>

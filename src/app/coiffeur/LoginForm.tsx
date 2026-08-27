@@ -20,7 +20,7 @@ export function LoginForm({
           name="staff_id"
           required
           defaultValue=""
-          className="mt-2 w-full border border-ink-line bg-ink-soft px-4 py-3.5 text-cream outline-none transition-colors focus:border-terracotta-soft"
+          className="mt-2 w-full border border-ink-line bg-ink-soft px-4 py-3.5 text-cream outline-none transition-colors focus:border-gold-soft"
         >
           <option value="" disabled>
             Choisir…
@@ -41,7 +41,7 @@ export function LoginForm({
           required
           autoComplete="one-time-code"
           spellCheck={false}
-          className="mt-2 w-full border border-ink-line bg-ink-soft px-4 py-3.5 text-lg uppercase tracking-[0.3em] text-cream outline-none transition-colors focus:border-terracotta-soft"
+          className="mt-2 w-full border border-ink-line bg-ink-soft px-4 py-3.5 text-lg uppercase tracking-[0.3em] text-cream outline-none transition-colors focus:border-gold-soft"
         />
       </label>
 
@@ -57,7 +57,7 @@ export function LoginForm({
       <button
         type="submit"
         disabled={pending}
-        className="w-full bg-terracotta px-6 py-3.5 text-xs font-semibold uppercase tracking-[0.2em] text-cream transition-colors hover:bg-ink disabled:opacity-60"
+        className="w-full bg-gold px-6 py-3.5 text-xs font-semibold uppercase tracking-[0.2em] text-cream transition-colors hover:bg-ink disabled:opacity-60"
       >
         {pending ? "Vérification…" : "Entrer"}
       </button>

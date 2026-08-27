@@ -1,8 +1,8 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 625" width="1000" height="625" preserveAspectRatio="xMidYMid slice" role="img" aria-label="La devanture du salon au trait">
   <defs>
     <linearGradient id="d-ciel" x1="0" y1="0" x2="0.3" y2="1">
-      <stop offset="0" stop-color="#fdfaf8"/>
-      <stop offset="1" stop-color="#f6e7e0"/>
+      <stop offset="0" stop-color="#fdfaf6"/>
+      <stop offset="1" stop-color="#f4e6e1"/>
     </linearGradient>
     <radialGradient id="d-jour" cx="0.5" cy="0.35" r="0.55">
       <stop offset="0" stop-color="#ffffff" stop-opacity="0.85"/>
@@ -10,7 +10,7 @@
     </radialGradient>
     <linearGradient id="d-vitre" x1="0.1" y1="0" x2="0.8" y2="1">
       <stop offset="0" stop-color="#ffffff"/>
-      <stop offset="1" stop-color="#f2e2de"/>
+      <stop offset="1" stop-color="#f2e6d8"/>
     </linearGradient>
   </defs>
 
@@ -18,54 +18,54 @@
   <rect width="1000" height="625" fill="url(#d-jour)"/>
 
   <!-- Façade -->
-  <rect x="130" y="86" width="740" height="474" fill="#fffdfa" stroke="#e8dcd2" stroke-width="2"/>
+  <rect x="130" y="86" width="740" height="474" fill="#fffdfa" stroke="#e8dcd0" stroke-width="2"/>
 
   <!-- Enseigne espresso : le seul aplat sombre, comme sur la vraie rue. -->
-  <rect x="130" y="86" width="740" height="88" fill="#33141f"/>
+  <rect x="130" y="86" width="740" height="88" fill="#1f2e4a"/>
   <text x="500" y="134" text-anchor="middle"
         font-family="Cormorant Garamond, Cormorant, Garamond, Georgia, 'Times New Roman', serif"
-        font-size="46" font-style="italic" font-weight="500" letter-spacing="3" fill="#e3c47c">Rana</text>
+        font-size="46" font-style="italic" font-weight="500" letter-spacing="3" fill="#d9ba72">Rana</text>
   <text x="500" y="160" text-anchor="middle"
         font-family="Helvetica Neue, Helvetica, Arial, sans-serif"
-        font-size="13" font-weight="500" letter-spacing="12" fill="#d08a72">COIFFURE</text>
+        font-size="13" font-weight="500" letter-spacing="12" fill="#d9ba72">COIFFURE</text>
 
   <!-- Store rayé, terre cuite et crème. -->
-  <path d="M130 174 h740 l-28 54 H158 z" fill="#fffdfa" stroke="#e8dcd2" stroke-width="1.6"/>
+  <path d="M130 174 h740 l-28 54 H158 z" fill="#fffdfa" stroke="#e8dcd0" stroke-width="1.6"/>
   <g>
-    <path d="M158 174 h82 l-14 54 h-82 z" fill="#a4553f" fill-opacity="0.88"/>
-    <path d="M270 174 h82 l-14 54 h-82 z" fill="#a4553f" fill-opacity="0.88"/>
-    <path d="M382 174 h82 l-14 54 h-82 z" fill="#a4553f" fill-opacity="0.88"/>
-    <path d="M494 174 h82 l-14 54 h-82 z" fill="#a4553f" fill-opacity="0.88"/>
-    <path d="M606 174 h82 l-14 54 h-82 z" fill="#a4553f" fill-opacity="0.88"/>
-    <path d="M718 174 h82 l-14 54 h-82 z" fill="#a4553f" fill-opacity="0.88"/>
+    <path d="M158 174 h82 l-14 54 h-82 z" fill="#8a6a26" fill-opacity="0.88"/>
+    <path d="M270 174 h82 l-14 54 h-82 z" fill="#8a6a26" fill-opacity="0.88"/>
+    <path d="M382 174 h82 l-14 54 h-82 z" fill="#8a6a26" fill-opacity="0.88"/>
+    <path d="M494 174 h82 l-14 54 h-82 z" fill="#8a6a26" fill-opacity="0.88"/>
+    <path d="M606 174 h82 l-14 54 h-82 z" fill="#8a6a26" fill-opacity="0.88"/>
+    <path d="M718 174 h82 l-14 54 h-82 z" fill="#8a6a26" fill-opacity="0.88"/>
   </g>
 
   <!-- Vitrines en arche et porte. -->
-  <path d="M180 522 V346 a92 92 0 0 1 184 0 V522 z" fill="url(#d-vitre)" stroke="#9a7b3f" stroke-width="2"/>
-  <path d="M636 522 V346 a92 92 0 0 1 184 0 V522 z" fill="url(#d-vitre)" stroke="#9a7b3f" stroke-width="2"/>
-  <path d="M448 522 V320 a52 52 0 0 1 104 0 V522 z" fill="url(#d-vitre)" stroke="#33141f" stroke-width="2.4"/>
-  <circle cx="536" cy="430" r="5" fill="#9a7b3f"/>
+  <path d="M180 522 V346 a92 92 0 0 1 184 0 V522 z" fill="url(#d-vitre)" stroke="#8a6a26" stroke-width="2"/>
+  <path d="M636 522 V346 a92 92 0 0 1 184 0 V522 z" fill="url(#d-vitre)" stroke="#8a6a26" stroke-width="2"/>
+  <path d="M448 522 V320 a52 52 0 0 1 104 0 V522 z" fill="url(#d-vitre)" stroke="#1f2e4a" stroke-width="2.4"/>
+  <circle cx="536" cy="430" r="5" fill="#8a6a26"/>
 
   <!-- Reflets et silhouettes derrière la vitre. -->
   <g fill="none" stroke="#ffffff" stroke-opacity="0.9" stroke-width="8" stroke-linecap="round">
     <path d="M214 470 C 250 404, 232 356, 272 320"/>
     <path d="M670 470 C 706 404, 688 356, 728 320"/>
   </g>
-  <g fill="#a4553f" fill-opacity="0.75">
+  <g fill="#8a6a26" fill-opacity="0.75">
     <path d="M232 522 V470 a30 30 0 0 1 60 0 V522 z"/>
     <path d="M694 522 V470 a30 30 0 0 1 60 0 V522 z"/>
   </g>
-  <g fill="none" stroke="#9a7b3f" stroke-width="1.8" stroke-opacity="0.8">
+  <g fill="none" stroke="#8a6a26" stroke-width="1.8" stroke-opacity="0.8">
     <path d="M304 468 V404 a26 26 0 0 1 52 0 V468 z"/>
     <path d="M766 468 V404 a26 26 0 0 1 52 0 V468 z"/>
   </g>
 
   <!-- Bacs à plantes. -->
-  <g fill="#33141f" fill-opacity="0.82">
+  <g fill="#1f2e4a" fill-opacity="0.82">
     <path d="M196 522 h64 l-8 38 h-48 z"/>
     <path d="M744 522 h64 l-8 38 h-48 z"/>
   </g>
-  <g fill="#5e6e5b" fill-opacity="0.85">
+  <g fill="#4f6f66" fill-opacity="0.85">
     <ellipse cx="212" cy="512" rx="14" ry="9" transform="rotate(-30 212 512)"/>
     <ellipse cx="236" cy="502" rx="13" ry="8" transform="rotate(12 236 502)"/>
     <ellipse cx="256" cy="514" rx="11" ry="7" transform="rotate(38 256 514)"/>
@@ -74,6 +74,6 @@
     <ellipse cx="804" cy="514" rx="11" ry="7" transform="rotate(38 804 514)"/>
   </g>
 
-  <path d="M0 560 h1000" stroke="#e8dcd2" stroke-width="3"/>
-  <path d="M0 588 h1000" stroke="#e8dcd2" stroke-width="1.5"/>
+  <path d="M0 560 h1000" stroke="#e8dcd0" stroke-width="3"/>
+  <path d="M0 588 h1000" stroke="#e8dcd0" stroke-width="1.5"/>
 </svg>

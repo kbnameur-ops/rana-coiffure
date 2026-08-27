@@ -46,11 +46,11 @@ export default async function EspacePage({
   if (!client) {
     return (
       <Shell settings={settings}>
-        <p className="eyebrow text-terracotta">Espace client</p>
+        <p className="eyebrow text-gold">Espace client</p>
         <h1 className="display mt-4 text-[clamp(2rem,6vw,3rem)] uppercase">
           Vos rendez-vous
         </h1>
-        <span className="rule-grow mt-6 block h-0.5 w-24 bg-terracotta" />
+        <span className="rule-grow mt-6 block h-0.5 w-24 bg-gold" />
 
         {efface && (
           <p className="mt-7 border-l-2 border-emerald-600 bg-emerald-50 px-4 py-3 text-sm text-emerald-900">
@@ -106,7 +106,7 @@ export default async function EspacePage({
     <Shell settings={settings}>
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <p className="eyebrow text-terracotta">Espace client</p>
+          <p className="eyebrow text-gold">Espace client</p>
           <h1 className="display mt-4 text-[clamp(2rem,6vw,3rem)] uppercase">
             Bonjour {client.name.split(" ")[0] || "à vous"}
           </h1>
@@ -120,7 +120,7 @@ export default async function EspacePage({
           </button>
         </form>
       </div>
-      <span className="rule-grow mt-6 block h-0.5 w-24 bg-terracotta" />
+      <span className="rule-grow mt-6 block h-0.5 w-24 bg-gold" />
 
       {/* ------------------------------------------------ prochain rendez-vous */}
       <section className="mt-12">

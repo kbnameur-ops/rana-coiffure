@@ -24,8 +24,8 @@ export default async function ReinitialisationPage({
   return (
     <main className="flex min-h-screen items-center justify-center bg-ink px-5 py-16">
       <div className="w-full max-w-sm">
-        <LogoBar shopName={settings.shop_name} className="h-14 w-auto" />
-        <p className="eyebrow mt-7 text-brass-soft">Espace salon</p>
+        <LogoBar shopName={settings.shop_name} tone="clair" className="h-14 w-auto" />
+        <p className="eyebrow mt-7 text-gold-soft">Espace salon</p>
         <h1 className="display mt-3 text-3xl uppercase text-cream">
           {valide ? "Nouveau mot de passe" : "Lien expiré"}
         </h1>
@@ -40,7 +40,7 @@ export default async function ReinitialisationPage({
             </p>
             <Link
               href="/admin/mot-de-passe-oublie"
-              className="mt-7 inline-block bg-terracotta px-6 py-3.5 text-xs font-semibold uppercase tracking-[0.18em] text-cream transition-colors hover:bg-ink"
+              className="mt-7 inline-block bg-gold px-6 py-3.5 text-xs font-semibold uppercase tracking-[0.18em] text-cream transition-colors hover:bg-ink"
             >
               Demander un lien
             </Link>

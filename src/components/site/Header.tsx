@@ -45,8 +45,8 @@ export function Header({
       (hasTeam || l.href !== "/#equipe") && (hasReviews || l.href !== "/#avis"),
   );
 
-  // Le site est clair de bout en bout : c'est la déclinaison espresso du
-  // verrou qui sert ici, l'or étant réservé aux fonds sombres.
+  // Le site est clair de bout en bout : le verrou marine et or s'y pose tel
+  // quel, sans déclinaison.
   return (
     <header
       className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ${
@@ -59,9 +59,8 @@ export function Header({
         <Link href="/" aria-label={`${shopName}, accueil`}>
           <LogoBar
             shopName={shopName}
-            tone="ink"
             priority
-            className="h-11 w-auto transition-transform duration-500 hover:-translate-y-0.5 sm:h-12"
+            className="h-12 w-auto transition-transform duration-500 hover:-translate-y-0.5 sm:h-14"
           />
         </Link>
 
@@ -73,7 +72,7 @@ export function Header({
               className="group relative text-sm text-mute transition-colors hover:text-ink"
             >
               {l.label}
-              <span className="absolute -bottom-1 left-0 h-px w-0 bg-terracotta transition-all duration-400 group-hover:w-full" />
+              <span className="absolute -bottom-1 left-0 h-px w-0 bg-gold transition-all duration-400 group-hover:w-full" />
             </a>
           ))}
         </nav>
@@ -82,7 +81,7 @@ export function Header({
           {hasClientSpace && (
             <Link
               href="/espace"
-              className="hidden text-sm text-mute transition-colors hover:text-terracotta xl:block"
+              className="hidden text-sm text-mute transition-colors hover:text-gold xl:block"
             >
               Mon espace
             </Link>
@@ -137,7 +136,7 @@ export function Header({
           )}
           <a
             href={`tel:${phone.replace(/\s/g, "")}`}
-            className="block py-4 font-medium text-terracotta"
+            className="block py-4 font-medium text-gold"
           >
             {phone}
           </a>

@@ -189,7 +189,7 @@ function Text({
     <label className="block">
       <span className="eyebrow text-mute">
         {label}
-        {required && <span className="ml-1 text-terracotta">*</span>}
+        {required && <span className="ml-1 text-gold">*</span>}
       </span>
       <input
         name={name}

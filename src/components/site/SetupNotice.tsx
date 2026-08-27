@@ -6,7 +6,7 @@ export function SetupNotice() {
   return (
     <main className="flex min-h-screen items-center justify-center bg-ink px-5 py-16">
       <div className="w-full max-w-xl">
-        <p className="eyebrow text-terracotta">Dernière étape</p>
+        <p className="eyebrow text-gold">Dernière étape</p>
         <h1 className="display mt-4 text-[clamp(2rem,6vw,3rem)] uppercase text-cream">
           Base de données à rattacher
         </h1>
@@ -31,7 +31,7 @@ export function SetupNotice() {
             ],
           ].map(([title, text], i) => (
             <li key={title} className="flex gap-5">
-              <span className="display flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-terracotta text-cream">
+              <span className="display flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gold text-cream">
                 {i + 1}
               </span>
               <div>

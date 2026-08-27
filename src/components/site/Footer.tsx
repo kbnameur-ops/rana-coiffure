@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { LogoFull } from "./Logo";
+import { LogoBar } from "./Logo";
 import type { Settings } from "@/lib/types";
 
 export function Footer({ settings }: { settings: Settings }) {
@@ -9,7 +9,7 @@ export function Footer({ settings }: { settings: Settings }) {
     <footer className="bg-ink text-cream/75">
       <div className="mx-auto grid max-w-6xl gap-12 px-5 py-16 sm:px-8 md:grid-cols-[1.3fr_1fr_1fr]">
         <div>
-          <LogoFull shopName={settings.shop_name} className="h-auto w-48" />
+          <LogoBar shopName={settings.shop_name} tone="clair" className="h-auto w-56" />
           <p className="mt-6 max-w-xs text-sm leading-relaxed text-cream/55">
             Salon de coiffure dames, {settings.postal_code} {settings.city}. Coupe,
             couleur, balayage, lissage, chignon et soins.
@@ -17,7 +17,7 @@ export function Footer({ settings }: { settings: Settings }) {
         </div>
 
         <div className="text-sm">
-          <p className="eyebrow text-brass-soft">Le salon</p>
+          <p className="eyebrow text-gold-soft">Le salon</p>
           <address className="mt-4 not-italic leading-relaxed">
             {settings.address}
             <br />
@@ -25,14 +25,14 @@ export function Footer({ settings }: { settings: Settings }) {
           </address>
           <a
             href={`tel:${settings.phone.replace(/\s/g, "")}`}
-            className="mt-4 block lining-nums tabular-nums transition-colors hover:text-brass-soft"
+            className="mt-4 block lining-nums tabular-nums transition-colors hover:text-gold-soft"
           >
             {settings.phone}
           </a>
           {settings.email && (
             <a
               href={`mailto:${settings.email}`}
-              className="block transition-colors hover:text-brass-soft"
+              className="block transition-colors hover:text-gold-soft"
             >
               {settings.email}
             </a>
@@ -42,7 +42,7 @@ export function Footer({ settings }: { settings: Settings }) {
               href={settings.instagram}
               target="_blank"
               rel="noreferrer noopener"
-              className="mt-4 inline-block transition-colors hover:text-brass-soft"
+              className="mt-4 inline-block transition-colors hover:text-gold-soft"
             >
               Instagram ↗
             </a>
@@ -50,10 +50,10 @@ export function Footer({ settings }: { settings: Settings }) {
         </div>
 
         <div className="text-sm">
-          <p className="eyebrow text-brass-soft">Rendez-vous</p>
+          <p className="eyebrow text-gold-soft">Rendez-vous</p>
           <Link
             href="/reservation"
-            className="mt-4 inline-block border border-cream/25 px-6 py-3 text-xs font-semibold uppercase tracking-[0.18em] text-cream transition-all duration-400 hover:-translate-y-0.5 hover:border-brass-soft hover:text-brass-soft"
+            className="mt-4 inline-block border border-cream/25 px-6 py-3 text-xs font-semibold uppercase tracking-[0.18em] text-cream transition-all duration-400 hover:-translate-y-0.5 hover:border-gold-soft hover:text-gold-soft"
           >
             Réserver en ligne
           </Link>

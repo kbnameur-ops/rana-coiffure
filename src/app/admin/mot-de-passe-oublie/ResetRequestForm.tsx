@@ -20,7 +20,7 @@ export function ResetRequestForm() {
           name="email"
           required
           autoComplete="username"
-          className="mt-2 w-full border border-ink-line bg-ink-soft px-4 py-3 text-cream outline-none transition-colors focus:border-terracotta-soft"
+          className="mt-2 w-full border border-ink-line bg-ink-soft px-4 py-3 text-cream outline-none transition-colors focus:border-gold-soft"
         />
       </label>
 
@@ -40,7 +40,7 @@ export function ResetRequestForm() {
       <button
         type="submit"
         disabled={pending}
-        className="w-full bg-terracotta px-6 py-3.5 text-xs font-semibold uppercase tracking-[0.2em] text-cream transition-colors hover:bg-ink disabled:opacity-60"
+        className="w-full bg-gold px-6 py-3.5 text-xs font-semibold uppercase tracking-[0.2em] text-cream transition-colors hover:bg-ink disabled:opacity-60"
       >
         {pending ? "Envoi…" : "Recevoir un lien"}
       </button>

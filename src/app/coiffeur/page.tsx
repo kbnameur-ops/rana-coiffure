@@ -26,7 +26,7 @@ const STATUS: Record<string, { label: string; className: string }> = {
   confirmed: { label: "À venir", className: "bg-ink text-cream" },
   done: { label: "Honorée", className: "bg-emerald-100 text-emerald-800" },
   no_show: { label: "Manquée", className: "bg-red-100 text-red-800" },
-  pending: { label: "À valider", className: "bg-terracotta/20 text-terracotta" },
+  pending: { label: "À valider", className: "bg-gold/20 text-gold" },
 };
 
 export default async function CoiffeurPage({
@@ -43,8 +43,8 @@ export default async function CoiffeurPage({
     return (
       <main className="flex min-h-screen items-center justify-center bg-ink px-5 py-16">
         <div className="w-full max-w-sm">
-          <LogoBar shopName={settings.shop_name} className="h-14 w-auto" />
-          <p className="eyebrow mt-7 text-brass-soft">Espace coiffeur</p>
+          <LogoBar shopName={settings.shop_name} tone="clair" className="h-14 w-auto" />
+          <p className="eyebrow mt-7 text-gold-soft">Espace coiffeur</p>
           <h1 className="display mt-3 text-3xl uppercase text-cream">
             Votre journée
           </h1>
@@ -54,7 +54,7 @@ export default async function CoiffeurPage({
           </p>
 
           {team.length === 0 ? (
-            <p className="mt-8 border-l-2 border-terracotta bg-ink-soft px-5 py-4 text-sm text-cream/80">
+            <p className="mt-8 border-l-2 border-gold bg-ink-soft px-5 py-4 text-sm text-cream/80">
               Aucun coiffeur n&apos;est encore enregistré dans le salon.
             </p>
           ) : (
@@ -99,16 +99,16 @@ export default async function CoiffeurPage({
       <header className="bg-ink">
         <div className="mx-auto flex max-w-4xl flex-wrap items-center justify-between gap-4 px-5 py-4 sm:px-8">
           <div className="flex items-center gap-4">
-            <LogoBar shopName={settings.shop_name} className="h-10 w-auto" />
+            <LogoBar shopName={settings.shop_name} tone="clair" className="h-10 w-auto" />
             <div className="border-l border-ink-line pl-4">
-              <p className="eyebrow text-brass-soft">Espace coiffeur</p>
+              <p className="eyebrow text-gold-soft">Espace coiffeur</p>
               <p className="display text-lg uppercase text-cream">{member.name}</p>
             </div>
           </div>
           <form action={logoutStaff}>
             <button
               type="submit"
-              className="border border-ink-line px-4 py-2 text-xs font-semibold uppercase tracking-[0.14em] text-cream transition-colors hover:border-terracotta hover:text-brass-soft"
+              className="border border-ink-line px-4 py-2 text-xs font-semibold uppercase tracking-[0.14em] text-cream transition-colors hover:border-gold hover:text-gold-soft"
             >
               Quitter
             </button>

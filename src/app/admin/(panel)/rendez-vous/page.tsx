@@ -139,7 +139,7 @@ export default async function ListeRendezVousPage({
               <h2 className="display text-lg uppercase">
                 <span className="first-letter:uppercase">{formatDateLong(date)}</span>
                 {date === today && (
-                  <span className="ml-3 bg-terracotta px-2 py-1 text-[0.65rem] tracking-widest text-cream">
+                  <span className="ml-3 bg-gold px-2 py-1 text-[0.65rem] tracking-widest text-cream">
                     Aujourd&apos;hui
                   </span>
                 )}
@@ -177,7 +177,7 @@ export default async function ListeRendezVousPage({
                         {b.ref}
                       </p>
                       {b.notes && (
-                        <p className="mt-2 border-l-2 border-terracotta pl-3 text-sm text-ink/70">
+                        <p className="mt-2 border-l-2 border-gold pl-3 text-sm text-ink/70">
                           {b.notes}
                         </p>
                       )}

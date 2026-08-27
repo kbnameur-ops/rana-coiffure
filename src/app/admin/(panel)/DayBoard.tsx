@@ -8,7 +8,7 @@ const STATUS: Record<string, string> = {
   confirmed: "border-ink/25 bg-white",
   done: "border-emerald-500/40 bg-emerald-50",
   no_show: "border-red-400/50 bg-red-50",
-  pending: "border-terracotta bg-terracotta/12",
+  pending: "border-gold bg-gold/12",
 };
 
 const ETIQUETTE: Record<string, string> = {

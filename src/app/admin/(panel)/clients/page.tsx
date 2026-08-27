@@ -134,7 +134,7 @@ export default async function ClientsPage({
                     <SubmitButton variant="ghost">Enregistrer</SubmitButton>
                   </form>
                   {!client.birthdate && (
-                    <p className="mt-2 text-xs text-terracotta">
+                    <p className="mt-2 text-xs text-gold">
                       Sans date de naissance, ce client ne peut pas ouvrir son
                       espace.
                     </p>
@@ -149,12 +149,12 @@ export default async function ClientsPage({
                     </p>
                     <div className="mt-2 h-1.5 w-full bg-ink/10">
                       <div
-                        className="h-full bg-terracotta"
+                        className="h-full bg-gold"
                         style={{ width: `${(stamps / threshold) * 100}%` }}
                       />
                     </div>
                     {available > 0 && (
-                      <p className="mt-2 text-xs font-semibold text-terracotta">
+                      <p className="mt-2 text-xs font-semibold text-gold">
                         {available} récompense{available > 1 ? "s" : ""} à remettre
                       </p>
                     )}

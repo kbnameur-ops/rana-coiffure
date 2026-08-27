@@ -1,9 +1,9 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" width="800" height="1000" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Le salon au trait : miroirs en arche, coiffeuse, fauteuil et suspension">
   <defs>
     <linearGradient id="i-mur" x1="0.3" y1="0" x2="0.7" y2="1">
-      <stop offset="0" stop-color="#fdfaf8"/>
-      <stop offset="0.5" stop-color="#f7eee6"/>
-      <stop offset="1" stop-color="#efdcd7"/>
+      <stop offset="0" stop-color="#fdfaf6"/>
+      <stop offset="0.5" stop-color="#f7f0e7"/>
+      <stop offset="1" stop-color="#eee2d4"/>
     </linearGradient>
     <radialGradient id="i-jour" cx="0.5" cy="0.2" r="0.55">
       <stop offset="0" stop-color="#ffffff" stop-opacity="0.95"/>
@@ -11,16 +11,16 @@
     </radialGradient>
     <linearGradient id="i-glace" x1="0.2" y1="0" x2="0.8" y2="1">
       <stop offset="0" stop-color="#ffffff"/>
-      <stop offset="0.55" stop-color="#f6e7e3"/>
-      <stop offset="1" stop-color="#e8d1cc"/>
+      <stop offset="0.55" stop-color="#f6ebdf"/>
+      <stop offset="1" stop-color="#e6d8c8"/>
     </linearGradient>
     <linearGradient id="i-siege" x1="0.1" y1="0" x2="0.6" y2="1">
-      <stop offset="0" stop-color="#c47a62"/>
-      <stop offset="1" stop-color="#9c4e39"/>
+      <stop offset="0" stop-color="#3d5178"/>
+      <stop offset="1" stop-color="#1f2e4a"/>
     </linearGradient>
     <linearGradient id="i-sol" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#eadad4"/>
-      <stop offset="1" stop-color="#e2cec8"/>
+      <stop offset="0" stop-color="#eadfd0"/>
+      <stop offset="1" stop-color="#e1d3c2"/>
     </linearGradient>
   </defs>
 
@@ -29,37 +29,37 @@
 
   <!-- Sol -->
   <rect y="880" width="800" height="120" fill="url(#i-sol)"/>
-  <path d="M0 880 h800" stroke="#c9a89f" stroke-width="1.6"/>
+  <path d="M0 880 h800" stroke="#c7b49b" stroke-width="1.6"/>
 
   <!-- Suspension : elle occupe le haut de l'arche. -->
-  <g stroke="#9a7b3f" stroke-width="1.8" fill="none">
+  <g stroke="#8a6a26" stroke-width="1.8" fill="none">
     <path d="M400 60 V196"/>
   </g>
-  <path d="M340 244 a60 48 0 0 1 120 0 z" fill="#f3e1dc" stroke="#9a7b3f" stroke-width="2"/>
-  <ellipse cx="400" cy="244" rx="60" ry="8" fill="#e3c47c" fill-opacity="0.7"/>
-  <ellipse cx="400" cy="286" rx="86" ry="34" fill="#f5e3b0" fill-opacity="0.28"/>
+  <path d="M340 244 a60 48 0 0 1 120 0 z" fill="#f3e7d8" stroke="#8a6a26" stroke-width="2"/>
+  <ellipse cx="400" cy="244" rx="60" ry="8" fill="#d9ba72" fill-opacity="0.7"/>
+  <ellipse cx="400" cy="286" rx="86" ry="34" fill="#f0dfae" fill-opacity="0.28"/>
 
   <!-- Deux miroirs en arche : le motif qui revient partout sur le site. -->
-  <path d="M148 654 V392 a106 106 0 0 1 212 0 V654 z" fill="url(#i-glace)" stroke="#9a7b3f" stroke-width="2.6"/>
-  <path d="M440 654 V360 a120 120 0 0 1 240 0 V654 z" fill="url(#i-glace)" stroke="#9a7b3f" stroke-width="2.6"/>
+  <path d="M148 654 V392 a106 106 0 0 1 212 0 V654 z" fill="url(#i-glace)" stroke="#8a6a26" stroke-width="2.6"/>
+  <path d="M440 654 V360 a120 120 0 0 1 240 0 V654 z" fill="url(#i-glace)" stroke="#8a6a26" stroke-width="2.6"/>
   <g fill="none" stroke="#ffffff" stroke-width="9" stroke-linecap="round" stroke-opacity="0.9">
     <path d="M196 612 C 234 528, 214 448, 258 396"/>
     <path d="M490 612 C 534 516, 508 424, 562 364"/>
   </g>
-  <g fill="none" stroke="#c9a89f" stroke-width="1.4" stroke-opacity="0.7">
+  <g fill="none" stroke="#c7b49b" stroke-width="1.4" stroke-opacity="0.7">
     <path d="M148 470 h212"/>
     <path d="M440 440 h240"/>
   </g>
 
   <!-- Coiffeuse et flacons. -->
-  <rect x="96" y="654" width="608" height="16" rx="4" fill="#e6d1cd" stroke="#9a7b3f" stroke-width="1.8"/>
-  <g stroke="#a4553f" stroke-width="1.8" fill="#ffffff">
+  <rect x="96" y="654" width="608" height="16" rx="4" fill="#e6d7c6" stroke="#8a6a26" stroke-width="1.8"/>
+  <g stroke="#8a6a26" stroke-width="1.8" fill="#ffffff">
     <rect x="180" y="602" width="28" height="52" rx="7"/>
     <rect x="222" y="618" width="20" height="36" rx="5"/>
     <rect x="576" y="596" width="26" height="58" rx="7"/>
     <rect x="612" y="620" width="19" height="34" rx="5"/>
   </g>
-  <g fill="#5e6e5b">
+  <g fill="#4f6f66">
     <rect x="180" y="602" width="28" height="9" rx="4.5"/>
     <rect x="576" y="596" width="26" height="9" rx="4.5"/>
   </g>
@@ -67,19 +67,19 @@
   <!-- Fauteuil de coiffage. -->
   <path d="M296 806 h208 V782 a72 72 0 0 0 -72 -72 h-64 a72 72 0 0 0 -72 72 z" fill="url(#i-siege)"/>
   <rect x="292" y="806" width="216" height="60" rx="9" fill="url(#i-siege)"/>
-  <path d="M292 806 h216" stroke="#7d3d2c" stroke-width="2" stroke-opacity="0.5"/>
-  <g fill="none" stroke="#5c2c3d" stroke-width="3" stroke-linecap="round">
+  <path d="M292 806 h216" stroke="#16223a" stroke-width="2" stroke-opacity="0.5"/>
+  <g fill="none" stroke="#3d5178" stroke-width="3" stroke-linecap="round">
     <path d="M400 866 V930"/>
     <path d="M348 942 h104"/>
   </g>
 
   <!-- Un feuillage, pour la fraîcheur. -->
-  <g fill="none" stroke="#5e6e5b" stroke-width="2.4" stroke-linecap="round">
+  <g fill="none" stroke="#4f6f66" stroke-width="2.4" stroke-linecap="round">
     <path d="M706 880 C 698 806, 712 748, 698 692"/>
     <path d="M702 790 C 734 778, 750 752, 748 724"/>
     <path d="M706 742 C 676 730, 662 704, 664 678"/>
   </g>
-  <g fill="#8b9a86">
+  <g fill="#8ba79c">
     <ellipse cx="696" cy="684" rx="17" ry="11" transform="rotate(-28 696 684)"/>
     <ellipse cx="750" cy="718" rx="15" ry="9.5" transform="rotate(24 750 718)"/>
     <ellipse cx="662" cy="674" rx="13" ry="9" transform="rotate(-42 662 674)"/>
