@@ -31,35 +31,40 @@ export function ServiceTabs({ categories }: { categories: TabCategory[] }) {
 
   return (
     <div>
-      <div className="-mx-5 overflow-x-auto px-5 sm:mx-0 sm:px-0">
-        <div
-          role="tablist"
-          aria-label="Catégories de prestations"
-          className="inline-flex min-w-full gap-1 border-b border-line"
-        >
-          {categories.map((category, i) => {
-            const selected = i === active;
-            return (
-              <button
-                key={category.id}
-                role="tab"
-                aria-selected={selected}
-                type="button"
-                onClick={() => setActive(i)}
-                className={`relative whitespace-nowrap px-5 py-4 text-sm font-medium uppercase tracking-[0.12em] transition-colors ${
-                  selected ? "text-ink" : "text-mute hover:text-ink"
+      {/* Les familles s'enroulent sur plusieurs lignes plutôt que de défiler :
+          une liste qui déborde laisse croire que la carte s'arrête à la
+          première famille. Le compte, lui, montre qu'il y a partout à voir. */}
+      <div
+        role="tablist"
+        aria-label="Catégories de prestations"
+        className="flex flex-wrap gap-2.5"
+      >
+        {categories.map((category, i) => {
+          const selected = i === active;
+          return (
+            <button
+              key={category.id}
+              role="tab"
+              aria-selected={selected}
+              type="button"
+              onClick={() => setActive(i)}
+              className={`group flex items-center gap-2.5 rounded-full border px-5 py-2.5 text-sm transition-all duration-400 ${
+                selected
+                  ? "border-ink bg-ink text-cream shadow-lg shadow-ink/15"
+                  : "border-line bg-white text-ink/75 hover:-translate-y-0.5 hover:border-gold hover:text-ink hover:shadow-md hover:shadow-ink/5"
+              }`}
+            >
+              <span className="font-medium">{category.name}</span>
+              <span
+                className={`text-xs lining-nums tabular-nums transition-colors ${
+                  selected ? "text-gold-soft" : "text-mute group-hover:text-gold"
                 }`}
               >
-                {category.name}
-                <span
-                  className={`absolute inset-x-0 -bottom-px h-0.5 origin-left bg-gold transition-transform duration-500 ${
-                    selected ? "scale-x-100" : "scale-x-0"
-                  }`}
-                />
-              </button>
-            );
-          })}
-        </div>
+                {category.services.length}
+              </span>
+            </button>
+          );
+        })}
       </div>
 
       {/* Le bandeau change avec l'onglet : `key` le remonte, donc il rejoue. */}
@@ -80,10 +85,6 @@ export function ServiceTabs({ categories }: { categories: TabCategory[] }) {
           <figcaption className="absolute bottom-0 left-0 p-6 sm:p-9">
             <span className="display block text-[clamp(1.5rem,3.4vw,2.5rem)] uppercase leading-none text-cream">
               {current.name}
-            </span>
-            <span className="mt-2 block text-xs uppercase tracking-[0.18em] text-cream/70 lining-nums tabular-nums">
-              {current.services.length} prestation
-              {current.services.length > 1 ? "s" : ""}
             </span>
           </figcaption>
         </figure>
