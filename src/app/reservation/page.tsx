@@ -15,6 +15,7 @@ import {
   settingInt,
 } from "@/lib/queries";
 import { getAvailabilityRange } from "@/lib/availability";
+import { getCurrentClient } from "@/lib/client-session";
 import { todayISO } from "@/lib/time";
 
 export const dynamic = "force-dynamic";
@@ -31,12 +32,26 @@ export default async function ReservationPage({
   searchParams: Promise<{ prestation?: string }>;
 }) {
   const params = await searchParams;
-  const [settings, catalogue, team, skills] = await Promise.all([
+  const [settings, catalogue, team, skills, current] = await Promise.all([
     getSettings(),
     getCatalogue(true),
     getStaff(true),
     getStaffSkills(),
+    getCurrentClient(),
   ]);
+
+  // L'espace client peut être coupé depuis l'espace salon : le tunnel ne
+  // propose alors pas de connexion et demande les coordonnées, comme avant.
+  const clientSpace = settings.client_space_enabled !== "0";
+  const identified =
+    clientSpace && current
+      ? {
+          name: current.name,
+          phone: current.phone,
+          email: current.email,
+          birthdate: current.birthdate,
+        }
+      : null;
 
   const staff: BookingStaff[] = team.map((member) => ({
     id: member.id,
@@ -86,7 +101,7 @@ export default async function ReservationPage({
         phone={settings.phone}
         hasTeam={staff.length > 0}
         hasReviews={false}
-        hasClientSpace={settings.client_space_enabled !== "0"}
+        hasClientSpace={clientSpace}
       />
 
       <main className="bg-porcelain pt-28 pb-24 sm:pt-32">
@@ -123,6 +138,8 @@ export default async function ReservationPage({
                 maxAdvanceDays={settingInt(settings, "max_advance_days", 45)}
                 initialServiceIds={initialServiceIds}
                 initialDays={initialDays}
+                clientSpace={clientSpace}
+                identified={identified}
               />
             )}
           </div>

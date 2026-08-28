@@ -30,6 +30,13 @@ export type BookingStaff = {
   serviceIds: number[];
 };
 
+export type ClientIdentity = {
+  name: string;
+  phone: string;
+  email: string;
+  birthdate: string;
+};
+
 export type DayAvailability = {
   date: string;
   open: boolean;
@@ -38,6 +45,9 @@ export type DayAvailability = {
 };
 
 type StepId = "service" | "staff" | "slot" | "contact" | "done";
+
+/** Sur l'étape « coordonnées » : le choix, la connexion, ou la saisie. */
+type ContactMode = "choix" | "connexion" | "saisie";
 
 const LABELS: Record<StepId, string> = {
   service: "Prestations",
@@ -58,6 +68,8 @@ export function BookingFlow({
   maxAdvanceDays,
   initialServiceIds = [],
   initialDays = [],
+  clientSpace = true,
+  identified = null,
 }: {
   services: BookingService[];
   staff: BookingStaff[];
@@ -67,6 +79,10 @@ export function BookingFlow({
   maxAdvanceDays: number;
   initialServiceIds?: number[];
   initialDays?: DayAvailability[];
+  /** L'espace client est-il ouvert ? Sinon, pas de connexion proposée. */
+  clientSpace?: boolean;
+  /** Cliente déjà connectée à son espace : ses coordonnées sont connues. */
+  identified?: ClientIdentity | null;
 }) {
   const steps: StepId[] = staff.length
     ? ["service", "staff", "slot", "contact", "done"]
@@ -85,12 +101,25 @@ export function BookingFlow({
   const [date, setDate] = useState<string | null>(null);
   const [slot, setSlot] = useState<number | null>(null);
   const [form, setForm] = useState({
-    name: "",
-    phone: "",
-    email: "",
-    birthdate: "",
+    name: identified?.name ?? "",
+    phone: identified?.phone ?? "",
+    email: identified?.email ?? "",
+    birthdate: identified?.birthdate ?? "",
     notes: "",
   });
+
+  /**
+   * L'étape « coordonnées » commence par proposer la connexion : une habituée
+   * retrouve ses informations en deux champs plutôt que de tout ressaisir.
+   * Déjà connectée, elle va droit au formulaire, pré-rempli.
+   */
+  const [contactMode, setContactMode] = useState<ContactMode>(
+    identified || !clientSpace ? "saisie" : "choix",
+  );
+  const [known, setKnown] = useState<ClientIdentity | null>(identified);
+  const [login, setLogin] = useState({ phone: "", birthdate: "" });
+  const [loginError, setLoginError] = useState<string | null>(null);
+  const [loggingIn, setLoggingIn] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<{ ref: string; staffName: string } | null>(
@@ -243,6 +272,51 @@ export function BookingFlow({
     setDate(d);
     setSlot(s);
     goTo("contact");
+  };
+
+  /**
+   * Connexion depuis le tunnel : la session s'ouvre comme sur /espace, et les
+   * coordonnées enregistrées remplissent le formulaire. En cas d'échec, la
+   * saisie manuelle reste à portée de clic — un rendez-vous ne doit jamais
+   * buter sur un problème d'identifiants.
+   */
+  const connect = async (event: React.FormEvent) => {
+    event.preventDefault();
+    setLoggingIn(true);
+    setLoginError(null);
+    try {
+      const res = await fetch("/api/espace/connexion", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(login),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setLoginError(data.error ?? "Connexion impossible.");
+        return;
+      }
+      const identity = data as ClientIdentity;
+      setKnown(identity);
+      setForm((f) => ({
+        ...f,
+        name: identity.name,
+        phone: identity.phone,
+        email: identity.email,
+        birthdate: identity.birthdate,
+      }));
+      setContactMode("saisie");
+    } catch {
+      setLoginError("Connexion impossible. Vérifiez votre réseau et réessayez.");
+    } finally {
+      setLoggingIn(false);
+    }
+  };
+
+  /** Repart d'un formulaire vierge : ce rendez-vous est pour quelqu'un d'autre. */
+  const forgetIdentity = () => {
+    setKnown(null);
+    setForm((f) => ({ ...f, name: "", phone: "", email: "", birthdate: "" }));
+    setContactMode("saisie");
   };
 
   const selectedDay = days.find((d) => d.date === date);
@@ -642,71 +716,212 @@ export function BookingFlow({
       {/* ----------------------------------------------------- 4 coordonnées */}
       {step === "contact" && chosen.length > 0 && date && slot !== null && (
         <section className="mt-10 grid gap-10 lg:grid-cols-[1.2fr_1fr]">
-          <form onSubmit={submit} className="order-2 lg:order-1">
-            <h2 className="display text-2xl uppercase">Vos coordonnées</h2>
-            <p className="mt-2 text-ink/60">
-              Le numéro de téléphone permet au salon de vous joindre en cas
-              d&apos;imprévu.
-            </p>
-
-            <div className="mt-8 space-y-5">
-              <Field
-                label="Nom et prénom"
-                required
-                value={form.name}
-                onChange={(v) => setForm({ ...form, name: v })}
-                autoComplete="name"
-              />
-              <Field
-                label="Téléphone"
-                required
-                type="tel"
-                value={form.phone}
-                onChange={(v) => setForm({ ...form, phone: v })}
-                autoComplete="tel"
-              />
+          <div className="order-2 lg:order-1">
+            {/* Le choix d'entrée : retrouver son espace, ou tout renseigner. */}
+            {contactMode === "choix" && (
               <div>
-                <Field
-                  label="Date de naissance (facultatif)"
-                  type="date"
-                  value={form.birthdate}
-                  onChange={(v) => setForm({ ...form, birthdate: v })}
-                  autoComplete="bday"
-                />
-                <p className="mt-2 text-xs leading-relaxed text-mute">
-                  Avec votre numéro, elle vous ouvre l&apos;espace client :
-                  historique, annulation en ligne et carte de fidélité.
+                <h2 className="display text-2xl uppercase">Déjà venue ?</h2>
+                <p className="mt-2 max-w-lg text-ink/60">
+                  Connectez-vous à votre espace client : vos coordonnées se
+                  remplissent toutes seules, et le rendez-vous rejoint votre
+                  historique.
                 </p>
-              </div>
-              <Field
-                label="E-mail (facultatif)"
-                type="email"
-                value={form.email}
-                onChange={(v) => setForm({ ...form, email: v })}
-                autoComplete="email"
-              />
-              <label className="block">
-                <span className="eyebrow text-mute">Précisions (facultatif)</span>
-                <textarea
-                  rows={3}
-                  maxLength={500}
-                  value={form.notes}
-                  onChange={(e) => setForm({ ...form, notes: e.target.value })}
-                  className="mt-2 w-full border border-ink/20 bg-white px-4 py-3 text-base outline-none transition-colors focus:border-ink"
-                  placeholder="Allergie, remarque…"
-                />
-              </label>
-            </div>
 
-            <button
-              type="submit"
-              disabled={submitting}
-              className="mt-8 w-full bg-ink px-8 py-4 text-xs font-semibold uppercase tracking-[0.2em] text-cream transition-colors hover:bg-ink-soft disabled:opacity-60 sm:w-auto"
-            >
-              {submitting ? "Envoi…" : "Confirmer le rendez-vous"}
-            </button>
-            <p className="mt-4 text-xs leading-relaxed text-mute">{notice}</p>
-          </form>
+                <div className="mt-8 grid gap-3 sm:grid-cols-2">
+                  <button
+                    type="button"
+                    onClick={() => setContactMode("connexion")}
+                    className="flex flex-col items-start border border-ink/12 bg-white p-6 text-left transition-all hover:-translate-y-0.5 hover:border-ink hover:shadow-lg hover:shadow-ink/5"
+                  >
+                    <span className="font-semibold">
+                      Je suis déjà cliente du salon
+                    </span>
+                    <span className="mt-2 grow text-sm leading-relaxed text-ink/60">
+                      Numéro de téléphone et date de naissance. Pas de mot de
+                      passe à retenir.
+                    </span>
+                    <span className="mt-5 text-xs font-semibold uppercase tracking-[0.16em] text-gold">
+                      Me connecter →
+                    </span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => setContactMode("saisie")}
+                    className="flex flex-col items-start border border-ink/12 bg-white p-6 text-left transition-all hover:-translate-y-0.5 hover:border-ink hover:shadow-lg hover:shadow-ink/5"
+                  >
+                    <span className="font-semibold">Première réservation</span>
+                    <span className="mt-2 grow text-sm leading-relaxed text-ink/60">
+                      Vous renseignez vos coordonnées : votre espace se crée
+                      avec le rendez-vous.
+                    </span>
+                    <span className="mt-5 text-xs font-semibold uppercase tracking-[0.16em] text-gold">
+                      Renseigner mes coordonnées →
+                    </span>
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {/* La connexion, sans quitter le tunnel : le créneau reste retenu. */}
+            {contactMode === "connexion" && (
+              <form onSubmit={connect}>
+                <h2 className="display text-2xl uppercase">Votre espace</h2>
+                <p className="mt-2 max-w-lg text-ink/60">
+                  Pas de mot de passe : votre numéro de téléphone et votre date
+                  de naissance suffisent.
+                </p>
+
+                <div className="mt-8 max-w-md space-y-5">
+                  <Field
+                    label="Téléphone"
+                    required
+                    type="tel"
+                    value={login.phone}
+                    onChange={(v) => setLogin({ ...login, phone: v })}
+                    autoComplete="tel"
+                  />
+                  <Field
+                    label="Date de naissance"
+                    required
+                    type="date"
+                    value={login.birthdate}
+                    onChange={(v) => setLogin({ ...login, birthdate: v })}
+                    autoComplete="bday"
+                  />
+                </div>
+
+                {loginError && (
+                  <p
+                    role="alert"
+                    className="mt-5 max-w-lg border-l-2 border-red-600 bg-red-50 px-4 py-3 text-sm leading-relaxed text-red-800"
+                  >
+                    {loginError}
+                  </p>
+                )}
+
+                <div className="mt-8 flex flex-wrap items-center gap-5">
+                  <button
+                    type="submit"
+                    disabled={loggingIn}
+                    className="bg-ink px-8 py-4 text-xs font-semibold uppercase tracking-[0.2em] text-cream transition-colors hover:bg-ink-soft disabled:opacity-60"
+                  >
+                    {loggingIn ? "Vérification…" : "Me connecter"}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setContactMode("saisie")}
+                    className="text-sm text-mute underline transition-colors hover:text-ink"
+                  >
+                    Renseigner mes coordonnées à la place
+                  </button>
+                </div>
+              </form>
+            )}
+
+            {contactMode === "saisie" && (
+            <form onSubmit={submit}>
+              <h2 className="display text-2xl uppercase">Vos coordonnées</h2>
+              {known ? (
+                <div className="mt-4 flex flex-wrap items-center justify-between gap-3 border border-gold/40 bg-cream px-4 py-3">
+                  <p className="text-sm">
+                    Connectée en tant que{" "}
+                    <strong className="font-semibold">
+                      {known.name || known.phone}
+                    </strong>
+                    . Ce rendez-vous rejoindra votre espace.
+                  </p>
+                  <button
+                    type="button"
+                    onClick={forgetIdentity}
+                    className="text-xs font-semibold uppercase tracking-[0.14em] text-mute underline transition-colors hover:text-ink"
+                  >
+                    Ce n&apos;est pas vous ?
+                  </button>
+                </div>
+              ) : (
+                <p className="mt-2 text-ink/60">
+                  Le numéro de téléphone permet au salon de vous joindre en cas
+                  d&apos;imprévu.{" "}
+                  {clientSpace && (
+                    <button
+                      type="button"
+                      onClick={() => setContactMode("connexion")}
+                      className="underline transition-colors hover:text-ink"
+                    >
+                      Déjà cliente ? Connectez-vous.
+                    </button>
+                  )}
+                </p>
+              )}
+
+              <div className="mt-8 space-y-5">
+                <Field
+                  label="Nom et prénom"
+                  required
+                  value={form.name}
+                  onChange={(v) => setForm({ ...form, name: v })}
+                  autoComplete="name"
+                />
+                <Field
+                  label="Téléphone"
+                  required
+                  type="tel"
+                  value={form.phone}
+                  onChange={(v) => setForm({ ...form, phone: v })}
+                  autoComplete="tel"
+                />
+                <div>
+                  <Field
+                    label={
+                      known
+                        ? "Date de naissance"
+                        : "Date de naissance (facultatif)"
+                    }
+                    type="date"
+                    value={form.birthdate}
+                    onChange={(v) => setForm({ ...form, birthdate: v })}
+                    autoComplete="bday"
+                  />
+                  {/* Déjà connectée, elle sait à quoi sert la date. */}
+                  {!known && (
+                    <p className="mt-2 text-xs leading-relaxed text-mute">
+                      Avec votre numéro, elle vous ouvre l&apos;espace client :
+                      historique, annulation en ligne et carte de fidélité.
+                    </p>
+                  )}
+                </div>
+                <Field
+                  label="E-mail (facultatif)"
+                  type="email"
+                  value={form.email}
+                  onChange={(v) => setForm({ ...form, email: v })}
+                  autoComplete="email"
+                />
+                <label className="block">
+                  <span className="eyebrow text-mute">Précisions (facultatif)</span>
+                  <textarea
+                    rows={3}
+                    maxLength={500}
+                    value={form.notes}
+                    onChange={(e) => setForm({ ...form, notes: e.target.value })}
+                    className="mt-2 w-full border border-ink/20 bg-white px-4 py-3 text-base outline-none transition-colors focus:border-ink"
+                    placeholder="Allergie, remarque…"
+                  />
+                </label>
+              </div>
+
+              <button
+                type="submit"
+                disabled={submitting}
+                className="mt-8 w-full bg-ink px-8 py-4 text-xs font-semibold uppercase tracking-[0.2em] text-cream transition-colors hover:bg-ink-soft disabled:opacity-60 sm:w-auto"
+              >
+                {submitting ? "Envoi…" : "Confirmer le rendez-vous"}
+              </button>
+              <p className="mt-4 text-xs leading-relaxed text-mute">{notice}</p>
+            </form>
+            )}
+          </div>
 
           <aside className="order-1 h-fit border border-ink/12 bg-white p-6 lg:order-2">
             <p className="eyebrow text-mute">Récapitulatif</p>
@@ -795,6 +1010,19 @@ export function BookingFlow({
             en précisant votre référence.
           </p>
 
+          {/* Une date de naissance donnée ouvre l'espace : autant y mener. */}
+          {clientSpace && (known || form.birthdate) && (
+            <p className="mt-6 border border-gold/40 bg-cream px-4 py-3 text-sm leading-relaxed">
+              {known
+                ? "Ce rendez-vous est enregistré dans votre espace client : vous pouvez l'y retrouver, l'annuler et suivre votre carte de fidélité."
+                : "Votre espace client est ouvert. Avec votre numéro et votre date de naissance, vous y retrouverez ce rendez-vous, votre historique et votre carte de fidélité."}{" "}
+              <Link href="/espace" className="underline hover:text-gold-deep">
+                Voir mon espace
+              </Link>
+              .
+            </p>
+          )}
+
           <div className="mt-8 flex flex-wrap gap-3">
             <Link
               href="/"
@@ -811,11 +1039,13 @@ export function BookingFlow({
                 setDate(null);
                 setSlot(null);
                 setResult(null);
+                // La cliente reste identifiée : inutile de la reconnecter.
+                setContactMode(known ? "saisie" : clientSpace ? "choix" : "saisie");
                 setForm({
-                  name: "",
-                  phone: "",
-                  email: "",
-                  birthdate: "",
+                  name: known?.name ?? "",
+                  phone: known?.phone ?? "",
+                  email: known?.email ?? "",
+                  birthdate: known?.birthdate ?? "",
                   notes: "",
                 });
               }}
