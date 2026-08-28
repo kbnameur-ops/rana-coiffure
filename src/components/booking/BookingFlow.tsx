@@ -550,7 +550,8 @@ export function BookingFlow({
                 </p>
                 <p className="mt-0.5 text-xs uppercase tracking-[0.14em] text-mute lining-nums tabular-nums">
                   {chosen.length} prestation{chosen.length > 1 ? "s" : ""} ·{" "}
-                  {formatDuration(totalDuration)} · {formatPrice(totalPrice)}
+                  {formatDuration(totalDuration)} ·{" "}
+                  {formatTarif(totalPrice, totalEstime)}
                 </p>
               </div>
               <button
