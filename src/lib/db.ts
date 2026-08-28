@@ -647,6 +647,19 @@ async function initialise(sql: Sql) {
       );
     }
 
+    // Les photos sont arrivées après la bascule : la base en ligne portait
+    // déjà la carte, sans image. On les pose sur les prestations qui n'en ont
+    // pas encore — une photo choisie depuis l'espace salon n'est jamais
+    // écrasée.
+    for (const [, prestations] of CATALOGUE) {
+      for (const [nom, , , , photo] of prestations) {
+        await tx.query(
+          "UPDATE services SET image = $1 WHERE name = $2 AND image = ''",
+          [photo, nom],
+        );
+      }
+    }
+
     for (const [nom, image] of VISUELS) {
       await tx.query(
         "UPDATE categories SET image = $1 WHERE name = $2 AND image = ''",
