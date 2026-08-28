@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { getAvailabilityRange } from "@/lib/availability";
-import { getService, getSettings, settingInt } from "@/lib/queries";
+import { getServicesByIds, getSettings, settingInt } from "@/lib/queries";
 import { addDays } from "@/lib/format";
 import { todayISO } from "@/lib/time";
 
@@ -8,9 +8,25 @@ export const dynamic = "force-dynamic";
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
-  const service = await getService(Number(searchParams.get("prestation")));
-  if (!service || !service.active || !service.bookable)
+
+  // `prestation` accepte une liste — `?prestation=3,7` ou répété — pour les
+  // visites qui cumulent plusieurs soins.
+  const ids = searchParams
+    .getAll("prestation")
+    .flatMap((v) => v.split(","))
+    .map((v) => Number(v.trim()))
+    .filter((n) => Number.isInteger(n) && n > 0);
+
+  const services = await getServicesByIds(ids);
+  if (
+    services.length === 0 ||
+    services.length !== new Set(ids).size ||
+    services.some((s) => !s.active || !s.bookable)
+  )
     return NextResponse.json({ error: "Prestation inconnue" }, { status: 404 });
+
+  // La durée qui occupe le fauteuil est celle du cumul.
+  const durationMin = services.reduce((t, s) => t + s.duration_min, 0);
 
   const today = todayISO();
   const start = searchParams.get("debut") ?? today;
@@ -28,14 +44,15 @@ export async function GET(request: Request) {
   const [settings, days] = await Promise.all([
     getSettings(),
     getAvailabilityRange(start, count, {
-      durationMin: service.duration_min,
-      serviceId: service.id,
+      durationMin,
+      serviceIds: services.map((s) => s.id),
       staffId: Number.isFinite(staffId) ? staffId : null,
     }),
   ]);
 
   return NextResponse.json({
-    duration: service.duration_min,
+    duration: durationMin,
+    priceCents: services.reduce((t, s) => t + s.price_cents, 0),
     maxDate: addDays(today, settingInt(settings, "max_advance_days", 45)),
     days,
   });

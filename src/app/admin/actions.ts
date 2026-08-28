@@ -131,14 +131,25 @@ export async function createCategory(formData: FormData) {
   revalidatePath("/");
 }
 
-export async function renameCategory(formData: FormData) {
+/**
+ * Nom et visuel d'une famille de prestations. Le visuel est une adresse de
+ * fichier : les planches livrées avec le site vivent sous `/prestations/`, une
+ * photo déposée par le salon peut être une URL complète.
+ */
+export async function updateCategory(formData: FormData) {
   await requireSession();
   const id = Number(formData.get("id"));
   const name = String(formData.get("name") ?? "").trim();
+  const image = String(formData.get("image") ?? "").trim().slice(0, 500);
   if (!id || !name) return;
   const sql = await getSql();
-  await sql.query("UPDATE categories SET name = $1 WHERE id = $2", [name, id]);
+  await sql.query("UPDATE categories SET name = $1, image = $2 WHERE id = $3", [
+    name,
+    image,
+    id,
+  ]);
   revalidatePath("/admin/prestations");
+  revalidatePath("/reservation");
   revalidatePath("/");
 }
 

@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useCallback, useMemo, useRef, useState } from "react";
 import {
@@ -17,6 +18,8 @@ export type BookingService = {
   price_cents: number;
   duration_min: number;
   category: string;
+  /** Visuel de la famille, partagé par toutes ses prestations. */
+  categoryImage: string;
 };
 
 export type BookingStaff = {
@@ -37,7 +40,7 @@ export type DayAvailability = {
 type StepId = "service" | "staff" | "slot" | "contact" | "done";
 
 const LABELS: Record<StepId, string> = {
-  service: "Prestation",
+  service: "Prestations",
   staff: "Qui vous coiffe",
   slot: "Créneau",
   contact: "Coordonnées",
@@ -53,7 +56,7 @@ export function BookingFlow({
   notice,
   phone,
   maxAdvanceDays,
-  initialServiceId = null,
+  initialServiceIds = [],
   initialDays = [],
 }: {
   services: BookingService[];
@@ -62,7 +65,7 @@ export function BookingFlow({
   notice: string;
   phone: string;
   maxAdvanceDays: number;
-  initialServiceId?: number | null;
+  initialServiceIds?: number[];
   initialDays?: DayAvailability[];
 }) {
   const steps: StepId[] = staff.length
@@ -70,9 +73,11 @@ export function BookingFlow({
     : ["service", "slot", "contact", "done"];
 
   const [step, setStep] = useState<StepId>(
-    initialServiceId ? (staff.length ? "staff" : "slot") : "service",
+    initialServiceIds.length ? (staff.length ? "staff" : "slot") : "service",
   );
-  const [serviceId, setServiceId] = useState<number | null>(initialServiceId);
+  // L'ordre du tableau est celui des clics : c'est celui du récapitulatif,
+  // et celui dans lequel les soins s'enchaînent dans le fauteuil.
+  const [selection, setSelection] = useState<number[]>(initialServiceIds);
   const [staffId, setStaffId] = useState<number | null>(null);
   const [windowStart, setWindowStart] = useState(today);
   const [days, setDays] = useState<DayAvailability[]>(initialDays);
@@ -93,20 +98,37 @@ export function BookingFlow({
   );
   const topRef = useRef<HTMLDivElement>(null);
 
-  const service = useMemo(
-    () => services.find((s) => s.id === serviceId) ?? null,
-    [services, serviceId],
+  const chosen = useMemo(
+    () =>
+      selection
+        .map((id) => services.find((s) => s.id === id))
+        .filter((s): s is BookingService => s !== undefined),
+    [services, selection],
   );
 
-  /** Une coiffeuse sans compétence déclarée assure toutes les prestations. */
+  // Le cumul commande tout : la durée réservée dans le planning comme le total
+  // annoncé à la cliente.
+  const totalDuration = chosen.reduce((t, s) => t + s.duration_min, 0);
+  const totalPrice = chosen.reduce((t, s) => t + s.price_cents, 0);
+  const summaryLine =
+    chosen.length === 0
+      ? ""
+      : `${chosen.map((s) => s.name).join(" + ")} · ${formatDuration(totalDuration)} · ${formatPrice(totalPrice)}`;
+
+  /**
+   * Une coiffeuse sans compétence déclarée assure tout. Sinon elle doit couvrir
+   * l'ensemble du rendez-vous : on ne partage pas une visite entre deux mains.
+   */
   const qualified = useMemo(
     () =>
-      serviceId === null
+      selection.length === 0
         ? []
         : staff.filter(
-            (s) => s.serviceIds.length === 0 || s.serviceIds.includes(serviceId),
+            (s) =>
+              s.serviceIds.length === 0 ||
+              selection.every((id) => s.serviceIds.includes(id)),
           ),
-    [staff, serviceId],
+    [staff, selection],
   );
 
   const chosenStaff = qualified.find((s) => s.id === staffId) ?? null;
@@ -117,22 +139,23 @@ export function BookingFlow({
   );
 
   const categories = useMemo(() => {
-    const map = new Map<string, BookingService[]>();
+    const map = new Map<string, { image: string; list: BookingService[] }>();
     for (const s of services) {
-      const list = map.get(s.category) ?? [];
-      list.push(s);
-      map.set(s.category, list);
+      const entry = map.get(s.category) ?? { image: s.categoryImage, list: [] };
+      entry.list.push(s);
+      map.set(s.category, entry);
     }
     return [...map.entries()];
   }, [services]);
 
   const loadDays = useCallback(
-    async (start: string, id: number, who: number | null) => {
+    async (start: string, ids: number[], who: number | null) => {
+      if (ids.length === 0) return;
       setLoadingDays(true);
       setError(null);
       try {
         const res = await fetch(
-          `/api/availability?prestation=${id}&debut=${start}&jours=${WINDOW_DAYS}&coiffeur=${who ?? "any"}`,
+          `/api/availability?prestation=${ids.join(",")}&debut=${start}&jours=${WINDOW_DAYS}&coiffeur=${who ?? "any"}`,
           { cache: "no-store" },
         );
         if (!res.ok) throw new Error();
@@ -154,39 +177,53 @@ export function BookingFlow({
     topRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
-  const chooseService = (id: number) => {
-    setServiceId(id);
+  /**
+   * Ajoute ou retire une prestation. Toute modification change la durée du
+   * rendez-vous : le créneau retenu jusque-là ne veut plus rien dire.
+   */
+  const toggleService = (id: number) => {
+    setSelection((current) =>
+      current.includes(id)
+        ? current.filter((x) => x !== id)
+        : [...current, id],
+    );
     setStaffId(null);
     setDate(null);
     setSlot(null);
     setDays([]);
     setWindowStart(today);
+    setError(null);
+  };
 
+  const confirmServices = () => {
+    if (selection.length === 0) return;
     const eligible = staff.filter(
-      (s) => s.serviceIds.length === 0 || s.serviceIds.includes(id),
+      (s) =>
+        s.serviceIds.length === 0 ||
+        selection.every((id) => s.serviceIds.includes(id)),
     );
     if (eligible.length > 0) {
       goTo("staff");
       return;
     }
-    void loadDays(today, id, null);
+    void loadDays(today, selection, null);
     goTo("slot");
   };
 
   const chooseStaff = (id: number | null) => {
-    if (!serviceId) return;
+    if (selection.length === 0) return;
     setStaffId(id);
     setDate(null);
     setSlot(null);
     setDays([]);
     setWindowStart(today);
-    void loadDays(today, serviceId, id);
+    void loadDays(today, selection, id);
     goTo("slot");
   };
 
   /** Décale la fenêtre de 14 jours et recharge les disponibilités. */
   const shiftWindow = (direction: -1 | 1) => {
-    if (!serviceId) return;
+    if (selection.length === 0) return;
     const raw = addDays(windowStart, direction * WINDOW_DAYS);
     const next =
       direction < 0
@@ -199,7 +236,7 @@ export function BookingFlow({
     if (next === windowStart) return;
     setWindowStart(next);
     setDate(null);
-    void loadDays(next, serviceId, staffId);
+    void loadDays(next, selection, staffId);
   };
 
   const chooseSlot = (d: string, s: number) => {
@@ -212,7 +249,7 @@ export function BookingFlow({
 
   const submit = async (event: React.FormEvent) => {
     event.preventDefault();
-    if (!service || !date || slot === null) return;
+    if (chosen.length === 0 || !date || slot === null) return;
     setSubmitting(true);
     setError(null);
     try {
@@ -220,7 +257,7 @@ export function BookingFlow({
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          serviceId: service.id,
+          serviceIds: selection,
           staffId,
           date,
           startMin: slot,
@@ -238,7 +275,7 @@ export function BookingFlow({
         if (res.status === 409) {
           setSlot(null);
           goTo("slot");
-          if (serviceId) void loadDays(windowStart, serviceId, staffId);
+          void loadDays(windowStart, selection, staffId);
         }
         setError(data.error ?? "Une erreur est survenue.");
         return;
@@ -310,61 +347,130 @@ export function BookingFlow({
         </p>
       )}
 
-      {/* ------------------------------------------------------ 1 prestation */}
+      {/* ----------------------------------------------------- 1 prestations */}
       {step === "service" && (
-        <section className="mt-10">
-          <h2 className="display text-2xl uppercase">Quelle prestation ?</h2>
-          <p className="mt-2 text-ink/60">
-            Sélectionnez ce que vous souhaitez, la durée est réservée en
-            conséquence.
+        <section className="mt-10 pb-28">
+          <h2 className="display text-2xl uppercase">Quelles prestations ?</h2>
+          <p className="mt-2 max-w-xl text-ink/60">
+            Cochez tout ce que vous souhaitez : coupe et pose d&apos;ongles dans
+            la même visite, par exemple. La durée réservée s&apos;additionne.
           </p>
 
-          <div className="mt-8 space-y-10">
-            {categories.map(([category, list]) => (
+          <div className="mt-8 space-y-12">
+            {categories.map(([category, { image, list }]) => (
               <div key={category}>
-                <div className="flex items-baseline gap-4">
-                  <h3 className="eyebrow text-mute">{category}</h3>
-                  <span className="h-px grow bg-ink/10" />
-                </div>
-                <div className="mt-4 grid gap-3 sm:grid-cols-2">
-                  {list.map((s) => (
-                    <button
-                      key={s.id}
-                      type="button"
-                      onClick={() => chooseService(s.id)}
-                      className="group flex flex-col items-start border border-ink/12 bg-white p-5 text-left transition-all hover:-translate-y-0.5 hover:border-ink hover:shadow-lg hover:shadow-ink/5"
-                    >
-                      <span className="flex w-full items-baseline justify-between gap-3">
-                        <span className="font-semibold">{s.name}</span>
-                        <span className="display text-lg lining-nums tabular-nums">
-                          {formatPrice(s.price_cents)}
+                {image && (
+                  <div className="relative mb-5 aspect-[16/6] overflow-hidden">
+                    <Image
+                      src={image}
+                      alt=""
+                      fill
+                      sizes="(max-width: 1024px) 100vw, 900px"
+                      className="object-cover"
+                    />
+                    <span className="absolute inset-0 bg-gradient-to-r from-ink/50 to-transparent" />
+                    <span className="display absolute bottom-0 left-0 p-5 text-2xl uppercase leading-none text-cream">
+                      {category}
+                    </span>
+                  </div>
+                )}
+                {/* Le bandeau porte déjà le nom : on ne le répète pas. */}
+                {!image && (
+                  <div className="mb-4 flex items-baseline gap-4">
+                    <h3 className="eyebrow text-mute">{category}</h3>
+                    <span className="h-px grow bg-ink/10" />
+                  </div>
+                )}
+                <div className="grid gap-3 sm:grid-cols-2">
+                  {list.map((s) => {
+                    const rank = selection.indexOf(s.id);
+                    const on = rank !== -1;
+                    return (
+                      <button
+                        key={s.id}
+                        type="button"
+                        aria-pressed={on}
+                        onClick={() => toggleService(s.id)}
+                        className={`group flex flex-col items-start border p-5 text-left transition-all hover:-translate-y-0.5 ${
+                          on
+                            ? "border-gold bg-cream shadow-lg shadow-gold/10"
+                            : "border-ink/12 bg-white hover:border-ink hover:shadow-lg hover:shadow-ink/5"
+                        }`}
+                      >
+                        <span className="flex w-full items-baseline justify-between gap-3">
+                          <span className="flex items-baseline gap-2.5 font-semibold">
+                            <span
+                              aria-hidden
+                              className={`relative top-0.5 flex h-5 w-5 shrink-0 items-center justify-center border text-[0.65rem] transition-colors ${
+                                on
+                                  ? "border-gold bg-gold text-cream"
+                                  : "border-ink/25 text-transparent"
+                              }`}
+                            >
+                              ✓
+                            </span>
+                            {s.name}
+                          </span>
+                          <span className="display text-lg lining-nums tabular-nums">
+                            {formatPrice(s.price_cents)}
+                          </span>
                         </span>
-                      </span>
-                      {s.description && (
-                        <span className="mt-2 text-sm leading-relaxed text-ink/60">
-                          {s.description}
+                        {s.description && (
+                          <span className="mt-2 pl-[1.9rem] text-sm leading-relaxed text-ink/60">
+                            {s.description}
+                          </span>
+                        )}
+                        <span className="mt-4 flex w-full items-center justify-between gap-3 pl-[1.9rem] text-xs uppercase tracking-[0.16em] text-mute">
+                          <span>{formatDuration(s.duration_min)}</span>
+                          {on && (
+                            <span className="text-gold">
+                              Choisie{selection.length > 1 ? ` · ${rank + 1}` : ""}
+                            </span>
+                          )}
                         </span>
-                      )}
-                      <span className="mt-4 text-xs uppercase tracking-[0.16em] text-mute">
-                        {formatDuration(s.duration_min)}
-                      </span>
-                    </button>
-                  ))}
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
             ))}
+          </div>
+
+          {/* La barre reste sous les yeux : le total suit chaque coche. */}
+          <div
+            className={`fixed inset-x-0 bottom-0 z-40 border-t border-ink/10 bg-porcelain/95 backdrop-blur-md transition-all duration-400 ${
+              selection.length
+                ? "translate-y-0 opacity-100"
+                : "pointer-events-none translate-y-full opacity-0"
+            }`}
+          >
+            <div className="mx-auto flex max-w-5xl flex-wrap items-center justify-between gap-4 px-5 py-4 sm:px-8">
+              <div className="min-w-0">
+                <p className="truncate text-sm font-medium">
+                  {chosen.map((s) => s.name).join(" + ") || "Aucune prestation"}
+                </p>
+                <p className="mt-0.5 text-xs uppercase tracking-[0.14em] text-mute lining-nums tabular-nums">
+                  {chosen.length} prestation{chosen.length > 1 ? "s" : ""} ·{" "}
+                  {formatDuration(totalDuration)} · {formatPrice(totalPrice)}
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={confirmServices}
+                className="bg-ink px-7 py-3.5 text-xs font-semibold uppercase tracking-[0.18em] text-cream transition-colors hover:bg-ink-soft"
+              >
+                Continuer
+              </button>
+            </div>
           </div>
         </section>
       )}
 
       {/* ------------------------------------------------------ 2 qui coiffe */}
-      {step === "staff" && service && (
+      {step === "staff" && chosen.length > 0 && (
         <section className="mt-10">
           <h2 className="display text-2xl uppercase tracking-[0.06em]">Avec qui ?</h2>
-          <p className="mt-2 text-ink/60">
-            {service.name} · {formatDuration(service.duration_min)} ·{" "}
-            {formatPrice(service.price_cents)}
-          </p>
+          <p className="mt-2 text-ink/60">{summaryLine}</p>
 
           <div className="mt-8 grid gap-3 sm:grid-cols-2">
             <button
@@ -407,12 +513,11 @@ export function BookingFlow({
       )}
 
       {/* ---------------------------------------------------------- 3 créneau */}
-      {step === "slot" && service && (
+      {step === "slot" && chosen.length > 0 && (
         <section className="mt-10">
           <h2 className="display text-2xl uppercase">Choisissez un créneau</h2>
           <p className="mt-2 text-ink/60">
-            {service.name} · {formatDuration(service.duration_min)} ·{" "}
-            {formatPrice(service.price_cents)}
+            {summaryLine}
             {staffLine && ` · ${staffLine}`}
           </p>
 
@@ -518,9 +623,13 @@ export function BookingFlow({
           {!date && !loadingDays && days.every((d) => !d.open || !d.slots.length) && (
             <p className="mt-10 border border-ink/10 bg-white p-6 text-sm text-ink/70">
               Aucune disponibilité sur cette période
-              {chosenStaff ? ` avec ${chosenStaff.name}` : ""}. Essayez les jours
-              suivants
-              {chosenStaff ? ", quelqu'un d'autre," : ""} ou appelez le salon au{" "}
+              {chosenStaff ? ` avec ${chosenStaff.name}` : ""}
+              {selection.length > 1
+                ? " pour l'ensemble des prestations choisies"
+                : ""}
+              . Essayez les jours suivants
+              {selection.length > 1 ? ", une prestation de moins," : ""}
+              {chosenStaff ? " quelqu'un d'autre," : ""} ou appelez le salon au{" "}
               <a className="underline" href={`tel:${phone.replace(/\s/g, "")}`}>
                 {phone}
               </a>
@@ -531,7 +640,7 @@ export function BookingFlow({
       )}
 
       {/* ----------------------------------------------------- 4 coordonnées */}
-      {step === "contact" && service && date && slot !== null && (
+      {step === "contact" && chosen.length > 0 && date && slot !== null && (
         <section className="mt-10 grid gap-10 lg:grid-cols-[1.2fr_1fr]">
           <form onSubmit={submit} className="order-2 lg:order-1">
             <h2 className="display text-2xl uppercase">Vos coordonnées</h2>
@@ -601,20 +710,36 @@ export function BookingFlow({
 
           <aside className="order-1 h-fit border border-ink/12 bg-white p-6 lg:order-2">
             <p className="eyebrow text-mute">Récapitulatif</p>
+
+            <ul className="mt-5 space-y-3 border-b border-ink/10 pb-5 text-sm">
+              {chosen.map((s) => (
+                <li key={s.id} className="flex items-baseline justify-between gap-4">
+                  <span>
+                    <span className="font-medium">{s.name}</span>
+                    <span className="ml-2 text-xs text-mute lining-nums tabular-nums">
+                      {formatDuration(s.duration_min)}
+                    </span>
+                  </span>
+                  <span className="shrink-0 lining-nums tabular-nums">
+                    {formatPrice(s.price_cents)}
+                  </span>
+                </li>
+              ))}
+            </ul>
+
             <dl className="mt-5 space-y-4 text-sm">
-              <Row label="Prestation" value={service.name} />
               {staffLine && <Row label="Avec" value={staffLine} />}
               <Row label="Date" value={formatDateLong(date)} capitalize />
               <Row
                 label="Heure"
-                value={`${minutesToTime(slot)} – ${minutesToTime(slot + service.duration_min)}`}
+                value={`${minutesToTime(slot)} – ${minutesToTime(slot + totalDuration)}`}
               />
-              <Row label="Durée" value={formatDuration(service.duration_min)} />
+              <Row label="Durée" value={formatDuration(totalDuration)} />
             </dl>
             <div className="mt-6 flex items-baseline justify-between border-t border-ink/10 pt-4">
               <span className="eyebrow text-mute">Total</span>
-              <span className="display text-2xl">
-                {formatPrice(service.price_cents)}
+              <span className="display text-2xl lining-nums tabular-nums">
+                {formatPrice(totalPrice)}
               </span>
             </div>
             <p className="mt-3 text-xs text-mute">Règlement sur place.</p>
@@ -623,7 +748,7 @@ export function BookingFlow({
       )}
 
       {/* --------------------------------------------------- 5 confirmation */}
-      {step === "done" && result && service && date && slot !== null && (
+      {step === "done" && result && chosen.length > 0 && date && slot !== null && (
         <section className="mt-12 max-w-xl">
           <div className="flex h-14 w-14 items-center justify-center rounded-full bg-gold text-2xl text-cream">
             ✓
@@ -634,17 +759,32 @@ export function BookingFlow({
             <strong className="font-semibold tracking-wider">{result.ref}</strong>.
           </p>
 
-          <dl className="mt-8 space-y-4 border-y border-ink/10 py-6 text-sm">
-            <Row label="Prestation" value={service.name} />
+          <ul className="mt-8 space-y-3 border-t border-ink/10 pt-6 text-sm">
+            {chosen.map((s) => (
+              <li key={s.id} className="flex items-baseline justify-between gap-4">
+                <span>
+                  <span className="font-medium">{s.name}</span>
+                  <span className="ml-2 text-xs text-mute lining-nums tabular-nums">
+                    {formatDuration(s.duration_min)}
+                  </span>
+                </span>
+                <span className="shrink-0 lining-nums tabular-nums">
+                  {formatPrice(s.price_cents)}
+                </span>
+              </li>
+            ))}
+          </ul>
+
+          <dl className="mt-5 space-y-4 border-b border-ink/10 pb-6 text-sm">
             {result.staffName && <Row label="Avec" value={result.staffName} />}
             <Row label="Date" value={formatDateLong(date)} capitalize />
             <Row
               label="Heure"
-              value={`${minutesToTime(slot)} – ${minutesToTime(slot + service.duration_min)}`}
+              value={`${minutesToTime(slot)} – ${minutesToTime(slot + totalDuration)}`}
             />
             <Row label="Au nom de" value={form.name} />
             <Row label="Téléphone" value={form.phone} />
-            <Row label="Total" value={formatPrice(service.price_cents)} />
+            <Row label="Total" value={formatPrice(totalPrice)} />
           </dl>
 
           <p className="mt-6 text-sm leading-relaxed text-ink/60">
@@ -666,7 +806,7 @@ export function BookingFlow({
               type="button"
               onClick={() => {
                 setStep("service");
-                setServiceId(null);
+                setSelection([]);
                 setStaffId(null);
                 setDate(null);
                 setSlot(null);

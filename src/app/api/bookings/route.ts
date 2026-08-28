@@ -3,6 +3,12 @@ import { createBooking } from "@/lib/availability";
 
 export const dynamic = "force-dynamic";
 
+/** Le tunnel envoie un tableau ; on tolère un identifiant seul par sécurité. */
+function normaliseIds(raw: unknown): number[] {
+  const list = Array.isArray(raw) ? raw : [raw];
+  return list.map((v) => Number(v)).filter((n) => Number.isInteger(n) && n > 0);
+}
+
 export async function POST(request: Request) {
   let body: Record<string, unknown>;
   try {
@@ -12,7 +18,7 @@ export async function POST(request: Request) {
   }
 
   const result = await createBooking({
-    serviceId: Number(body.serviceId),
+    serviceIds: normaliseIds(body.serviceIds ?? body.serviceId),
     staffId:
       body.staffId === null || body.staffId === undefined
         ? null

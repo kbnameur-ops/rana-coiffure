@@ -55,23 +55,26 @@ export default async function ReservationPage({
         price_cents: s.price_cents,
         duration_min: s.duration_min,
         category: category.name,
+        categoryImage: category.image,
       })),
   );
 
   const today = todayISO();
-  const initialServiceId = services.some(
-    (s) => s.id === Number(params.prestation),
-  )
-    ? Number(params.prestation)
-    : null;
 
-  // Prestation choisie depuis la carte : les 14 premiers jours sont rendus
+  // `?prestation=3,7` : la carte peut envoyer plusieurs soins d'un coup.
+  const initialServices = (params.prestation ?? "")
+    .split(",")
+    .map((v) => Number(v.trim()))
+    .map((id) => services.find((s) => s.id === id))
+    .filter((s): s is BookingService => s !== undefined);
+  const initialServiceIds = initialServices.map((s) => s.id);
+
+  // Prestations choisies depuis la carte : les 14 premiers jours sont rendus
   // côté serveur, l'étape « créneau » s'affiche donc déjà remplie.
-  const initialService = services.find((s) => s.id === initialServiceId);
-  const initialDays: DayAvailability[] = initialService
+  const initialDays: DayAvailability[] = initialServices.length
     ? await getAvailabilityRange(today, 14, {
-        durationMin: initialService.duration_min,
-        serviceId: initialService.id,
+        durationMin: initialServices.reduce((t, s) => t + s.duration_min, 0),
+        serviceIds: initialServiceIds,
         staffId: null,
       })
     : [];
@@ -118,7 +121,7 @@ export default async function ReservationPage({
                 notice={settings.booking_notice}
                 phone={settings.phone}
                 maxAdvanceDays={settingInt(settings, "max_advance_days", 45)}
-                initialServiceId={initialServiceId}
+                initialServiceIds={initialServiceIds}
                 initialDays={initialDays}
               />
             )}

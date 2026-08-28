@@ -282,6 +282,24 @@ CREATE TABLE IF NOT EXISTS loyalty_redemptions (
   note       TEXT NOT NULL DEFAULT ''
 );
 
+-- Un rendez-vous peut cumuler plusieurs prestations : coupe et pose d'ongles
+-- dans la même visite. La ligne du rendez-vous porte le total — c'est lui qui
+-- occupe le créneau — et cette table en garde le détail.
+CREATE TABLE IF NOT EXISTS booking_services (
+  id           SERIAL PRIMARY KEY,
+  booking_id   INTEGER NOT NULL REFERENCES bookings(id) ON DELETE CASCADE,
+  service_id   INTEGER REFERENCES services(id) ON DELETE SET NULL,
+  name         TEXT NOT NULL,
+  price_cents  INTEGER NOT NULL,
+  duration_min INTEGER NOT NULL,
+  sort_order   INTEGER NOT NULL DEFAULT 0
+);
+
+CREATE INDEX IF NOT EXISTS idx_booking_services ON booking_services (booking_id);
+
+-- Illustration d'une catégorie, affichée sur la carte des prestations.
+ALTER TABLE categories ADD COLUMN IF NOT EXISTS image TEXT NOT NULL DEFAULT '';
+
 ALTER TABLE bookings ADD COLUMN IF NOT EXISTS client_id INTEGER
   REFERENCES clients(id) ON DELETE SET NULL;
 
@@ -366,6 +384,21 @@ const CATALOGUE: [string, [string, string, number, number][]][] = [
       ["Essai coiffure mariée", "Séance d'essai, photos et ajustements.", 6000, 90],
     ],
   ],
+];
+
+/**
+ * Un visuel par famille de prestations. Ce sont des planches dessinées aux
+ * couleurs de la maison, posées ici pour que la carte ne soit jamais nue : le
+ * salon les remplace par ses propres photos depuis l'espace salon, et une
+ * valeur déjà saisie n'est jamais écrasée.
+ */
+const VISUELS: [string, string][] = [
+  ["Coupe & coiffage", "/prestations/coupe.svg"],
+  ["Couleur & balayage", "/prestations/couleur.svg"],
+  ["Lissage & permanente", "/prestations/lissage.svg"],
+  ["Soins & rituels", "/prestations/soins.svg"],
+  ["Chignon & occasions", "/prestations/chignon.svg"],
+  ["Beauté & ongles", "/prestations/beaute.svg"],
 ];
 
 /**
@@ -473,6 +506,13 @@ async function initialise(sql: Sql) {
           [cat.id, nom, description, duree, i],
         );
       }
+    }
+
+    for (const [nom, image] of VISUELS) {
+      await tx.query(
+        "UPDATE categories SET image = $1 WHERE name = $2 AND image = ''",
+        [image, nom],
+      );
     }
 
     const [{ n: hourCount }] = await tx.query<{ n: string }>(

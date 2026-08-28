@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 600" width="1600" height="600" role="img" aria-label="Couleur et balayage">
+  <defs>
+    <linearGradient id="k-bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fdfaf6"/><stop offset="1" stop-color="#f7f0e7"/>
+    </linearGradient>
+    <linearGradient id="k-1" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#1f2e4a"/><stop offset="1" stop-color="#8a6a26"/>
+    </linearGradient>
+    <linearGradient id="k-2" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2b3d5e"/><stop offset="1" stop-color="#d9ba72"/>
+    </linearGradient>
+    <linearGradient id="k-3" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#3d5178"/><stop offset="1" stop-color="#f4e6e1"/>
+    </linearGradient>
+    <linearGradient id="k-4" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#634c18"/><stop offset="1" stop-color="#fbf6ee"/>
+    </linearGradient>
+  </defs>
+  <rect width="1600" height="600" fill="url(#k-bg)"/>
+  <circle cx="1180" cy="300" r="270" fill="#f4e6e1" opacity="0.5"/>
+
+  <!-- Mèches en dégradé : la racine foncée s'éclaircit vers les pointes. -->
+  <g stroke-linecap="round" fill="none" stroke-width="34">
+    <path d="M250 -20 C 214 200, 234 400, 250 620" stroke="url(#k-1)"/>
+    <path d="M350 -30 C 310 200, 330 410, 350 630" stroke="url(#k-2)"/>
+    <path d="M450 -20 C 410 200, 430 400, 450 620" stroke="url(#k-3)"/>
+    <path d="M550 -30 C 512 200, 532 410, 550 630" stroke="url(#k-4)"/>
+  </g>
+
+  <g fill="none" stroke="#8a6a26" stroke-width="2.2" stroke-linecap="round">
+    <path d="M700 140 c 104 60, 138 192, 86 292"/>
+    <path d="M756 118 c 132 76, 170 232, 104 348"/>
+  </g>
+
+  <!-- Nuancier déployé en éventail. -->
+  <g transform="translate(1180 316)">
+    <g transform="rotate(-42)"><rect x="-27" y="-236" width="54" height="200" rx="27" fill="#1f2e4a"/></g>
+    <g transform="rotate(-25)"><rect x="-27" y="-244" width="54" height="208" rx="27" fill="#634c18"/></g>
+    <g transform="rotate(-8)"><rect x="-27" y="-250" width="54" height="214" rx="27" fill="#8a6a26"/></g>
+    <g transform="rotate(9)"><rect x="-27" y="-250" width="54" height="214" rx="27" fill="#a15a52"/></g>
+    <g transform="rotate(26)"><rect x="-27" y="-244" width="54" height="208" rx="27" fill="#d9ba72"/></g>
+    <g transform="rotate(43)"><rect x="-27" y="-236" width="54" height="200" rx="27" fill="#f4e6e1"/></g>
+    <circle cx="0" cy="0" r="20" fill="none" stroke="#1f2e4a" stroke-width="4"/>
+    <circle cx="0" cy="0" r="7" fill="#1f2e4a"/>
+  </g>
+  <path d="M110 552 H 1490" stroke="#8a6a26" stroke-width="1.2" opacity="0.45"/>
+</svg>

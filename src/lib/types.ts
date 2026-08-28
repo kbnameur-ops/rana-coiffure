@@ -2,6 +2,8 @@ export type Category = {
   id: number;
   name: string;
   sort_order: number;
+  /** Visuel de la famille de prestations. Vide = aucun. */
+  image: string;
 };
 
 export type Service = {

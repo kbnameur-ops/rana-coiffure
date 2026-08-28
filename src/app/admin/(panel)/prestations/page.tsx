@@ -6,7 +6,7 @@ import {
   deleteService,
   moveCategory,
   moveService,
-  renameCategory,
+  updateCategory,
   updateService,
 } from "@/app/admin/actions";
 import { ConfirmButton, SubmitButton } from "../ui";
@@ -82,14 +82,33 @@ function CategoryBlock({
   return (
     <section className="border border-ink/12 bg-white">
       <header className="flex flex-wrap items-center justify-between gap-3 border-b border-ink/12 bg-ink/[0.03] p-4">
-        <form action={renameCategory} className="flex items-center gap-2">
+        <form action={updateCategory} className="flex flex-wrap items-center gap-2">
           <input type="hidden" name="id" value={category.id} />
+          {/* Aperçu du visuel : il rend l'adresse saisie immédiatement vérifiable. */}
+          {category.image ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={category.image}
+              alt=""
+              className="h-11 w-16 shrink-0 border border-ink/15 object-cover"
+            />
+          ) : (
+            <span className="flex h-11 w-16 shrink-0 items-center justify-center border border-dashed border-ink/20 text-[0.6rem] uppercase tracking-wider text-mute">
+              Sans
+            </span>
+          )}
           <input
             name="name"
             defaultValue={category.name}
             className="display border border-transparent bg-transparent px-2 py-1 text-lg uppercase hover:border-ink/20 focus:border-ink focus:outline-none"
           />
-          <SubmitButton variant="ghost">Renommer</SubmitButton>
+          <input
+            name="image"
+            defaultValue={category.image}
+            placeholder="/prestations/coupe.svg"
+            className="w-56 border border-ink/20 px-3 py-1.5 text-sm"
+          />
+          <SubmitButton variant="ghost">Enregistrer</SubmitButton>
         </form>
 
         <form className="flex gap-2">

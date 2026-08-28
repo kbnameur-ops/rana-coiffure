@@ -63,6 +63,24 @@ export async function getService(id: number): Promise<Service | undefined> {
   return row;
 }
 
+/**
+ * Plusieurs prestations d'un coup, rendues dans l'ordre demandé : c'est celui
+ * que la cliente a choisi, et donc celui du récapitulatif. Un identifiant
+ * inconnu est simplement absent du résultat, à l'appelant de le constater.
+ */
+export async function getServicesByIds(ids: number[]): Promise<Service[]> {
+  const uniques = [...new Set(ids)].filter((id) => Number.isInteger(id));
+  if (uniques.length === 0) return [];
+  const sql = await getSql();
+  const rows = await sql.query<Service>(
+    "SELECT * FROM services WHERE id = ANY($1)",
+    [uniques],
+  );
+  return uniques
+    .map((id) => rows.find((s) => s.id === id))
+    .filter((s): s is Service => s !== undefined);
+}
+
 export async function getCatalogue(onlyActive = false) {
   const [categories, services] = await Promise.all([
     getCategories(),
@@ -78,7 +96,7 @@ export async function getCatalogue(onlyActive = false) {
   );
   if (orphans.length) {
     grouped.push({
-      category: { id: 0, name: "Autres prestations", sort_order: 999 },
+      category: { id: 0, name: "Autres prestations", sort_order: 999, image: "" },
       services: orphans,
     });
   }

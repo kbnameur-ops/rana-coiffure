@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { formatDuration, formatPrice } from "@/lib/format";
@@ -16,6 +17,8 @@ export type TabService = {
 export type TabCategory = {
   id: number;
   name: string;
+  /** Visuel de la famille. Vide : la carte s'affiche sans bandeau. */
+  image: string;
   services: TabService[];
 };
 
@@ -55,6 +58,33 @@ export function ServiceTabs({ categories }: { categories: TabCategory[] }) {
           })}
         </div>
       </div>
+
+      {/* Le bandeau change avec l'onglet : `key` le remonte, donc il rejoue. */}
+      {current.image && (
+        <figure
+          key={`visuel-${current.id}`}
+          className="relative mt-10 aspect-[16/6] overflow-hidden"
+        >
+          <Image
+            src={current.image}
+            alt=""
+            fill
+            sizes="(max-width: 1024px) 100vw, 1100px"
+            className="object-cover"
+            style={{ animation: "rise 0.9s var(--ease-out-soft) both" }}
+          />
+          <span className="absolute inset-0 bg-gradient-to-r from-ink/55 via-ink/15 to-transparent" />
+          <figcaption className="absolute bottom-0 left-0 p-6 sm:p-9">
+            <span className="display block text-[clamp(1.5rem,3.4vw,2.5rem)] uppercase leading-none text-cream">
+              {current.name}
+            </span>
+            <span className="mt-2 block text-xs uppercase tracking-[0.18em] text-cream/70 lining-nums tabular-nums">
+              {current.services.length} prestation
+              {current.services.length > 1 ? "s" : ""}
+            </span>
+          </figcaption>
+        </figure>
+      )}
 
       <div key={current.id} className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {current.services.map((service, i) => (

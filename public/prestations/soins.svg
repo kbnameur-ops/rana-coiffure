@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 600" width="1600" height="600" role="img" aria-label="Soins et rituels">
+  <defs>
+    <linearGradient id="s-bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fdfaf6"/><stop offset="1" stop-color="#eaf1ed"/>
+    </linearGradient>
+  </defs>
+  <rect width="1600" height="600" fill="url(#s-bg)"/>
+  <circle cx="800" cy="300" r="278" fill="#e2ece6" opacity="0.75"/>
+  <path d="M800 92 c 96 128, 142 208, 142 272 a 142 142 0 0 1 -284 0 c 0 -64, 46 -144, 142 -272 z"
+        fill="none" stroke="#4f6f66" stroke-width="3.2"/>
+  <path d="M800 200 c 60 82, 88 132, 88 172 a 88 88 0 0 1 -176 0 c 0 -40, 28 -90, 88 -172 z"
+        fill="#8ba79c" opacity="0.35"/>
+  <g fill="none" stroke="#8a6a26" stroke-width="2.4" stroke-linecap="round">
+    <path d="M430 420 c 86 -14, 148 -66, 168 -150"/>
+    <path d="M430 420 c 14 -86, 66 -148, 150 -168"/>
+    <path d="M1170 420 c -86 -14, -148 -66, -168 -150"/>
+    <path d="M1170 420 c -14 -86, -66 -148, -150 -168"/>
+  </g>
+  <g fill="none" stroke="#4f6f66" stroke-width="2.4" stroke-linecap="round" opacity="0.7">
+    <path d="M180 300 c 70 -46, 140 -46, 210 0"/>
+    <path d="M180 372 c 70 -46, 140 -46, 210 0"/>
+    <path d="M1210 300 c 70 -46, 140 -46, 210 0"/>
+    <path d="M1210 372 c 70 -46, 140 -46, 210 0"/>
+  </g>
+  <circle cx="800" cy="76" r="10" fill="#d9ba72"/>
+  <path d="M110 552 H 1490" stroke="#8a6a26" stroke-width="1.2" opacity="0.45"/>
+</svg>

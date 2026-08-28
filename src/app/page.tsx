@@ -79,6 +79,7 @@ export default async function HomePage() {
   const tabs: TabCategory[] = catalogue.map(({ category, services }) => ({
     id: category.id,
     name: category.name,
+    image: category.image,
     services: services.map((s) => ({
       id: s.id,
       name: s.name,

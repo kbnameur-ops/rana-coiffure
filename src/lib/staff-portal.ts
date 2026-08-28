@@ -144,13 +144,14 @@ export async function addWalkIn(input: WalkInInput): Promise<WalkInResult> {
     return { ok: false, error: "Trop ancien : prévenez le salon." };
 
   const ref = makeRef();
-  await sql.query(
+  const [booking] = await sql.query<{ id: number }>(
     `INSERT INTO bookings
        (ref, service_id, service_name, staff_id, staff_name, price_cents,
         duration_min, date, start_min, end_min, customer_name, phone, email,
         notes, status, source, created_by_staff_id, created_at)
      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, '', '', $12,
-             'pending', 'walk_in', $4, $13)`,
+             'pending', 'walk_in', $4, $13)
+     RETURNING id`,
     [
       ref,
       service.id,
@@ -167,6 +168,16 @@ export async function addWalkIn(input: WalkInInput): Promise<WalkInResult> {
       new Date().toISOString(),
     ],
   );
+
+  // Une saisie coiffeur ne porte qu'une prestation, mais elle rejoint le même
+  // détail que les réservations en ligne : les cumuls lisent une seule table.
+  await sql.query(
+    `INSERT INTO booking_services
+       (booking_id, service_id, name, price_cents, duration_min, sort_order)
+     VALUES ($1, $2, $3, $4, $5, 0)`,
+    [booking.id, service.id, service.name, service.price_cents, service.duration_min],
+  );
+
   return { ok: true, ref };
 }
 
@@ -201,11 +212,18 @@ async function lines(
     count: string;
     total_cents: string;
   }>(
-    `SELECT service_name, COUNT(*) AS count, SUM(price_cents) AS total_cents
-       FROM bookings
-      WHERE staff_id = $1 AND status = 'done' AND date >= $2 AND date <= $3
-      GROUP BY service_name
-      ORDER BY COUNT(*) DESC, service_name`,
+    // Un rendez-vous cumulé compte pour chacune de ses prestations. Les
+    // rendez-vous antérieurs au détail n'ont pas de ligne : le LEFT JOIN les
+    // ramène sur leur libellé d'origine.
+    `SELECT COALESCE(d.name, b.service_name) AS service_name,
+            COUNT(*) AS count,
+            SUM(COALESCE(d.price_cents, b.price_cents)) AS total_cents
+       FROM bookings b
+       LEFT JOIN booking_services d ON d.booking_id = b.id
+      WHERE b.staff_id = $1 AND b.status = 'done'
+        AND b.date >= $2 AND b.date <= $3
+      GROUP BY COALESCE(d.name, b.service_name)
+      ORDER BY COUNT(*) DESC, COALESCE(d.name, b.service_name)`,
     [staffId, from, to],
   );
   return rows.map((r) => ({

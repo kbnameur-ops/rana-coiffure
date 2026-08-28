@@ -112,10 +112,15 @@ async function loadContext(
   };
 }
 
-/** Un coiffeur sans compétence déclarée assure toutes les prestations. */
-function canServe(context: Context, staffId: number, serviceId: number) {
+/**
+ * Un coiffeur sans compétence déclarée assure toutes les prestations. Sinon,
+ * il doit couvrir *toutes* celles du rendez-vous : un rendez-vous cumulé est
+ * assuré d'un bout à l'autre par la même personne.
+ */
+function canServe(context: Context, staffId: number, serviceIds: number[]) {
   const set = context.skills.get(staffId);
-  return !set || set.size === 0 || set.has(serviceId);
+  if (!set || set.size === 0) return true;
+  return serviceIds.every((id) => set.has(id));
 }
 
 /**
@@ -169,14 +174,15 @@ function slotsInRanges(
 
 export type DayQuery = {
   date: string;
+  /** Durée cumulée des prestations : c'est elle qui occupe le créneau. */
   durationMin: number;
-  serviceId: number;
+  serviceIds: number[];
   /** `null` = sans préférence : n'importe quel coiffeur qualifié. */
   staffId: number | null;
 };
 
 function computeDay(context: Context, query: DayQuery): DayAvailability {
-  const { date, durationMin, serviceId, staffId } = query;
+  const { date, durationMin, serviceIds, staffId } = query;
 
   if (date < context.today)
     return { date, open: false, reason: "Date passée", slots: [] };
@@ -200,7 +206,7 @@ function computeDay(context: Context, query: DayQuery): DayAvailability {
       ? nowMinutes() + context.minNotice
       : Number.NEGATIVE_INFINITY;
 
-  const qualified = context.staff.filter((s) => canServe(context, s.id, serviceId));
+  const qualified = context.staff.filter((s) => canServe(context, s.id, serviceIds));
 
   /* --- aucun coiffeur configuré : le salon fonctionne au nombre de fauteuils */
   if (qualified.length === 0) {
@@ -285,7 +291,8 @@ function makeRef(): string {
 }
 
 export type CreateBookingInput = {
-  serviceId: number;
+  /** Une ou plusieurs prestations, dans l'ordre choisi par la cliente. */
+  serviceIds: number[];
   staffId: number | null;
   date: string;
   startMin: number;
@@ -315,7 +322,7 @@ function pickStaff(
   const end = startMin + query.durationMin;
 
   const candidates = context.staff
-    .filter((s) => canServe(context, s.id, query.serviceId))
+    .filter((s) => canServe(context, s.id, query.serviceIds))
     .filter((s) => query.staffId === null || s.id === query.staffId)
     .filter((s) =>
       staffRanges(context, s.id, weekday).some(
@@ -341,21 +348,41 @@ export async function createBooking(
 ): Promise<CreateBookingResult> {
   const sql = await getSql();
 
-  const [service] = await sql.query<{
+  const ids = [...new Set(input.serviceIds)].filter((id) => Number.isFinite(id));
+  if (ids.length === 0)
+    return {
+      ok: false,
+      code: "validation",
+      error: "Merci de choisir au moins une prestation.",
+    };
+
+  const trouvees = await sql.query<{
     id: number;
     name: string;
     price_cents: number;
     duration_min: number;
     active: boolean;
     bookable: boolean;
-  }>("SELECT * FROM services WHERE id = $1", [input.serviceId]);
+  }>("SELECT * FROM services WHERE id = ANY($1)", [ids]);
 
-  if (!service || !service.active || !service.bookable)
+  // On respecte l'ordre de sélection : c'est celui du récapitulatif.
+  const services = ids
+    .map((id) => trouvees.find((s) => s.id === id))
+    .filter((s): s is (typeof trouvees)[number] => Boolean(s));
+
+  if (
+    services.length !== ids.length ||
+    services.some((s) => !s.active || !s.bookable)
+  )
     return {
       ok: false,
       code: "validation",
-      error: "Cette prestation n'est plus réservable en ligne.",
+      error: "Une des prestations choisies n'est plus réservable en ligne.",
     };
+
+  const dureeTotale = services.reduce((t, s) => t + s.duration_min, 0);
+  const prixTotal = services.reduce((t, s) => t + s.price_cents, 0);
+  const libelle = services.map((s) => s.name).join(" + ");
 
   const name = input.customerName.trim();
   const phone = input.phone.trim();
@@ -384,8 +411,8 @@ export async function createBooking(
       const context = await loadContext(tx, input.date, input.date);
       const query: DayQuery = {
         date: input.date,
-        durationMin: service.duration_min,
-        serviceId: service.id,
+        durationMin: dureeTotale,
+        serviceIds: services.map((s) => s.id),
         staffId: input.staffId,
       };
       const day = computeDay(context, query);
@@ -432,24 +459,28 @@ export async function createBooking(
         ref = makeRef();
       }
 
-      await tx.query(
+      // La ligne du rendez-vous porte le cumul : c'est lui qui occupe le
+      // créneau, et tout ce qui lit déjà `bookings` continue de fonctionner.
+      // `service_id` garde la première prestation, le détail suit juste après.
+      const [booking] = await tx.query<{ id: number }>(
         `INSERT INTO bookings
            (ref, service_id, service_name, staff_id, staff_name, price_cents,
             duration_min, date, start_min, end_min, customer_name, phone,
             email, notes, client_id, status, created_at)
          VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14,
-                 $15, 'confirmed', $16)`,
+                 $15, 'confirmed', $16)
+         RETURNING id`,
         [
           ref,
-          service.id,
-          service.name,
+          services[0].id,
+          libelle,
           assigned?.id ?? null,
           assigned?.name ?? "",
-          service.price_cents,
-          service.duration_min,
+          prixTotal,
+          dureeTotale,
           input.date,
           input.startMin,
-          input.startMin + service.duration_min,
+          input.startMin + dureeTotale,
           name,
           phone,
           email,
@@ -458,6 +489,16 @@ export async function createBooking(
           new Date().toISOString(),
         ],
       );
+
+      for (const [i, s] of services.entries()) {
+        await tx.query(
+          `INSERT INTO booking_services
+             (booking_id, service_id, name, price_cents, duration_min, sort_order)
+           VALUES ($1, $2, $3, $4, $5, $6)`,
+          [booking.id, s.id, s.name, s.price_cents, s.duration_min, i],
+        );
+      }
+
       return { ok: true, ref, staffName: assigned?.name ?? "" };
     });
   } catch {
