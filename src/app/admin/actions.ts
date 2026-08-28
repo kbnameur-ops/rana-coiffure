@@ -230,8 +230,9 @@ export async function updateService(formData: FormData) {
   await sql.query(
     `UPDATE services
         SET category_id = $1, name = $2, description = $3, price_cents = $4,
-            duration_min = $5, active = $6, bookable = $7
-      WHERE id = $8`,
+            duration_min = $5, active = $6, bookable = $7, image = $8,
+            price_from = $9
+      WHERE id = $10`,
     [
       Number(formData.get("category_id")) || null,
       String(formData.get("name") ?? "").trim(),
@@ -240,6 +241,8 @@ export async function updateService(formData: FormData) {
       Math.max(5, Number(formData.get("duration")) || 30),
       Boolean(formData.get("active")),
       Boolean(formData.get("bookable")),
+      String(formData.get("image") ?? "").trim().slice(0, 500),
+      Boolean(formData.get("price_from")),
       id,
     ],
   );

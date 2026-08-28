@@ -87,6 +87,10 @@ export default async function HomePage() {
       price_cents: s.price_cents,
       duration_min: s.duration_min,
       bookable: s.bookable,
+      // Sans photo propre, la prestation s'en tient au texte : le visuel de la
+      // famille est déjà en bandeau juste au-dessus, le répéter n'apprend rien.
+      image: s.image,
+      price_from: s.price_from,
     })),
   }));
 

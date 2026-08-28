@@ -7,6 +7,15 @@ export function formatPrice(cents: number): string {
     : `${euros.toFixed(2).replace(".", ",")} €`;
 }
 
+/**
+ * Tarif affiché. Un prix « à partir de » est un plancher : le dire évite de
+ * promettre un montant que le salon ne peut pas tenir sur une coiffure de
+ * mariage ou un nail art travaillé.
+ */
+export function formatTarif(cents: number, from = false): string {
+  return from ? `à partir de ${formatPrice(cents)}` : formatPrice(cents);
+}
+
 export function formatDuration(min: number): string {
   if (min < 60) return `${min} min`;
   const h = Math.floor(min / 60);

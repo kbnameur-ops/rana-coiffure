@@ -71,6 +71,8 @@ export default async function ReservationPage({
         duration_min: s.duration_min,
         category: category.name,
         categoryImage: category.image,
+        image: s.image,
+        price_from: s.price_from,
       })),
   );
 

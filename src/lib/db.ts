@@ -300,6 +300,15 @@ CREATE INDEX IF NOT EXISTS idx_booking_services ON booking_services (booking_id)
 -- Illustration d'une catégorie, affichée sur la carte des prestations.
 ALTER TABLE categories ADD COLUMN IF NOT EXISTS image TEXT NOT NULL DEFAULT '';
 
+-- Chaque prestation porte sa photo. Le visuel de la famille reste le repli
+-- quand elle n'en a pas encore.
+ALTER TABLE services ADD COLUMN IF NOT EXISTS image TEXT NOT NULL DEFAULT '';
+
+-- Certaines prestations n'ont pas de tarif ferme : la coiffure d'un mariage
+-- dépend du travail demandé. Le prix devient alors un plancher, annoncé comme
+-- tel plutôt que présenté comme un montant définitif.
+ALTER TABLE services ADD COLUMN IF NOT EXISTS price_from BOOLEAN NOT NULL DEFAULT FALSE;
+
 ALTER TABLE bookings ADD COLUMN IF NOT EXISTS client_id INTEGER
   REFERENCES clients(id) ON DELETE SET NULL;
 
@@ -334,57 +343,137 @@ export const DEFAULT_SETTINGS: Record<string, string> = {
     "Merci de prévenir au moins 2 h à l'avance en cas d'empêchement.",
 };
 
-const CATALOGUE: [string, [string, string, number, number][]][] = [
+/**
+ * La carte du salon. Chaque ligne : nom, description, prix en centimes, durée
+ * en minutes, et un drapeau « à partir de » pour les prestations dont le tarif
+ * dépend du travail demandé.
+ *
+ * Les durées ne figuraient pas dans la carte fournie : elles sont estimées
+ * pour que le créneau réservé tienne la prestation. C'est le salon qui les
+ * ajuste depuis l'espace salon, à l'usage.
+ */
+type Ligne = [nom: string, description: string, prix: number, duree: number, aPartirDe?: true];
+
+const CATALOGUE: [string, Ligne[]][] = [
   [
-    "Coupe & coiffage",
+    "Coiffure",
     [
-      ["Shampooing, coupe, brushing", "Diagnostic, shampooing, coupe aux ciseaux et brushing.", 4500, 60],
-      ["Coupe seule", "Sur cheveux lavés, coupe et séchage naturel.", 3200, 45],
-      ["Brushing", "Mise en forme à la brosse ronde, tenue longue durée.", 2800, 40],
-      ["Coupe frange", "Rafraîchissement de la frange entre deux rendez-vous.", 1200, 15],
-      ["Coupe enfant", "Jusqu'à 12 ans, shampooing compris.", 2200, 30],
-      ["Boucles & ondulations", "Coiffage au fer ou au diffuseur selon la matière.", 3400, 45],
+      ["Shampooing + brushing cheveux courts", "Shampooing adapté, mise en forme à la brosse.", 2000, 30],
+      ["Shampooing + brushing cheveux mi-longs", "Shampooing adapté, brushing tenue longue durée.", 2500, 40],
+      ["Shampooing + brushing cheveux longs", "Shampooing adapté, brushing sur toute la longueur.", 3000, 50],
+      ["Coupe + shampooing + coiffage", "Diagnostic, coupe aux ciseaux et coiffage.", 3500, 45],
+      ["Coupe + brushing", "Coupe travaillée et brushing de finition.", 4000, 60],
+      ["Frange", "Rafraîchissement de la frange entre deux rendez-vous.", 800, 15],
+      ["Coiffure / chignon simple", "Attache travaillée pour une sortie.", 4500, 45],
+      ["Coiffure événementielle", "Mariage, soirée, cérémonie. Essai possible en amont.", 6000, 75, true],
+      ["Attache / coiffure rapide", "Queue travaillée, demi-attache ou tresse.", 3000, 30],
+      ["Soin profond + massage cuir chevelu", "Masque au bac et massage du cuir chevelu.", 2500, 30],
     ],
   ],
   [
-    "Couleur & balayage",
+    "Coloration & techniques",
     [
-      ["Couleur racines", "Reprise de racines, patine de finition incluse.", 5200, 75],
-      ["Couleur complète", "Couleur des racines aux pointes, longueurs comprises.", 6800, 90],
-      ["Balayage", "Éclaircissement mèche à mèche pour un effet naturel.", 9500, 150],
-      ["Ombré / tie and dye", "Dégradé de lumière sur les longueurs.", 11000, 180],
-      ["Mèches papier", "Mèches fines et régulières sur toute la tête.", 8500, 135],
-      ["Patine / gloss", "Rafraîchit le reflet et referme l'écaille.", 3800, 45],
+      ["Coloration racines", "Reprise de racines, patine de finition incluse.", 4500, 60],
+      ["Coloration complète cheveux courts", "Des racines aux pointes, longueurs comprises.", 5500, 75],
+      ["Coloration complète cheveux mi-longs", "Des racines aux pointes, longueurs comprises.", 6500, 90],
+      ["Coloration complète cheveux longs", "Des racines aux pointes, longueurs comprises.", 7500, 105],
+      ["Patine / gloss", "Rafraîchit le reflet et referme l'écaille.", 3500, 30],
+      ["Mèches cheveux courts", "Mèches fines et régulières, patine incluse.", 7500, 90],
+      ["Mèches cheveux mi-longs", "Mèches fines et régulières, patine incluse.", 9500, 120],
+      ["Mèches cheveux longs", "Mèches fines et régulières, patine incluse.", 11500, 150],
+      ["Balayage cheveux courts", "Éclaircissement mèche à mèche, effet naturel.", 9000, 105],
+      ["Balayage cheveux mi-longs", "Éclaircissement mèche à mèche, effet naturel.", 12000, 135],
+      ["Balayage cheveux longs", "Éclaircissement mèche à mèche, effet naturel.", 15000, 165],
+      ["Balayage + patine + soin + brushing", "La formule complète, de l'éclaircissement au coiffage.", 17000, 195],
+      ["Ombré hair", "Dégradé de lumière sur les longueurs.", 15000, 180, true],
     ],
   ],
   [
-    "Lissage & permanente",
+    "Lissage & soins capillaires",
     [
-      ["Lissage brésilien", "Discipline la matière pendant plusieurs mois.", 15000, 180],
-      ["Lissage à la kératine", "Assouplit les frisottis, garde le mouvement.", 12000, 150],
-      ["Permanente souple", "Volume et ondulations tenues au quotidien.", 8000, 120],
-      ["Défrisage", "Sur cheveux crépus, avec soin de reconstruction.", 9000, 150],
+      ["Soin hydratant cheveux", "Masque au bac, rinçage et séchage naturel.", 2000, 20],
+      ["Soin profond réparateur", "Reconstruit la fibre abîmée, densifie la longueur.", 3000, 30],
+      ["Soin kératine", "Assouplit les frisottis et garde le mouvement.", 4000, 45],
+      ["Hair botox", "Comble la fibre, lisse et fait briller.", 8000, 90, true],
+      ["Lissage brésilien cheveux courts", "Discipline la matière pendant plusieurs mois.", 9000, 120],
+      ["Lissage brésilien cheveux mi-longs", "Discipline la matière pendant plusieurs mois.", 12000, 150],
+      ["Lissage brésilien cheveux longs", "Discipline la matière pendant plusieurs mois.", 15000, 180],
+      ["Lissage premium cheveux très longs", "Protocole renforcé sur grande longueur.", 18000, 210],
     ],
   ],
   [
-    "Soins & rituels",
+    "Onglerie",
     [
-      ["Soin profond", "Masque au bac, massage du cuir chevelu, rinçage.", 2500, 25],
-      ["Rituel botox capillaire", "Comble la fibre abîmée, densifie la longueur.", 5500, 60],
-      ["Soin cuir chevelu", "Gommage et sérum apaisant, cheveux sensibles.", 3000, 35],
-      ["Ampoule anti-chute", "Cure ciblée, appliquée en fin de prestation.", 1800, 15],
+      ["Manucure simple", "Mise en forme, cuticules, soin des mains.", 2000, 30],
+      ["Manucure + vernis classique", "Manucure complète et pose de vernis.", 2500, 40],
+      ["Vernis semi-permanent", "Tenue deux à trois semaines, brillance conservée.", 3000, 45],
+      ["Semi-permanent French", "Semi-permanent avec French travaillée.", 3500, 60],
+      ["Dépose semi-permanent", "Dépose soignée, sans agresser l'ongle.", 1000, 20],
+      ["Pose gel sur ongles naturels", "Renforcement au gel sur l'ongle naturel.", 4500, 75],
+      ["Pose gel + extensions", "Rallongement au gel, longueur et forme au choix.", 5500, 90],
+      ["Remplissage gel", "Reprise de la repousse, toutes les trois à quatre semaines.", 4000, 75],
+      ["Nail art simple", "En supplément d'une pose : quelques ongles décorés.", 500, 10],
+      ["Nail art élaboré", "En supplément d'une pose : décor travaillé, strass, relief.", 1000, 20, true],
+      ["Beauté des pieds", "Pédicure, gommage et soin.", 3000, 45],
+      ["Beauté des pieds + semi-permanent", "Pédicure complète et pose semi-permanente.", 4500, 60],
     ],
   ],
   [
-    "Chignon & occasions",
+    "Beauté du regard",
     [
-      ["Chignon de mariée", "Essai préalable, pose du jour, fixation tenue.", 12000, 120],
-      ["Chignon de soirée", "Attache travaillée pour une occasion.", 6500, 75],
-      ["Coiffure d'invitée", "Ondulations ou demi-attache, maquillage non inclus.", 4800, 60],
-      ["Essai coiffure mariée", "Séance d'essai, photos et ajustements.", 6000, 90],
+      ["Épilation des sourcils", "Mise en forme à la pince ou à la cire.", 1200, 15],
+      ["Restructuration des sourcils", "Redessine la ligne, sourcils clairsemés ou abîmés.", 2000, 30],
+      ["Teinture des sourcils", "Intensifie la ligne, tenue plusieurs semaines.", 1500, 20],
+      ["Teinture des cils", "Regard souligné sans maquillage.", 1800, 20],
+      ["Rehaussement de cils", "Courbe les cils naturels, effet plusieurs semaines.", 4500, 60],
+      ["Rehaussement + teinture", "Rehaussement suivi d'une teinture.", 5500, 75],
+      ["Extensions de cils — cil à cil", "Une extension par cil, résultat naturel.", 6000, 90],
+      ["Extensions de cils — volume mixte", "Mélange de cil à cil et de bouquets.", 7000, 105],
+      ["Extensions de cils — volume russe", "Bouquets légers, densité maximale.", 8000, 120],
+      ["Remplissage extensions de cils", "Reprise toutes les deux à trois semaines.", 4000, 60, true],
+    ],
+  ],
+  [
+    "Épilation",
+    [
+      ["Lèvres", "", 800, 10],
+      ["Menton", "", 1000, 10],
+      ["Aisselles", "", 1400, 15],
+      ["Demi-jambes", "", 1800, 20],
+      ["Jambes complètes", "", 2500, 30],
+      ["Maillot classique", "", 1500, 15],
+      ["Maillot échancré", "", 2000, 20],
+      ["Maillot intégral", "", 2500, 30],
+      ["Bras", "", 1800, 20],
+      ["Dos", "", 2500, 25],
+    ],
+  ],
+  [
+    "Visage & bien-être",
+    [
+      ["Soin visage express — 30 min", "Nettoyage, gommage et hydratation.", 3000, 30],
+      ["Soin visage classique — 45 min", "Nettoyage, gommage, masque et modelage.", 4500, 45],
+      ["Nettoyage de peau profond", "Extraction des impuretés, peau nette.", 5000, 60],
+      ["Soin visage hydratant", "Repulpe et apaise les peaux déshydratées.", 4500, 45],
+      ["Soin visage éclat", "Ravive le teint terne, effet bonne mine.", 5000, 45],
+      ["Massage du visage", "Modelage drainant et relâchement des traits.", 2500, 30],
+      ["Massage relaxant — 30 min", "Dos et nuque, huiles chaudes.", 3500, 30],
+      ["Massage relaxant — 60 min", "Corps entier, pression au choix.", 6000, 60],
+    ],
+  ],
+  [
+    "Forfaits",
+    [
+      ["Forfait Beauty Express", "Brushing, manucure simple et sourcils.", 4500, 90],
+      ["Forfait Glow", "Soin visage, sourcils et semi-permanent.", 7500, 105],
+      ["Forfait Femme", "Coupe, brushing et soin profond.", 6500, 90],
+      ["Forfait Color", "Coloration, coupe, brushing et soin.", 12000, 180],
+      ["Forfait Balayage", "Balayage, patine, soin, coupe et brushing.", 18000, 240],
+      ["Forfait Mariée / Événement", "Coiffure, maquillage et beauté du regard. Essai en amont.", 15000, 180, true],
     ],
   ],
 ];
+
 
 /**
  * Un visuel par famille de prestations. Ce sont des planches dessinées aux
@@ -393,27 +482,47 @@ const CATALOGUE: [string, [string, string, number, number][]][] = [
  * valeur déjà saisie n'est jamais écrasée.
  */
 const VISUELS: [string, string][] = [
-  ["Coupe & coiffage", "/prestations/coupe.svg"],
-  ["Couleur & balayage", "/prestations/couleur.svg"],
-  ["Lissage & permanente", "/prestations/lissage.svg"],
-  ["Soins & rituels", "/prestations/soins.svg"],
-  ["Chignon & occasions", "/prestations/chignon.svg"],
-  ["Beauté & ongles", "/prestations/beaute.svg"],
+  ["Coiffure", "/prestations/coiffure.svg"],
+  ["Coloration & techniques", "/prestations/coloration.svg"],
+  ["Lissage & soins capillaires", "/prestations/lissage.svg"],
+  ["Onglerie", "/prestations/onglerie.svg"],
+  ["Beauté du regard", "/prestations/regard.svg"],
+  ["Épilation", "/prestations/epilation.svg"],
+  ["Visage & bien-être", "/prestations/visage.svg"],
+  ["Forfaits", "/prestations/forfaits.svg"],
 ];
 
 /**
- * Prestations d'institut relevées sur la vitrine du salon. Créées inactives et
- * sans tarif : c'est au salon de les chiffrer puis de les publier.
+ * La carte d'origine était la mienne : un catalogue de coiffure inventé, puis
+ * sept prestations d'institut relevées sur la vitrine, sans tarif. Le salon a
+ * arrêté sa vraie carte — d'où ce remplacement.
+ *
+ * Les données d'amorçage ne s'appliquent qu'à une base vide : la base en ligne,
+ * déjà remplie, ne les aurait jamais vues. La bascule est donc explicite, et
+ * ne retire que ce qui porte encore le nom exact d'une prestation d'amorçage :
+ * ce que le salon a ajouté ou renommé lui appartient et reste en place.
  */
-const INSTITUT_CATEGORIE = "Beauté & ongles";
-const INSTITUT: [string, string, number][] = [
-  ["Beauté des mains", "Manucure, mise en forme, pose de vernis.", 45],
-  ["Beauté des pieds", "Pédicure, gommage, pose de vernis.", 60],
-  ["Pose de faux ongles", "Pose complète, gel ou résine.", 90],
-  ["Maquillage permanent", "Sourcils, lèvres ou eye-liner. Retouche comprise.", 120],
-  ["Extension de cils", "Pose cil à cil ou volume russe.", 120],
-  ["Tatouage", "Sur devis, après rendez-vous conseil.", 60],
-  ["Soin visage", "Nettoyage, gommage, masque et hydratation.", 60],
+const CATALOGUE_VERSION = "2";
+
+const ANCIENNES_FAMILLES = [
+  "Coupe & coiffage",
+  "Couleur & balayage",
+  "Lissage & permanente",
+  "Soins & rituels",
+  "Chignon & occasions",
+  "Beauté & ongles",
+];
+
+const ANCIENNES_PRESTATIONS = [
+  "Shampooing, coupe, brushing", "Coupe seule", "Brushing", "Coupe frange",
+  "Coupe enfant", "Boucles & ondulations", "Couleur racines",
+  "Couleur complète", "Balayage", "Ombré / tie and dye", "Mèches papier",
+  "Patine / gloss", "Lissage brésilien", "Lissage à la kératine",
+  "Permanente souple", "Défrisage", "Soin profond", "Rituel botox capillaire",
+  "Soin cuir chevelu", "Ampoule anti-chute", "Chignon de mariée",
+  "Chignon de soirée", "Coiffure d'invitée", "Essai coiffure mariée",
+  "Beauté des mains", "Pose de faux ongles", "Maquillage permanent",
+  "Extension de cils", "Tatouage", "Soin visage", "Beauté des pieds",
 ];
 
 // Fermé dimanche et lundi. 9h30–19h en semaine, nocturne le jeudi jusqu'à 20h,
@@ -440,27 +549,76 @@ async function initialise(sql: Sql) {
       );
     }
 
-    const [{ n: categoryCount }] = await tx.query<{ n: string }>(
-      "SELECT COUNT(*) AS n FROM categories",
+    /* ------------------------------------------------------------- la carte */
+    // Les données d'amorçage ne s'appliquent qu'à une base vide : la carte du
+    // salon doit aussi atteindre la base déjà en ligne. Cette bascule est donc
+    // rejouable et ne fait qu'ajouter ce qui manque, une fois l'ancienne carte
+    // retirée.
+    const [version] = await tx.query<{ value: string }>(
+      "SELECT value FROM settings WHERE key = 'catalogue_version'",
     );
-    if (Number(categoryCount) === 0) {
-      for (const [index, [name, services]] of CATALOGUE.entries()) {
-        const [category] = await tx.query<{ id: number }>(
-          "INSERT INTO categories (name, sort_order) VALUES ($1, $2) RETURNING id",
-          [name, index],
+
+    if ((version?.value ?? "1") !== CATALOGUE_VERSION) {
+      // Ne disparaît que ce qui porte encore son nom d'amorçage, dans une
+      // famille d'amorçage : une prestation ajoutée ou renommée depuis
+      // l'espace salon appartient au salon et reste en place. Les rendez-vous
+      // déjà pris gardent leur libellé, recopié sur la ligne du rendez-vous.
+      await tx.query(
+        `DELETE FROM services
+          WHERE name = ANY($1)
+            AND category_id IN (SELECT id FROM categories WHERE name = ANY($2))`,
+        [ANCIENNES_PRESTATIONS, ANCIENNES_FAMILLES],
+      );
+      await tx.query(
+        `DELETE FROM categories
+          WHERE name = ANY($1)
+            AND NOT EXISTS (
+              SELECT 1 FROM services WHERE category_id = categories.id
+            )`,
+        [ANCIENNES_FAMILLES],
+      );
+
+      // Une famille que le salon a garnie survit au ménage. On la range
+      // derrière la carte plutôt que de la laisser en concurrence de rang.
+      await tx.query("UPDATE categories SET sort_order = sort_order + 100");
+
+      for (const [rang, [famille, prestations]] of CATALOGUE.entries()) {
+        let [row] = await tx.query<{ id: number }>(
+          "SELECT id FROM categories WHERE name = $1",
+          [famille],
         );
+        if (row) {
+          await tx.query("UPDATE categories SET sort_order = $1 WHERE id = $2", [
+            rang,
+            row.id,
+          ]);
+        } else {
+          [row] = await tx.query<{ id: number }>(
+            "INSERT INTO categories (name, sort_order) VALUES ($1, $2) RETURNING id",
+            [famille, rang],
+          );
+        }
+
         for (const [
           i,
-          [label, description, price, duration],
-        ] of services.entries()) {
+          [nom, description, prix, duree, plancher],
+        ] of prestations.entries()) {
           await tx.query(
             `INSERT INTO services
-               (category_id, name, description, price_cents, duration_min, sort_order)
-             VALUES ($1, $2, $3, $4, $5, $6)`,
-            [category.id, label, description, price, duration, i],
+               (category_id, name, description, price_cents, duration_min,
+                sort_order, price_from)
+             SELECT $1, $2, $3, $4, $5, $6, $7
+              WHERE NOT EXISTS (SELECT 1 FROM services WHERE name = $2)`,
+            [row.id, nom, description, prix, duree, i, plancher === true],
           );
         }
       }
+
+      await tx.query(
+        `INSERT INTO settings (key, value) VALUES ('catalogue_version', $1)
+         ON CONFLICT (key) DO UPDATE SET value = EXCLUDED.value`,
+        [CATALOGUE_VERSION],
+      );
     }
 
     // Le site a d'abord été mis en ligne avec des coordonnées d'exemple. On les
@@ -480,32 +638,6 @@ async function initialise(sql: Sql) {
         "UPDATE settings SET value = $1 WHERE key = $2 AND value = $3",
         [reel, cle, exemple],
       );
-    }
-
-    // Les prestations d'institut sont affichées sur la vitrine du salon. Elles
-    // sont créées ici, sur une base neuve comme sur une base déjà amorcée, mais
-    // *inactives* : leurs tarifs restent à fixer et rien ne doit s'afficher au
-    // public tant que le salon ne les a pas renseignés depuis l'espace salon.
-    const [institut] = await tx.query<{ id: number }>(
-      "SELECT id FROM categories WHERE name = $1",
-      [INSTITUT_CATEGORIE],
-    );
-    if (!institut) {
-      const [{ max: rang }] = await tx.query<{ max: number | null }>(
-        "SELECT MAX(sort_order) AS max FROM categories",
-      );
-      const [cat] = await tx.query<{ id: number }>(
-        "INSERT INTO categories (name, sort_order) VALUES ($1, $2) RETURNING id",
-        [INSTITUT_CATEGORIE, (rang ?? -1) + 1],
-      );
-      for (const [i, [nom, description, duree]] of INSTITUT.entries()) {
-        await tx.query(
-          `INSERT INTO services
-             (category_id, name, description, price_cents, duration_min, sort_order, active)
-           VALUES ($1, $2, $3, 0, $4, $5, FALSE)`,
-          [cat.id, nom, description, duree, i],
-        );
-      }
     }
 
     for (const [nom, image] of VISUELS) {

@@ -272,6 +272,39 @@ function ServiceRow({
           Réservable en ligne
         </label>
 
+        {/* Un tarif qui dépend du travail demandé s'annonce comme un plancher. */}
+        <label className="flex items-center gap-2 text-sm">
+          <input
+            type="checkbox"
+            name="price_from"
+            defaultChecked={service.price_from}
+            className="h-4 w-4 accent-black"
+          />
+          Tarif « à partir de »
+        </label>
+
+        <label className="flex min-w-[16rem] grow items-center gap-2 text-sm">
+          <span className="shrink-0 text-mute">Photo</span>
+          {service.image ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={service.image}
+              alt=""
+              className="h-9 w-12 shrink-0 border border-ink/15 object-cover"
+            />
+          ) : (
+            <span className="flex h-9 w-12 shrink-0 items-center justify-center border border-dashed border-ink/20 text-[0.55rem] uppercase tracking-wider text-mute">
+              Sans
+            </span>
+          )}
+          <input
+            name="image"
+            defaultValue={service.image}
+            placeholder="/photos/prestations/coupe.jpg"
+            className="w-full border border-ink/20 px-3 py-2 text-sm"
+          />
+        </label>
+
         <span className="grow" />
 
         <SubmitButton>Enregistrer</SubmitButton>

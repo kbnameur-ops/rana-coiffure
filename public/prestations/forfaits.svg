@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 600" width="1600" height="600" role="img" aria-label="Forfaits">
+  <defs>
+    <linearGradient id="f-bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f7f0e7"/><stop offset="0.5" stop-color="#fdfaf6"/><stop offset="1" stop-color="#f4e6e1"/>
+    </linearGradient>
+  </defs>
+  <rect width="1600" height="600" fill="url(#f-bg)"/>
+
+  <!-- Un ruban traverse la planche : le forfait relie les prestations. -->
+  <path d="M-20 420 C 300 300, 500 470, 800 360 C 1100 250, 1300 400, 1620 300"
+        fill="none" stroke="#d9ba72" stroke-width="3" stroke-linecap="round"/>
+  <path d="M-20 452 C 300 332, 500 502, 800 392 C 1100 282, 1300 432, 1620 332"
+        fill="none" stroke="#8a6a26" stroke-width="1.4" stroke-linecap="round" opacity="0.55"/>
+
+  <!-- Trois médaillons : la coiffure, l'ongle, le soin. -->
+  <g>
+    <circle cx="400" cy="268" r="112" fill="#f7f0e7" stroke="#8a6a26" stroke-width="2"/>
+    <g fill="none" stroke="#1f2e4a" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M356 322 L 452 216"/>
+      <path d="M356 216 L 452 322"/>
+      <circle cx="345" cy="333" r="16"/>
+      <circle cx="345" cy="205" r="16"/>
+    </g>
+  </g>
+  <g>
+    <circle cx="800" cy="220" r="112" fill="#f7f0e7" stroke="#8a6a26" stroke-width="2"/>
+    <g fill="none" stroke="#8a6a26" stroke-width="3.2" stroke-linejoin="round">
+      <path d="M772 170 h 56 v 108 a 18 18 0 0 1 -18 18 h -20 a 18 18 0 0 1 -18 -18 z"/>
+      <path d="M790 170 v -28 h 20 v 28"/>
+      <path d="M800 116 v 26"/>
+    </g>
+    <path d="M772 224 h 56 v 54 a 18 18 0 0 1 -18 18 h -20 a 18 18 0 0 1 -18 -18 z" fill="#a15a52" opacity="0.75"/>
+  </g>
+  <g>
+    <circle cx="1200" cy="268" r="112" fill="#eaf1ed" stroke="#8a6a26" stroke-width="2"/>
+    <path d="M1200 194 c 40 52, 58 86, 58 112 a 58 58 0 0 1 -116 0 c 0 -26, 18 -60, 58 -112 z"
+          fill="#8ba79c" fill-opacity="0.4" stroke="#4f6f66" stroke-width="3"/>
+  </g>
+
+  <path d="M190 154 C197.28 174.72, 197.28 174.72, 218 182 C197.28 189.28, 197.28 189.28, 190 210 C182.72 189.28, 182.72 189.28, 162 182 C182.72 174.72, 182.72 174.72, 190 154 Z" fill="#d9ba72" opacity="0.85"/>
+  <path d="M1420 359 C1424.94 373.06, 1424.94 373.06, 1439 378 C1424.94 382.94, 1424.94 382.94, 1420 397 C1415.06 382.94, 1415.06 382.94, 1401 378 C1415.06 373.06, 1415.06 373.06, 1420 359 Z" fill="#d9ba72" opacity="0.6"/>
+  <path d="M110 552 H 1490" stroke="#8a6a26" stroke-width="1.2" opacity="0.45"/>
+</svg>

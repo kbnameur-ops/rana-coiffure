@@ -16,6 +16,10 @@ export type Service = {
   sort_order: number;
   active: boolean;
   bookable: boolean;
+  /** Photo de la prestation. Vide : le visuel de la famille prend le relais. */
+  image: string;
+  /** Le tarif est un plancher : « à partir de ». */
+  price_from: boolean;
 };
 
 export type OpeningHour = {

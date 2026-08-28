@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-import { formatDuration, formatPrice } from "@/lib/format";
+import { formatDuration, formatTarif } from "@/lib/format";
 
 export type TabService = {
   id: number;
@@ -12,6 +12,9 @@ export type TabService = {
   price_cents: number;
   duration_min: number;
   bookable: boolean;
+  /** Photo de la prestation. Vide : la carte s'en tient au texte. */
+  image: string;
+  price_from: boolean;
 };
 
 export type TabCategory = {
@@ -91,12 +94,29 @@ export function ServiceTabs({ categories }: { categories: TabCategory[] }) {
           <article
             key={service.id}
             style={{ animation: `rise 0.8s var(--ease-out-soft) ${i * 70}ms both` }}
-            className="card group flex flex-col p-7"
+            className="card group flex flex-col overflow-hidden"
           >
+            {service.image && (
+              <div className="relative aspect-[4/3] overflow-hidden">
+                <Image
+                  src={service.image}
+                  alt=""
+                  fill
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 360px"
+                  className="object-cover transition-transform duration-700 group-hover:scale-[1.04]"
+                />
+              </div>
+            )}
+
+            <div className="flex grow flex-col p-7">
             <div className="flex items-start justify-between gap-4">
               <h4 className="display text-xl leading-snug">{service.name}</h4>
-              <p className="display shrink-0 text-3xl lining-nums tabular-nums text-gold">
-                {formatPrice(service.price_cents)}
+              <p
+                className={`display shrink-0 lining-nums tabular-nums text-gold ${
+                  service.price_from ? "text-right text-lg leading-tight" : "text-3xl"
+                }`}
+              >
+                {formatTarif(service.price_cents, service.price_from)}
               </p>
             </div>
 
@@ -125,6 +145,7 @@ export function ServiceTabs({ categories }: { categories: TabCategory[] }) {
                   Sur place
                 </span>
               )}
+            </div>
             </div>
           </article>
         ))}

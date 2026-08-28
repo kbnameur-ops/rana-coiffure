@@ -8,6 +8,7 @@ import {
   formatDateLong,
   formatDuration,
   formatPrice,
+  formatTarif,
   minutesToTime,
 } from "@/lib/format";
 
@@ -20,6 +21,10 @@ export type BookingService = {
   category: string;
   /** Visuel de la famille, partagé par toutes ses prestations. */
   categoryImage: string;
+  /** Photo de la prestation. Vide : la carte reste au texte. */
+  image: string;
+  /** Le tarif est un plancher : le total ne peut alors qu'être minoré. */
+  price_from: boolean;
 };
 
 export type BookingStaff = {
@@ -139,10 +144,11 @@ export function BookingFlow({
   // annoncé à la cliente.
   const totalDuration = chosen.reduce((t, s) => t + s.duration_min, 0);
   const totalPrice = chosen.reduce((t, s) => t + s.price_cents, 0);
+  const totalEstime = chosen.some((s) => s.price_from);
   const summaryLine =
     chosen.length === 0
       ? ""
-      : `${chosen.map((s) => s.name).join(" + ")} · ${formatDuration(totalDuration)} · ${formatPrice(totalPrice)}`;
+      : `${chosen.map((s) => s.name).join(" + ")} · ${formatDuration(totalDuration)} · ${formatTarif(totalPrice, totalEstime)}`;
 
   /**
    * Une coiffeuse sans compétence déclarée assure tout. Sinon elle doit couvrir
@@ -465,12 +471,24 @@ export function BookingFlow({
                         type="button"
                         aria-pressed={on}
                         onClick={() => toggleService(s.id)}
-                        className={`group flex flex-col items-start border p-5 text-left transition-all hover:-translate-y-0.5 ${
+                        className={`group flex items-start gap-4 border p-5 text-left transition-all hover:-translate-y-0.5 ${
                           on
                             ? "border-gold bg-cream shadow-lg shadow-gold/10"
                             : "border-ink/12 bg-white hover:border-ink hover:shadow-lg hover:shadow-ink/5"
                         }`}
                       >
+                        {s.image && (
+                          <span className="relative block h-20 w-20 shrink-0 overflow-hidden sm:h-24 sm:w-24">
+                            <Image
+                              src={s.image}
+                              alt=""
+                              fill
+                              sizes="96px"
+                              className="object-cover"
+                            />
+                          </span>
+                        )}
+                        <span className="flex min-w-0 grow flex-col">
                         <span className="flex w-full items-baseline justify-between gap-3">
                           <span className="flex items-baseline gap-2.5 font-semibold">
                             <span
@@ -485,8 +503,14 @@ export function BookingFlow({
                             </span>
                             {s.name}
                           </span>
-                          <span className="display text-lg lining-nums tabular-nums">
-                            {formatPrice(s.price_cents)}
+                          <span
+                            className={`shrink-0 lining-nums tabular-nums ${
+                              s.price_from
+                                ? "text-right text-xs uppercase tracking-wider text-mute"
+                                : "display text-lg"
+                            }`}
+                          >
+                            {formatTarif(s.price_cents, s.price_from)}
                           </span>
                         </span>
                         {s.description && (
@@ -501,6 +525,7 @@ export function BookingFlow({
                               Choisie{selection.length > 1 ? ` · ${rank + 1}` : ""}
                             </span>
                           )}
+                        </span>
                         </span>
                       </button>
                     );
@@ -936,7 +961,7 @@ export function BookingFlow({
                     </span>
                   </span>
                   <span className="shrink-0 lining-nums tabular-nums">
-                    {formatPrice(s.price_cents)}
+                    {formatTarif(s.price_cents, s.price_from)}
                   </span>
                 </li>
               ))}
@@ -952,12 +977,18 @@ export function BookingFlow({
               <Row label="Durée" value={formatDuration(totalDuration)} />
             </dl>
             <div className="mt-6 flex items-baseline justify-between border-t border-ink/10 pt-4">
-              <span className="eyebrow text-mute">Total</span>
+              <span className="eyebrow text-mute">
+                {totalEstime ? "À partir de" : "Total"}
+              </span>
               <span className="display text-2xl lining-nums tabular-nums">
                 {formatPrice(totalPrice)}
               </span>
             </div>
-            <p className="mt-3 text-xs text-mute">Règlement sur place.</p>
+            <p className="mt-3 text-xs leading-relaxed text-mute">
+              {totalEstime
+                ? "Une des prestations choisies se chiffre sur place, selon le travail demandé. Règlement sur place."
+                : "Règlement sur place."}
+            </p>
           </aside>
         </section>
       )}
@@ -984,7 +1015,7 @@ export function BookingFlow({
                   </span>
                 </span>
                 <span className="shrink-0 lining-nums tabular-nums">
-                  {formatPrice(s.price_cents)}
+                  {formatTarif(s.price_cents, s.price_from)}
                 </span>
               </li>
             ))}
@@ -999,7 +1030,10 @@ export function BookingFlow({
             />
             <Row label="Au nom de" value={form.name} />
             <Row label="Téléphone" value={form.phone} />
-            <Row label="Total" value={formatPrice(totalPrice)} />
+            <Row
+              label={totalEstime ? "À partir de" : "Total"}
+              value={formatPrice(totalPrice)}
+            />
           </dl>
 
           <p className="mt-6 text-sm leading-relaxed text-ink/60">
