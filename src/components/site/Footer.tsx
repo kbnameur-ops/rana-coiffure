@@ -12,7 +12,8 @@ export function Footer({ settings }: { settings: Settings }) {
           <LogoBar shopName={settings.shop_name} tone="clair" className="h-auto w-56" />
           <p className="mt-6 max-w-xs text-sm leading-relaxed text-cream/55">
             Coiffure et institut de beauté, {settings.postal_code} {settings.city}.
-            Coupe, couleur, balayage, lissage, chignon, ongles et soins.
+            Coupe, couleur, balayage, lissage, chignon, ongles, cils,
+            épilation et soins du visage.
           </p>
         </div>
 

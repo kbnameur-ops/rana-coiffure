@@ -20,17 +20,6 @@ import { nowMinutes, todayISO } from "@/lib/time";
 
 export const dynamic = "force-dynamic";
 
-const MARQUEE = [
-  "Coupe & coiffage",
-  "Couleur sur mesure",
-  "Balayage lumière",
-  "Lissage brésilien",
-  "Chignon de mariée",
-  "Soins profonds",
-  "Beauté des ongles",
-  "Soin du visage",
-];
-
 const SIGNATURES = [
   {
     title: "Le diagnostic d'abord",
@@ -94,6 +83,7 @@ export default async function HomePage() {
     })),
   }));
 
+  const familles = tabs.map((t) => t.name);
   const allServices = catalogue.flatMap((g) => g.services);
   const priceFrom = Math.min(...allServices.map((s) => s.price_cents));
 
@@ -275,7 +265,9 @@ export default async function HomePage() {
         {/* --------------------------------------------------------- bandeau */}
         <div className="overflow-hidden bg-ink py-3.5">
           <ul className="flex w-max animate-[marquee_52s_linear_infinite] items-center gap-10 pr-10">
-            {[...MARQUEE, ...MARQUEE].map((word, i) => (
+            {/* Le bandeau reprend les familles de la carte : renommer une
+                famille depuis l'espace salon le met à jour du même geste. */}
+            {[...familles, ...familles].map((word, i) => (
               <li key={i} className="eyebrow flex items-center gap-10 text-cream/70">
                 {word}
                 <span className="text-gold-soft/70" aria-hidden>

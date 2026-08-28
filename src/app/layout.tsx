@@ -31,10 +31,10 @@ export async function generateMetadata(): Promise<Metadata> {
       default: `${name} — ${tagline} à ${city}`,
       template: `%s — ${name}`,
     },
-    description: `${name}, ${tagline.toLowerCase()} à ${city}. Coupe, couleur, balayage, lissage, chignon, ongles et soins du visage. Réservation en ligne en moins d'une minute.`,
+    description: `${name}, ${tagline.toLowerCase()} à ${city}. Coupe, couleur, balayage, lissage, chignon, ongles, extensions de cils, épilation et soins du visage. Réservation en ligne en moins d'une minute.`,
     openGraph: {
       title: `${name} — ${tagline}`,
-      description: `${tagline} à ${city}. Coupe, couleur, balayage, coiffure de mariée, ongles et soins. Réservez votre rendez-vous en ligne.`,
+      description: `${tagline} à ${city}. Coupe, couleur, balayage, coiffure de mariée, ongles, cils, épilation et soins. Réservez votre rendez-vous en ligne.`,
       type: "website",
       locale: "fr_FR",
     },
