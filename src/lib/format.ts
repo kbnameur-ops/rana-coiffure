@@ -16,6 +16,18 @@ export function formatTarif(cents: number, from = false): string {
   return from ? `à partir de ${formatPrice(cents)}` : formatPrice(cents);
 }
 
+/**
+ * Un numéro WhatsApp est stocké au format international, sans signe : c'est ce
+ * qu'attend un lien wa.me. Affiché, il reprend sa forme française.
+ */
+export function formatWhatsapp(raw: string): string {
+  const chiffres = raw.replace(/\D/g, "");
+  const national = chiffres.startsWith("33") ? `0${chiffres.slice(2)}` : chiffres;
+  return national.length === 10
+    ? national.replace(/(\d{2})(?=\d)/g, "$1 ").trim()
+    : raw;
+}
+
 export function formatDuration(min: number): string {
   if (min < 60) return `${min} min`;
   const h = Math.floor(min / 60);

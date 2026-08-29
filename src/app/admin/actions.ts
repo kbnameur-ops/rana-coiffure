@@ -357,6 +357,8 @@ const SETTING_KEYS = [
   "phone",
   "email",
   "instagram",
+  "facebook",
+  "whatsapp",
   "google_maps_url",
   "google_place_id",
   "google_places_api_key",

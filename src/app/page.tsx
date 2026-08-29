@@ -524,6 +524,16 @@ export default async function HomePage() {
                 >
                   <span>Appeler</span>
                 </a>
+                {settings.whatsapp && (
+                  <a
+                    href={`https://wa.me/${settings.whatsapp.replace(/\D/g, "")}`}
+                    target="_blank"
+                    rel="noreferrer noopener"
+                    className="btn-ghost px-7 py-3 text-xs font-semibold uppercase tracking-[0.18em]"
+                  >
+                    <span>WhatsApp</span>
+                  </a>
+                )}
               </div>
 
               <div className="relative mt-9 aspect-16/10 overflow-hidden rounded-t-[3rem] rounded-b-sm">

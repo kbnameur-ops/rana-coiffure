@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { LogoBar } from "./Logo";
+import { formatWhatsapp } from "@/lib/format";
 import type { Settings } from "@/lib/types";
 
 export function Footer({ settings }: { settings: Settings }) {
@@ -38,16 +39,53 @@ export function Footer({ settings }: { settings: Settings }) {
               {settings.email}
             </a>
           )}
-          {settings.instagram && (
+          {settings.whatsapp && (
             <a
-              href={settings.instagram}
+              href={`https://wa.me/${settings.whatsapp.replace(/\D/g, "")}`}
               target="_blank"
               rel="noreferrer noopener"
-              className="mt-4 inline-block transition-colors hover:text-gold-soft"
+              className="mt-1 block transition-colors hover:text-gold-soft"
             >
-              Instagram ↗
+              WhatsApp{" "}
+              <span className="lining-nums tabular-nums text-cream/55">
+                {formatWhatsapp(settings.whatsapp)}
+              </span>
             </a>
           )}
+
+          {/* Les réseaux du salon, groupés : c'est là qu'on les cherche. */}
+          <div className="mt-4 flex flex-wrap gap-x-4 gap-y-1">
+            {settings.instagram && (
+              <a
+                href={settings.instagram}
+                target="_blank"
+                rel="noreferrer noopener"
+                className="transition-colors hover:text-gold-soft"
+              >
+                Instagram ↗
+              </a>
+            )}
+            {settings.facebook && (
+              <a
+                href={settings.facebook}
+                target="_blank"
+                rel="noreferrer noopener"
+                className="transition-colors hover:text-gold-soft"
+              >
+                Facebook ↗
+              </a>
+            )}
+            {settings.google_maps_url && (
+              <a
+                href={settings.google_maps_url}
+                target="_blank"
+                rel="noreferrer noopener"
+                className="transition-colors hover:text-gold-soft"
+              >
+                Google ↗
+              </a>
+            )}
+          </div>
         </div>
 
         <div className="text-sm">

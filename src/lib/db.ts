@@ -326,7 +326,10 @@ export const DEFAULT_SETTINGS: Record<string, string> = {
   phone: "01 48 40 07 84",
   email: "",
   instagram: "https://www.instagram.com/rana_coiffure/",
-  google_maps_url: "",
+  facebook: "https://www.facebook.com/share/19R7Scy2vj/",
+  // Numéro au format international : c'est celui qu'attend un lien wa.me.
+  whatsapp: "33699454556",
+  google_maps_url: "https://share.google/UZgv6weBz2hVYYkpa",
   client_space_enabled: "1",
   loyalty_enabled: "1",
   loyalty_threshold: "10",
@@ -532,9 +535,24 @@ const ANCIENNES_PRESTATIONS = [
   "Extension de cils", "Tatouage", "Soin visage", "Beauté des pieds",
 ];
 
-// Fermé dimanche et lundi. 9h30–19h en semaine, nocturne le jeudi jusqu'à 20h,
-// 9h–18h30 le samedi.
+// Ouvert sept jours sur sept, de 10 h à 20 h.
 const OPENING: [number, number, number][] = [
+  [1, 600, 1200],
+  [2, 600, 1200],
+  [3, 600, 1200],
+  [4, 600, 1200],
+  [5, 600, 1200],
+  [6, 600, 1200],
+  [7, 600, 1200],
+];
+
+/**
+ * Les premiers horaires étaient les miens : fermé dimanche et lundi, nocturne
+ * le jeudi. Le salon ouvre en réalité tous les jours de 10 h à 20 h. La base en
+ * ligne les porte déjà : on ne les remplace que s'ils sont restés exactement
+ * ceux de l'amorçage — une saisie faite depuis l'espace salon prime toujours.
+ */
+const ANCIENS_HORAIRES: [number, number, number][] = [
   [2, 570, 1140],
   [3, 570, 1140],
   [4, 570, 1200],
@@ -639,6 +657,11 @@ async function initialise(sql: Sql) {
       ["city", "Paris", "Pantin"],
       ["phone", "01 23 45 67 89", "01 48 40 07 84"],
       ["instagram", "", "https://www.instagram.com/rana_coiffure/"],
+      // Arrivés après la mise en ligne : la base porte déjà une valeur vide,
+      // que l'amorçage n'aurait jamais remplacée.
+      ["facebook", "", "https://www.facebook.com/share/19R7Scy2vj/"],
+      ["whatsapp", "", "33699454556"],
+      ["google_maps_url", "", "https://share.google/UZgv6weBz2hVYYkpa"],
     ];
     for (const [cle, exemple, reel] of CORRECTIONS) {
       await tx.query(
@@ -670,12 +693,38 @@ async function initialise(sql: Sql) {
     const [{ n: hourCount }] = await tx.query<{ n: string }>(
       "SELECT COUNT(*) AS n FROM opening_hours",
     );
-    if (Number(hourCount) === 0) {
+    const poseHoraires = async () => {
       for (const [weekday, open, close] of OPENING) {
         await tx.query(
           "INSERT INTO opening_hours (weekday, open_min, close_min) VALUES ($1, $2, $3)",
           [weekday, open, close],
         );
+      }
+    };
+
+    if (Number(hourCount) === 0) {
+      await poseHoraires();
+    } else {
+      // Base déjà remplie : on ne reprend les horaires que s'ils sont restés
+      // ceux de l'amorçage, au créneau près.
+      const actuels = await tx.query<{
+        weekday: number;
+        open_min: number;
+        close_min: number;
+      }>(
+        "SELECT weekday, open_min, close_min FROM opening_hours ORDER BY weekday, open_min",
+      );
+      const memes =
+        actuels.length === ANCIENS_HORAIRES.length &&
+        actuels.every(
+          (h, i) =>
+            h.weekday === ANCIENS_HORAIRES[i][0] &&
+            h.open_min === ANCIENS_HORAIRES[i][1] &&
+            h.close_min === ANCIENS_HORAIRES[i][2],
+        );
+      if (memes) {
+        await tx.query("DELETE FROM opening_hours");
+        await poseHoraires();
       }
     }
 

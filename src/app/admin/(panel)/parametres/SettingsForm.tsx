@@ -31,6 +31,12 @@ export function SettingsForm({ settings }: { settings: Settings }) {
           <Text name="phone" label="Téléphone" settings={settings} />
           <Text name="email" label="E-mail" settings={settings} type="email" />
           <Text name="instagram" label="Lien Instagram" settings={settings} />
+          <Text name="facebook" label="Lien Facebook" settings={settings} />
+          <Text
+            name="whatsapp"
+            label="WhatsApp (indicatif + numéro, ex. 33699454556)"
+            settings={settings}
+          />
           <Text
             name="google_maps_url"
             label="Lien Google Maps (fiche du salon)"
