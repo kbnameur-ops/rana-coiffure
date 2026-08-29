@@ -120,9 +120,17 @@ export function Footer({ settings }: { settings: Settings }) {
           <p>
             © {year} {settings.shop_name}. Tous droits réservés.
           </p>
-          <Link href="/admin" className="transition-colors hover:text-cream">
-            Espace salon
-          </Link>
+          <div className="flex items-center gap-5">
+            <Link
+              href="/mentions-legales"
+              className="transition-colors hover:text-cream"
+            >
+              Mentions légales
+            </Link>
+            <Link href="/admin" className="transition-colors hover:text-cream">
+              Espace salon
+            </Link>
+          </div>
         </div>
       </div>
     </footer>

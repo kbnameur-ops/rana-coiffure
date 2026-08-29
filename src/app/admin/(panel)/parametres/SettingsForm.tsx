@@ -168,6 +168,49 @@ export function SettingsForm({ settings }: { settings: Settings }) {
         />
       </fieldset>
 
+      <fieldset className="border border-ink/12 bg-white p-5">
+        <legend className="eyebrow px-2 text-mute">Mentions légales</legend>
+        <p className="mb-4 text-sm leading-relaxed text-mute">
+          Ces informations composent la page{" "}
+          <a href="/mentions-legales" className="underline hover:text-ink">
+            Mentions légales
+          </a>
+          . Un champ laissé vide n&apos;y apparaît pas.
+        </p>
+        <div className="grid gap-4 sm:grid-cols-2">
+          <Text name="legal_name" label="Dénomination" settings={settings} />
+          <Text name="legal_form" label="Forme juridique" settings={settings} />
+          <Text
+            name="legal_capital"
+            label="Capital social"
+            settings={settings}
+          />
+          <Text name="legal_siren" label="SIREN" settings={settings} />
+          <Text name="legal_siret" label="SIRET du siège" settings={settings} />
+          <Text
+            name="legal_rcs"
+            label="Immatriculation (RCS)"
+            settings={settings}
+          />
+          <Text
+            name="legal_manager"
+            label="Gérante (directrice de la publication)"
+            settings={settings}
+          />
+          <Text
+            name="legal_vat"
+            label="TVA intracommunautaire"
+            settings={settings}
+            hint="À renseigner si le salon y est assujetti."
+          />
+        </div>
+        <Area
+          name="legal_mediator"
+          label="Médiateur de la consommation"
+          settings={settings}
+        />
+      </fieldset>
+
       <div>
         <SubmitButton>Enregistrer</SubmitButton>
         <Flash state={state} />

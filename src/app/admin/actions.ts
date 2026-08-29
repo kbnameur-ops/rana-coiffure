@@ -371,6 +371,15 @@ const SETTING_KEYS = [
   "min_notice_hours",
   "max_advance_days",
   "booking_notice",
+  "legal_name",
+  "legal_form",
+  "legal_capital",
+  "legal_siren",
+  "legal_siret",
+  "legal_rcs",
+  "legal_manager",
+  "legal_vat",
+  "legal_mediator",
 ];
 
 export async function saveSettings(

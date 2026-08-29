@@ -344,6 +344,20 @@ export const DEFAULT_SETTINGS: Record<string, string> = {
   max_advance_days: "45",
   booking_notice:
     "Merci de prévenir au moins 2 h à l'avance en cas d'empêchement.",
+
+  /* ------------------------------------------------------ mentions légales */
+  // Relevés au registre du commerce (SIREN 413 060 179). Le numéro de TVA et
+  // le médiateur de la consommation restent à renseigner par le salon : les
+  // inventer serait pire que de les taire.
+  legal_name: "RANA",
+  legal_form: "Société à responsabilité limitée à capital variable",
+  legal_capital: "7 622,45 €",
+  legal_siren: "413 060 179",
+  legal_siret: "413 060 179 00012",
+  legal_rcs: "RCS Bobigny 413 060 179",
+  legal_manager: "Zahia Tir",
+  legal_vat: "",
+  legal_mediator: "",
 };
 
 /**
@@ -662,6 +676,13 @@ async function initialise(sql: Sql) {
       ["facebook", "", "https://www.facebook.com/share/19R7Scy2vj/"],
       ["whatsapp", "", "33699454556"],
       ["google_maps_url", "", "https://share.google/UZgv6weBz2hVYYkpa"],
+      ["legal_name", "", "RANA"],
+      ["legal_form", "", "Société à responsabilité limitée à capital variable"],
+      ["legal_capital", "", "7 622,45 €"],
+      ["legal_siren", "", "413 060 179"],
+      ["legal_siret", "", "413 060 179 00012"],
+      ["legal_rcs", "", "RCS Bobigny 413 060 179"],
+      ["legal_manager", "", "Zahia Tir"],
     ];
     for (const [cle, exemple, reel] of CORRECTIONS) {
       await tx.query(
