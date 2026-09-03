@@ -71,10 +71,11 @@ export default async function EspacePage({
         </div>
 
         <p className="mt-10 max-w-lg text-sm leading-relaxed text-mute">
-          Votre espace se crée tout seul à votre première réservation. La date
-          de naissance y est demandée : c&apos;est elle qui vous ouvre l&apos;accès
-          ici. Si vous ne l&apos;avez jamais renseignée, indiquez-la au salon ou
-          à votre prochain rendez-vous.{" "}
+          Votre espace se crée tout seul à votre première réservation en ligne :
+          la date de naissance y est demandée, c&apos;est elle qui vous ouvre
+          l&apos;accès ici. Si votre fiche a été créée au salon et que le
+          numéro seul ne suffit pas, indiquez votre date de naissance à votre
+          prochain rendez-vous.{" "}
           <Link href="/reservation" className="underline hover:text-ink">
             Prendre rendez-vous
           </Link>

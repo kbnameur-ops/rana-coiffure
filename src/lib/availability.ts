@@ -395,11 +395,34 @@ export async function createBooking(
       error: "Merci d'indiquer un numéro de téléphone valide.",
     };
   const email = (input.email ?? "").trim();
-  if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
+  if (!email)
+    return {
+      ok: false,
+      code: "validation",
+      error: "Merci d'indiquer votre adresse e-mail.",
+    };
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
     return {
       ok: false,
       code: "validation",
       error: "L'adresse e-mail ne semble pas valide.",
+    };
+
+  // Le téléphone et la date de naissance ouvrent l'espace client : sans elle,
+  // la cliente ne pourrait pas y retrouver le rendez-vous qu'elle vient de
+  // prendre. Elle est donc demandée, pas proposée.
+  const birthdate = (input.birthdate ?? "").trim();
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(birthdate))
+    return {
+      ok: false,
+      code: "validation",
+      error: "Merci d'indiquer votre date de naissance.",
+    };
+  if (birthdate > todayISO())
+    return {
+      ok: false,
+      code: "validation",
+      error: "La date de naissance ne peut pas être dans le futur.",
     };
 
   try {
@@ -445,9 +468,7 @@ export async function createBooking(
         phone,
         name,
         email,
-        birthdate: /^\d{4}-\d{2}-\d{2}$/.test(input.birthdate ?? "")
-          ? input.birthdate
-          : "",
+        birthdate,
       });
 
       let ref = makeRef();

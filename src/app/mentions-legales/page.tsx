@@ -117,22 +117,23 @@ export default async function MentionsPage() {
                 <span className="text-gold" aria-hidden>
                   —
                 </span>
-                Votre nom et votre numéro de téléphone : ils permettent au salon
-                de vous reconnaître et de vous joindre en cas d&apos;imprévu.
+                Votre nom, votre numéro de téléphone et votre e-mail : ils
+                permettent au salon de vous reconnaître et de vous joindre en
+                cas d&apos;imprévu.
               </li>
               <li className="flex gap-3">
                 <span className="text-gold" aria-hidden>
                   —
                 </span>
-                Votre date de naissance, facultative : associée à votre numéro,
-                c&apos;est elle qui ouvre votre espace client.
+                Votre date de naissance : associée à votre numéro, c&apos;est
+                elle qui ouvre votre espace client.
               </li>
               <li className="flex gap-3">
                 <span className="text-gold" aria-hidden>
                   —
                 </span>
-                Votre e-mail, facultatif, et les précisions que vous laissez au
-                moment de réserver.
+                Les précisions que vous laissez au moment de réserver — le
+                seul champ facultatif du formulaire.
               </li>
               <li className="flex gap-3">
                 <span className="text-gold" aria-hidden>

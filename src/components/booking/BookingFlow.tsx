@@ -867,8 +867,9 @@ export function BookingFlow({
                 </div>
               ) : (
                 <p className="mt-2 text-ink/60">
-                  Le numéro de téléphone permet au salon de vous joindre en cas
-                  d&apos;imprévu.{" "}
+                  Tout est demandé, sauf les précisions : ces informations
+                  ouvrent votre espace client et permettent au salon de vous
+                  joindre en cas d&apos;imprévu.{" "}
                   {clientSpace && (
                     <button
                       type="button"
@@ -897,14 +898,20 @@ export function BookingFlow({
                   onChange={(v) => setForm({ ...form, phone: v })}
                   autoComplete="tel"
                 />
+                <Field
+                  label="E-mail"
+                  required
+                  type="email"
+                  value={form.email}
+                  onChange={(v) => setForm({ ...form, email: v })}
+                  autoComplete="email"
+                />
                 <div>
                   <Field
-                    label={
-                      known
-                        ? "Date de naissance"
-                        : "Date de naissance (facultatif)"
-                    }
+                    label="Date de naissance"
+                    required
                     type="date"
+                    max={today}
                     value={form.birthdate}
                     onChange={(v) => setForm({ ...form, birthdate: v })}
                     autoComplete="bday"
@@ -912,18 +919,12 @@ export function BookingFlow({
                   {/* Déjà connectée, elle sait à quoi sert la date. */}
                   {!known && (
                     <p className="mt-2 text-xs leading-relaxed text-mute">
-                      Avec votre numéro, elle vous ouvre l&apos;espace client :
-                      historique, annulation en ligne et carte de fidélité.
+                      Avec votre numéro de téléphone, elle vous ouvre
+                      l&apos;espace client : historique, annulation en ligne et
+                      carte de fidélité.
                     </p>
                   )}
                 </div>
-                <Field
-                  label="E-mail (facultatif)"
-                  type="email"
-                  value={form.email}
-                  onChange={(v) => setForm({ ...form, email: v })}
-                  autoComplete="email"
-                />
                 <label className="block">
                   <span className="eyebrow text-mute">Précisions (facultatif)</span>
                   <textarea
@@ -1046,7 +1047,7 @@ export function BookingFlow({
           </p>
 
           {/* Une date de naissance donnée ouvre l'espace : autant y mener. */}
-          {clientSpace && (known || form.birthdate) && (
+          {clientSpace && (
             <p className="mt-6 border border-gold/40 bg-cream px-4 py-3 text-sm leading-relaxed">
               {known
                 ? "Ce rendez-vous est enregistré dans votre espace client : vous pouvez l'y retrouver, l'annuler et suivre votre carte de fidélité."
@@ -1102,6 +1103,7 @@ function Field({
   type = "text",
   required = false,
   autoComplete,
+  max,
 }: {
   label: string;
   value: string;
@@ -1109,6 +1111,8 @@ function Field({
   type?: string;
   required?: boolean;
   autoComplete?: string;
+  /** Borne haute d'un champ date : on ne naît pas demain. */
+  max?: string;
 }) {
   return (
     <label className="block">
@@ -1119,6 +1123,7 @@ function Field({
       <input
         type={type}
         required={required}
+        max={max}
         value={value}
         autoComplete={autoComplete}
         onChange={(e) => onChange(e.target.value)}
